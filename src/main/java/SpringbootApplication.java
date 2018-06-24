@@ -19,8 +19,9 @@ import java.util.Properties;
 @SpringBootApplication
 @EnableAutoConfiguration
 @EnableAspectJAutoProxy
-@ComponentScan(basePackages = {"com.jw.consult", "com.jw.consult.service", "com.jw.base"})
-@MapperScan("com.jw.consult.dao")
+@ComponentScan(basePackages = {"com.jw.kids", "com.jw.kids.service", "com.jw.base"})
+@MapperScan(basePackages = {"com.jw.kids.dao"})
+
 public class SpringbootApplication {
 
     @Bean

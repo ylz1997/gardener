@@ -1,29 +1,28 @@
 <div class="container-fluid" id="containerDiv">
     <form class="form-inline" style="padding:10px;" role="form">
-        <div class="row" style="padding: 2px;">
-            <div class="form-group col-lg-8"  >
-                <div class="input-group">
-                    <span class="input-group-addon" >中文名</span>
-                    <input type="text" class="form-control" id="ch_nm" placeholder="请输入学生中文名" >
-                </div>
-                <div class="input-group">
-                    <span class="input-group-addon">英文名</span>
-                    <input type="text" class="form-control" id="en_nm" placeholder="请输入学生英文名">
-                </div>
+        <div class="form-group" style="width:30%">
+            <div class="input-group">
+                <span class="input-group-addon" >中文名</span>
+                <input type="text" class="form-control" id="ch_nm" placeholder="请输入学生中文名" >
             </div>
         </div>
-        <div class="dropdown">
-            <button class="btn btn-default dropdown-toggle" type="button" id="class_id" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                请选择学生班级
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="class_id">
-                <li><a href="#">Brown</a></li>
-                <li><a href="#">harvard</a></li>
-                <li><a href="#">Separated link</a></li>
-                <li><a href="#">newHear</a></li>
-            </ul>
+        <div class="form-group" style="width:30%">
+            <div class="input-group">
+                <span class="input-group-addon">英文名</span>
+                <input type="text" class="form-control" id="en_nm" placeholder="请输入学生英文名">
+            </div>
         </div>
+        <div class="form-group" style="width:30%">
+            <div class="input-group">
+                <span class="input-group-addon">班级</span>
+                <select id="classId"  class="form-control">
+                    <option value="Brown">Brown</option>
+                    <option value="harvard">harvard</option>
+                </select>
+            </div>
+
+        </div>
+
         <div class="btn-group" role="group" aria-label="...">
             <button type="button" class="btn btn-success">
                 <span class="glyphicon glyphicon-plus" id="btn-query" aria-hidden="true">查询</span>
