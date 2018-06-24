@@ -21,7 +21,8 @@ define(['dialog',
                             contentType:"application/json",
                             data:JSON.stringify(params),
                             success:function (data) {
-                                if(data.responseJSON.result == true){
+                                data = JSON.parse(data);
+                                if(data.result == true){
                                     new Dialog({
                                         mode: 'tips',
                                         tipsType: 'success',

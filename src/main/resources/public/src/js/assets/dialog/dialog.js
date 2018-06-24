@@ -1,4 +1,4 @@
-define(['text!/src/js/assets/dialog/confirm.tpl','hdb','bootstrap','jquery', 'toastr'], function (ConfirmTpl,Hdb, Bootstrap,$, Toastr) {
+define(['css!src/css/toastr/toastr.min' ,'text!/src/js/assets/dialog/confirm.tpl','hdb','jquery', 'bootstrap', 'toastr'], function (toastrcss, ConfirmTpl,Hdb, $, Bootstrap, Toastr) {
     var option;
     var initialize = function (options) {
         option = options;
