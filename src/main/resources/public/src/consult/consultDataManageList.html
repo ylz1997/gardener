@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../css/datepicker/bootstrap-datepicker.css">
+    <link rel="stylesheet" type="text/css" href="../DataTables-1.10.16/css/jquery.dataTables.min.css">
+    <link href="/src/css/toastr/toastr.min.css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/assets/jquery/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../js/assets/bootstrap/bootstrap.min.js"></script>
+    <title>咨询表 - 咨询表查询</title>
+</head>
+<body class="ke-wrapper">
+<div class="ke-panel-title">
+    咨询表记录
+</div>
+<div class="t-list-search t-columns-3 zxb-search">
+    <ul class="t-columns-group" id="form-contain">
+        <li class="width-all">
+            <label>&nbsp;</label>
+            <div>
+                <a id="btn-search" href="javascript: void(0);" class="t-btn t-btn-sm t-btn-blue">查询</a>
+                <a id="btn-reset" href="javascript: void(0);" class="t-btn t-btn-sm">重置</a>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="t-list-btns">
+    <div>
+        <a id="btn-import" class="t-btn t-btn-sm" href="javascript:void(0)">
+            <i class="iconfont icon-xiazai"></i> 导入
+        </a>
+        <a id="btn-add" class="t-btn t-btn-sm t-btn-green" href="javascript:void(0)">
+            <i class="iconfont icon-jiahao"></i> 新增记录
+        </a>
+    </div>
+</div>
+<table id="list-contain" >
+
+</table>
+</body>
+<script src="../js/requirejs/requirejsMain.js"></script>
+<script src="../js/requirejs/require.js" data-main="/src/js/consult/consultDataManageListNew.js"></script>
+</html>

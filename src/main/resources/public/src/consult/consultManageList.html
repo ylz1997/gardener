@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../css/datepicker/bootstrap-datepicker.css">
+    <link rel="stylesheet" type="text/css" href="../DataTables-1.10.16/css/jquery.dataTables.min.css">
+    <link href="/src/css/toastr/toastr.min.css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/assets/jquery/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../js/assets/bootstrap/bootstrap.min.js"></script>
+    <title>咨询表 - 咨询表查询</title>
+</head>
+<body style="padding: 10px;">
+<div class="container-fluid" id="containerDiv">
+<form class="form-inline" style="padding:10px;" role="form">
+    <div class="row" style="padding: 2px;">
+        <div class="form-group col-lg-8"  >
+            <div class="input-group">
+                <span class="input-group-addon" >咨询表名称</span>
+                <input type="text" class="form-control" id="cnslNm" placeholder="请输入咨询表名称" >
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">校区名称</span>
+                <input type="text" class="form-control" id="regnId" placeholder="请输入校区名称">
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding: 2px;">
+        <div class="form-group col-lg-8"  >
+            <div class="input-group">
+                <span class="input-group-addon">时间</span>
+                <div class="input-group input-daterange">
+                    <input type="text" class="form-control" id="startTime" placeholder="起始时间">
+                    <div class="input-group-addon">to</div>
+                    <input type="text" class="form-control" id="endTime" placeholder="结束时间">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding: 2px;">
+        <div class="form-group col-lg-4">
+            <div class="input-group">
+                <span class="input-group-addon">操作人</span>
+                <input type="text" class="form-control" id="opPrsnId" placeholder="操作人">
+            </div>
+            <div class="input-group">
+                <button class="btn btn-info" type="button" id="searchBtn">查询</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div id="successDialog" class="alert alert-success" role="alert" style="display: none">操作成功！</div>
+<div id="errorDialog" class="alert alert-danger" role="alert" style="display: none">操作失败！</div>
+<div id="confirmDialog" class="alert alert-danger" role="alert" style="display: none">确认删除吗？
+    <a href="javascript:void(0)" class="alert-link confirm-delete-btn">确认</a>
+    <a href="javascript:void(0)" class="alert-link cancel-delete-btn">取消</a>
+</div>
+<div class="continer">
+    <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-success">
+            <span class="glyphicon glyphicon-plus" id="btn-add" aria-hidden="true">新增咨询表</span>
+        </button>
+    </div>
+    <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-info consult-edit"><span class="glyphicon glyphicon-pencil">修改</span></button>
+    </div>
+    <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-success btn-info consult-download">
+            <span class="glyphicon glyphicon-download-alt"></span>
+            下载模板
+        </button>
+    </div>
+    <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-success btn-info consult-delete">
+            <span class="glyphicon glyphicon-trash">删除</span></button>
+    </div>
+</div>
+
+    <table id="list-contain" class="display">
+</table>
+</div>
+<script src="../js/requirejs/requirejsMain.js"></script>
+<script src="../js/requirejs/require.js" data-main="/src/js/consult/consultManageList.js"></script>
+
+</body>
+</html>
