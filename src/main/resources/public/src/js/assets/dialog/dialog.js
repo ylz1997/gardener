@@ -4,7 +4,7 @@ define(['css!src/css/toastr/toastr.min' ,'text!/src/js/assets/dialog/confirm.tpl
         option = options;
         if(options.mode == "tips")
         {
-            Toastr.options.positionClass = 'toast-top-center';
+            Toastr.options.positionClass = 'toast-bottom-center';
             if(options.content){
                 if(options.tipsType == "success" ){
                     Toastr.success(options.content);

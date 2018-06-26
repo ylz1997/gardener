@@ -35,7 +35,7 @@ var require = {
 	            "deps" :['jquery', 'css!src/css/bootstrap/bootstrap.css']
 	        },
             "datatables" :{
-	            "deps" :['jquery', 'css!src/css/datatable/datatables.min.css']
+	            "deps" :['jquery', 'css!/src/DataTables-1.10.16/css/jquery.dataTables.min']
             },
             'ajax': { 'deps': ['jquery'] }
         },

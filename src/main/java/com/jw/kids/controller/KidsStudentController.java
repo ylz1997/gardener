@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author jw
@@ -31,10 +32,58 @@ public class KidsStudentController {
         tKids.setCrtTime(new Date());
         tKids.setModfTime(new Date());
         tKids.setOperator(0001L);
-        kidsStudentService.addStudent(tKids);
+        TKids tkids = kidsStudentService.addKids(tKids);
+        HashMap result = new HashMap();
+
+        result.put("tkids",tkids);
+        result.put("result",true);
+        return JsonUtil.convertObject2Json(result);
+    }
+
+    @RequestMapping(value = "/edit",method = RequestMethod.POST)
+    public String editKids(@Valid @RequestBody TKids tKids) throws GeneralException {
+        tKids.setModfTime(new Date());
+        tKids.setOperator(0001L);
+        TKids tkids = kidsStudentService.editKids(tKids);
         HashMap result = new HashMap();
 
         result.put("result",true);
+        result.put("tkids",tkids);
+        return JsonUtil.convertObject2Json(result);
+    }
+
+    @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    public String deleteKids(@Valid @RequestBody TKids tKids) throws GeneralException {
+        tKids.setModfTime(new Date());
+        tKids.setOperator(0001L);
+        TKids tkids = kidsStudentService.deleteKids(tKids);
+        HashMap result = new HashMap();
+
+        result.put("result",true);
+        result.put("tkids",tkids);
+        return JsonUtil.convertObject2Json(result);
+    }
+
+    @RequestMapping(value = "/get",method = RequestMethod.POST)
+    public String getKids(Long kId) throws GeneralException {
+        TKids tkids = kidsStudentService.getKidsById(kId);
+        HashMap result = new HashMap();
+
+        result.put("result",true);
+        result.put("tkids",tkids);
+        return JsonUtil.convertObject2Json(result);
+    }
+
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    public String listKids(TKids tKids, Integer start, Integer length, Integer draw) throws GeneralException {
+        List<TKids> listTkids = kidsStudentService.listKids(tKids, start, length);
+        Integer totoal = kidsStudentService.totalKids();
+        HashMap result = new HashMap();
+
+        result.put("data",listTkids);
+        result.put("recordTotal",totoal);
+        result.put("recordsFiltered",totoal);
+        result.put("draw", draw);
         return JsonUtil.convertObject2Json(result);
     }
 }

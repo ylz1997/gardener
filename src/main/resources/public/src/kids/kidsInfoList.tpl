@@ -23,7 +23,7 @@
 
         </div>
 
-        <div class="btn-group" role="group" aria-label="...">
+        <div class="btn-group" role="group" style="width:30%;margin:10px;" aria-label="...">
             <button type="button" class="btn btn-success">
                 <span class="glyphicon glyphicon-plus" id="btn-query" aria-hidden="true">查询</span>
             </button>
@@ -56,7 +56,6 @@
                 <span class="glyphicon glyphicon-trash">删除</span></button>
         </div>-->
     </div>
-
     <table id="list-contain" class="display">
     </table>
 </div>

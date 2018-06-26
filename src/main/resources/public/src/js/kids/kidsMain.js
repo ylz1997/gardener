@@ -5,6 +5,8 @@ define(['text!src/kids/kidsInfoList.tpl',
                     staffInfoTpl,
                   KidsInfo) {
 
+    var table;
+
     var eventInit = function(){
         $("#kidsInfo").click(function () {
             $("#contentMain").html(kidsTpl);
@@ -16,8 +18,8 @@ define(['text!src/kids/kidsInfoList.tpl',
 
     }
 
-
     $(document).ready(function () {
         eventInit();
+
     })
 });
