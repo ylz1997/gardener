@@ -23,8 +23,14 @@ define(['dialog',
                 {data: 'kId', title:"人员编号"},
                 {data: 'chNm', title:"中文名"},
                 {data: 'enNm', title:"英文名"},
-                {data: 'sex', title:"性别"}
-
+                {data: 'sex', title:"性别"},
+                {data: 'pNm', title:"家长姓名"},
+                {data: 'pRelation', title:"家长关系"},
+                {data: 'phone', title:"联系方式"},
+                {data: 'address', title:"家庭住址"},
+                {data: 'classId', title:"所在班级"},
+                {data: 'crtTime', title:"创建时间"},
+                {data: 'modfTime', title:"修改时间"}
                 /* { data: 'cnslNm' ,title: "咨询表名称" , render:function (data, type, row, meta) {
                      return genLinkToConsultData(row,data);
                  }},
