@@ -1,46 +1,35 @@
 package com.jw.kids.controller;
 
-import com.jw.kids.bean.TKidsSysPara;
-import com.jw.kids.service.KidsStudentService;
-import com.jw.kids.service.KidsSysParamService;
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
+import com.jw.base.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author jw
  * @desc
  */
-@RequestMapping("/sysParam")
+@RestController
+@RequestMapping("/SysPara")
 public class KidsSysParaController {
     @Autowired
-    KidsSysParamService kidsSysParamService;
+    KidsSysParaComponent kidsSysParaComponent;
 
-    private static KidsSysParaController instance = new KidsSysParaController();
-
-    private Map<String,Object> param = new HashMap<>();
-
-    public static KidsSysParaController getInstance(){
-        return instance;
-    }
     public Object get(String code){
-        return this.param.get(code);
+        return kidsSysParaComponent.get(code);
     }
-    @RequestMapping("/getParamByCode")
-    public String getString(String code,String defultValue){
-        Object o = this.get(code);
-        return o!=null?o.toString():defultValue;
-    }
-    public void init(){
 
-        List<TKidsSysPara> vl = kidsSysParamService.findKey("removed", "0");
-        for(TKidsSysPara v:vl){
-            param.put(v.getParamKey(), v.getParamValue());
-            //remark.put(v.getCode(), v.getRemark());
-            System.err.print("key:"+v.getParamKey()+"----value:"+v.getParamKey());
-        }
+    @RequestMapping(value = "/getParamByCode", method = RequestMethod.GET)
+    public String getString(String code){
+        Object o = this.get(code);
+        HashMap result = new HashMap();
+
+        result.put("param",o);
+        result.put("result",true);
+        return JsonUtil.convertObject2Json(result);
     }
 }

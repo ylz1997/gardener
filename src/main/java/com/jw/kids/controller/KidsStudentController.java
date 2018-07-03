@@ -77,7 +77,7 @@ public class KidsStudentController {
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public String listKids(TKids tKids, Integer start, Integer length, Integer draw) throws GeneralException {
         List<TKids> listTkids = kidsStudentService.listKids(tKids, start, length);
-        Integer totoal = kidsStudentService.totalKids();
+        Integer totoal = kidsStudentService.totalKids(tKids);
         HashMap result = new HashMap();
 
         result.put("data",listTkids);

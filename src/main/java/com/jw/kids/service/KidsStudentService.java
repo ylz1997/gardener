@@ -58,5 +58,5 @@ public interface KidsStudentService {
      * @param
      * @throws GeneralException
      */
-    Integer totalKids() throws GeneralException;
+    Integer totalKids(TKids tKids) throws GeneralException;
 }

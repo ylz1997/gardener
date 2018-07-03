@@ -3,21 +3,21 @@
         <div class="form-group" style="width:30%">
             <div class="input-group">
                 <span class="input-group-addon" >中文名</span>
-                <input type="text" class="form-control" id="ch_nm" placeholder="请输入学生中文名" >
+                <input type="text" class="form-control searchParam" id="chNm" placeholder="请输入学生中文名" >
             </div>
         </div>
         <div class="form-group" style="width:30%">
             <div class="input-group">
                 <span class="input-group-addon">英文名</span>
-                <input type="text" class="form-control" id="en_nm" placeholder="请输入学生英文名">
+                <input type="text" class="form-control searchParam" id="enNm" placeholder="请输入学生英文名">
             </div>
         </div>
         <div class="form-group" style="width:30%">
             <div class="input-group">
                 <span class="input-group-addon">班级</span>
-                <select id="classId"  class="form-control">
-                    <option value="Brown">Brown</option>
-                    <option value="harvard">harvard</option>
+                <select id="classId"  class="form-control searchParam">
+                    <option value="1">Brown</option>
+                    <option value="2">harvard</option>
                 </select>
             </div>
 
@@ -42,9 +42,7 @@
                 <span class="glyphicon glyphicon-plus" id="btn-add" aria-hidden="true">新生档案填写</span>
             </button>
         </div>
-        <div class="btn-group" role="group" aria-label="...">
-            <button type="button" class="btn btn-info consult-edit"><span class="glyphicon glyphicon-pencil">修改</span></button>
-        </div><!--
+        <!--
         <div class="btn-group" role="group" aria-label="...">
             <button type="button" class="btn btn-success btn-info consult-download">
                 <span class="glyphicon glyphicon-download-alt"></span>
