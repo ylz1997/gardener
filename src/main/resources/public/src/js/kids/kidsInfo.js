@@ -10,6 +10,8 @@ define(['dialog',
             Hdb) {
     var table;
     var sexParam = {};
+    var relation = {};
+    var classes = {};
 
     $.ajax({
         url:"/SysPara/getParamByCode",
@@ -19,6 +21,48 @@ define(['dialog',
             callData = JSON.parse(callData);
             if(callData.result == true){
                 sexParam = callData.param;
+            }
+        },
+        error:function (data) {
+            if(data.result != true){
+                new Dialog({
+                    mode: 'tips',
+                    tipsType: 'error',
+                    content: data.responseJSON.error
+                });
+            }
+        }
+    })
+
+    $.ajax({
+        url:"/SysPara/getParamByCode",
+        method:"GET",
+        data:{code:"relation"},
+        success:function (callData) {
+            callData = JSON.parse(callData);
+            if(callData.result == true){
+                relation = callData.param;
+            }
+        },
+        error:function (data) {
+            if(data.result != true){
+                new Dialog({
+                    mode: 'tips',
+                    tipsType: 'error',
+                    content: data.responseJSON.error
+                });
+            }
+        }
+    })
+
+    $.ajax({
+        url:"/SysPara/getParamByCode",
+        method:"GET",
+        data:{code:"class"},
+        success:function (callData) {
+            callData = JSON.parse(callData);
+            if(callData.result == true){
+                classes = callData.param;
             }
         },
         error:function (data) {
@@ -42,7 +86,14 @@ define(['dialog',
             return options.inverse(this);
         }
     });
-
+    var exchangeDataDic = function (dataDic, data) {
+        for(var i=0; i < dataDic.length; i++){
+            if(dataDic[i].value == data){
+                return dataDic[i].name;
+            }
+        }
+        return data;
+    }
     var genOperation = function (row) {
         var html = "<a class='modifyBtn' href='javascript:void(0)' kId='" + row.kId + "'>修改</a>";
         return html;
@@ -76,15 +127,18 @@ define(['dialog',
                 {data: 'chNm', title:"中文名"},
                 {data: 'enNm', title:"英文名"},
                 {data: 'sex', title:"性别",render: function (data, type, row, meta) {
-                        if(sexParam[data]){
-                            return sexParam[data];
-                        }
+                    return exchangeDataDic(sexParam, data);
                 }},
                 {data: 'pNm', title:"家长姓名"},
-                {data: 'pRelation', title:"家长关系"},
+                {data: 'pRelation', title:"家长关系",render: function (data) {
+                    return exchangeDataDic(relation, data);
+
+                }},
                 {data: 'phone', title:"联系方式"},
                 {data: 'address', title:"家庭住址"},
-                {data: 'classId', title:"所在班级"},
+                {data: 'classId', title:"所在班级", render: function (data) {
+                    return exchangeDataDic(classes, data);
+                }},
                 {data: 'crtTime', title:"创建时间"},
                 {data: 'modfTime', title:"修改时间"},
                 {
@@ -107,7 +161,10 @@ define(['dialog',
                         data = JSON.parse(data);
                         if(data.result == true){
                             var tmp = Hdb.compile(KidsInput);
-                            var html = tmp(data.tkids);
+                            data.sexParam = sexParam;
+                            data.relation = relation;
+                            data.classes = classes;
+                            var html = tmp(data);
                             new Dialog(
                                 {
                                     mode:"confirm",
@@ -181,10 +238,17 @@ define(['dialog',
 
     var init = function () {
         $("#btn-add").click(function () {
+            var data = {};
+            data.sexParam = sexParam;
+            data.relation = relation;
+            data.classes = classes;
+
+            var inputTemplate = Hdb.compile(KidsInput);
+            var inputHtml = inputTemplate(data);
             new Dialog(
                 {mode:"confirm",
                     id:"kidsInput",
-                    content:KidsInput,
+                    content:inputHtml,
                     title:"新增学生录入",
                     ok:function () {
                         var params = new Object();
