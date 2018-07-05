@@ -1,15 +1,17 @@
 define(['text!src/kids/kidsInfoList.tpl',
         'text!src/kids/staffInfoList.tpl',
         'src/js/kids/kidsInfo',
+        'src/js/kids/kidsStaffInfo',
         'jquery',
         'dialog',
         'hdb'],
         function (kidsTpl,
                     staffInfoTpl,
-                  KidsInfo,
-                  $,
-                  Dialog,
-                  Hdb) {
+                    KidsInfo,
+                    KidsStaffInfo,
+                    $,
+                    Dialog,
+                    Hdb) {
 
     var table;
     var classes;
@@ -43,6 +45,7 @@ define(['text!src/kids/kidsInfoList.tpl',
         })
         $("#staffInfo").click(function () {
             $("#contentMain").html(staffInfoTpl);
+            new KidsStaffInfo();
         })
 
     }

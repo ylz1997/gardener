@@ -80,10 +80,10 @@ public class KidsStudentServiceImpl implements KidsStudentService {
         TKidsExample.Criteria criteria = example.createCriteria();
         example.setOrderByClause(" modf_Time desc ");
         if(StringUtil.isNotEmpty(tKids.getChNm())){
-            criteria.andChNmLike(tKids.getChNm());
+            criteria.andChNmLike("%" +tKids.getChNm()+ "%");
         }
         if(StringUtil.isNotEmpty(tKids.getEnNm())){
-            criteria.andEnNmLike(tKids.getEnNm());
+            criteria.andEnNmLike("%" +tKids.getEnNm()+ "%");
         }
         if(null != tKids.getClassId()){
             criteria.andClassIdEqualTo(tKids.getClassId());

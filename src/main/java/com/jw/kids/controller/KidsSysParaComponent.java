@@ -16,9 +16,8 @@ import java.util.Map;
 
 /**
  * @author jw
- * @desc
+ * @desc 初始化加载系统参数类
  */
-@RequestMapping("/SysParam")
 public class KidsSysParaComponent {
     @Autowired
     KidsSysParamService kidsSysParamService;

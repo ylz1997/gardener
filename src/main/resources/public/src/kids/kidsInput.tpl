@@ -1,6 +1,6 @@
 <form >
     <input type="hidden" class="kidsClz" name="kId" id="kId" {{#if tkids.kId}}value="{{tkids.kId}}"{{/if}}>
-    <input type="hidden" class="kidsClz" name="crtTime" id="crtTime" {{#if tkids.crtTime}}value="{{tkids.crtTime}}"{{/if}}>
+    <input type="hidden" class="kidsClz" name="crtTime" id="crtTime" {{#if tkids.crtTime}}value={{tkids.crtTime}}{{/if}}>
 
     <div class="form-group">
         <label for="chNm">中文名</label>

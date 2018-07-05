@@ -2,9 +2,8 @@ package com.jw.kids.controller;
 
 import com.jw.base.GeneralException;
 import com.jw.base.JsonUtil;
-import com.jw.kids.bean.TKids;
-import com.jw.kids.bean.TKidsExample;
-import com.jw.kids.service.KidsStudentService;
+import com.jw.kids.bean.TTeacher;
+import com.jw.kids.service.KidsStaffSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,66 +20,65 @@ import java.util.List;
  * @desc
  */
 @RestController
-@RequestMapping("/Kids")
-public class KidsStudentController {
-
+@RequestMapping("/Staff")
+public class KidsStaffController {
     @Autowired
-    private KidsStudentService kidsStudentService;
+    private KidsStaffSV kidsStaffSV;
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public String addKids(@Valid @RequestBody TKids tKids) throws GeneralException {
-        tKids.setCrtTime(new Date());
-        tKids.setModfTime(new Date());
-        tKids.setOperator(0001L);
-        TKids kidsResult = kidsStudentService.addKids(tKids);
+    public String addKids(@Valid @RequestBody TTeacher tTeacher) throws GeneralException {
+        tTeacher.setCrtTime(new Date());
+        tTeacher.setModfTime(new Date());
+        tTeacher.setOperator(0001L);
+        TTeacher teacherResult = kidsStaffSV.addStaff(tTeacher);
         HashMap result = new HashMap();
 
-        result.put("tkids",kidsResult);
+        result.put("tStaff",teacherResult);
         result.put("result",true);
         return JsonUtil.convertObject2Json(result);
     }
 
     @RequestMapping(value = "/edit",method = RequestMethod.POST)
-    public String editKids(@Valid @RequestBody TKids tKids) throws GeneralException {
-        tKids.setModfTime(new Date());
-        tKids.setOperator(0001L);
-        TKids kidsResult = kidsStudentService.editKids(tKids);
+    public String editKids(@Valid @RequestBody TTeacher tTeacher) throws GeneralException {
+        tTeacher.setModfTime(new Date());
+        tTeacher.setOperator(0001L);
+        TTeacher tTeacherResult = kidsStaffSV.editStaff(tTeacher);
         HashMap result = new HashMap();
 
         result.put("result",true);
-        result.put("tkids",kidsResult);
+        result.put("tStaff",tTeacherResult);
         return JsonUtil.convertObject2Json(result);
     }
 
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
-    public String deleteKids(@Valid @RequestBody TKids tKids) throws GeneralException {
-        tKids.setModfTime(new Date());
-        tKids.setOperator(0001L);
-        TKids kidsResult = kidsStudentService.deleteKids(tKids);
+    public String deleteKids(@Valid @RequestBody TTeacher tTeacher) throws GeneralException {
+        tTeacher.setModfTime(new Date());
+        tTeacher.setOperator(0001L);
+        TTeacher tTeacherResult = kidsStaffSV.deleteStaff(tTeacher);
         HashMap result = new HashMap();
 
         result.put("result",true);
-        result.put("tkids",kidsResult);
+        result.put("tStaff",tTeacherResult);
         return JsonUtil.convertObject2Json(result);
     }
 
     @RequestMapping(value = "/get",method = RequestMethod.POST)
-    public String getKids(Long kId) throws GeneralException {
-        TKids kidsResult = kidsStudentService.getKidsById(kId);
+    public String getKids(Long tId) throws GeneralException {
+        TTeacher tTeacher = kidsStaffSV.getStaffById(tId);
         HashMap result = new HashMap();
 
         result.put("result",true);
-        result.put("tkids",kidsResult);
+        result.put("tStaff",tTeacher);
         return JsonUtil.convertObject2Json(result);
     }
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
-    public String listKids(TKids tKids, Integer start, Integer length, Integer draw) throws GeneralException {
-        List<TKids> listTkids = kidsStudentService.listKids(tKids, start, length);
-        Integer total = kidsStudentService.totalKids(tKids);
+    public String listKids(TTeacher tTeacher, Integer start, Integer length, Integer draw) throws GeneralException {
+        List<TTeacher> listTeacher = kidsStaffSV.listStaff(tTeacher, start, length);
+        Integer total = kidsStaffSV.totalStaff(tTeacher);
         HashMap result = new HashMap();
 
-        result.put("data",listTkids);
+        result.put("data",listTeacher);
         result.put("recordTotal",total);
         result.put("recordsFiltered",total);
         result.put("draw", draw);
