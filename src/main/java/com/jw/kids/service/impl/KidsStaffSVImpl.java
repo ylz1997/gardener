@@ -38,9 +38,16 @@ public class KidsStaffSVImpl implements KidsStaffSV{
     }
 
     @Override
-    public TTeacher deleteStaff(TTeacher tTeacher) throws GeneralException {
+    public TTeacher deleteStaff(String tId) throws GeneralException {
+        Long lTid = null;
+        try{
+            lTid = Long.parseLong(tId);
+        }catch (Exception e){
+            throw new GeneralException("STAFF_001");
+        }
+        TTeacher tTeacher = teacherDAO.selectByPrimaryKey(lTid);
         tTeacher.setModfTime(new Date());
-        teacherDAO.deleteByPrimaryKey(tTeacher.getTeacherId());
+        teacherDAO.deleteByPrimaryKey(lTid);
         return tTeacher;
     }
 

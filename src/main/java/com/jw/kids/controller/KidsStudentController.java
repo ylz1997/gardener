@@ -53,10 +53,8 @@ public class KidsStudentController {
     }
 
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
-    public String deleteKids(@Valid @RequestBody TKids tKids) throws GeneralException {
-        tKids.setModfTime(new Date());
-        tKids.setOperator(0001L);
-        TKids kidsResult = kidsStudentService.deleteKids(tKids);
+    public String deleteKids(String kId) throws GeneralException {
+        TKids kidsResult = kidsStudentService.deleteKids(kId);
         HashMap result = new HashMap();
 
         result.put("result",true);

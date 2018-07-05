@@ -34,7 +34,7 @@ public interface KidsStudentService {
      * @return
      * @throws GeneralException
      */
-    TKids deleteKids(TKids tKids) throws GeneralException;
+    TKids deleteKids(String kId) throws GeneralException;
 
     /**
      * 查询单个

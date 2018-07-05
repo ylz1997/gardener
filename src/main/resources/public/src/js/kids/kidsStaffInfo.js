@@ -52,7 +52,8 @@ define(['dialog',
         return data;
     }
     var genOperation = function (row) {
-        var html = "<a class='modifyBtn' href='javascript:void(0)' tId='" + row.teacherId + "'>修改</a>";
+        var html = "<a class='modifyBtn' href='javascript:void(0)' tId='" + row.teacherId + "'>修改</a> | ";
+        html = html + "<a class='deleteBtn' href='javascript:void(0)' tId='" + row.teacherId + "'>删除</a>"
         return html;
     }
     var getParam = function () {
@@ -159,6 +160,34 @@ define(['dialog',
                     }
                 })
             })
+            $(".deleteBtn").click(function () {
+                var tId = $(this).attr("tId");
+
+                $.ajax({
+                    url:"/Staff/delete",
+                    method:"POST",
+                    data:{tId:tId},
+                    success:function (data) {
+                        data = JSON.parse(data);
+                        if(data.result == true){
+                            new Dialog({
+                                mode: 'tips',
+                                tipsType: 'success',
+                                content: "删除成功"
+                            });
+                            search();
+                        }
+                    },
+                    error:function (data) {
+                        new Dialog({
+                            mode: 'tips',
+                            tipsType: 'error',
+                            content: data.responseJSON.error
+                        });
+                        return;
+                    }
+                })
+            })
         });
 
         /*        table.on( 'draw', function () {
@@ -209,6 +238,7 @@ define(['dialog',
                                         tipsType: 'success',
                                         content: "保存成功"
                                     });
+                                    search();
                                 }
                             },
                             error:function (data) {

@@ -38,9 +38,16 @@ public class KidsStudentServiceImpl implements KidsStudentService {
     }
 
     @Override
-    public TKids deleteKids(TKids tKids) throws GeneralException {
+    public TKids deleteKids(String kId) throws GeneralException {
+        Long lKid;
+        try{
+            lKid = Long.parseLong(kId);
+        }catch (Exception e){
+            throw new GeneralException("KIDS_001");
+        }
+        TKids tKids = tKidsMapper.selectByPrimaryKey(lKid);
         tKids.setModfTime(new Date());
-        tKidsMapper.deleteByPrimaryKey(tKids.getkId());
+        tKidsMapper.deleteByPrimaryKey(lKid);
         return tKids;
     }
 

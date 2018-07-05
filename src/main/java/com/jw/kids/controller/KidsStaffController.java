@@ -51,10 +51,8 @@ public class KidsStaffController {
     }
 
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
-    public String deleteKids(@Valid @RequestBody TTeacher tTeacher) throws GeneralException {
-        tTeacher.setModfTime(new Date());
-        tTeacher.setOperator(0001L);
-        TTeacher tTeacherResult = kidsStaffSV.deleteStaff(tTeacher);
+    public String deleteKids(String tId) throws GeneralException {
+        TTeacher tTeacherResult = kidsStaffSV.deleteStaff(tId);
         HashMap result = new HashMap();
 
         result.put("result",true);

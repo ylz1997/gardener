@@ -95,7 +95,9 @@ define(['dialog',
         return data;
     }
     var genOperation = function (row) {
-        var html = "<a class='modifyBtn' href='javascript:void(0)' kId='" + row.kId + "'>修改</a>";
+        var html = "<a class='modifyBtn' href='javascript:void(0)' kId='" + row.kId + "'>修改</a> |";
+        html = html + "<a class='deleteBtn' href='javascript:void(0)' kId='" + row.kId + "'>删除</a>";
+
         return html;
     }
     var getParam = function () {
@@ -207,6 +209,33 @@ define(['dialog',
                     },
                     error:function (data) {
                         debugger;
+                        new Dialog({
+                            mode: 'tips',
+                            tipsType: 'error',
+                            content: data.responseJSON.error
+                        });
+                        return;
+                    }
+                })
+            })
+            $(".deleteBtn").click(function () {
+                var kId = $(this).attr("kId");
+                $.ajax({
+                    url:"/Kids/delete",
+                    method:"POST",
+                    data:{kId:kId},
+                    success:function (data) {
+                        data = JSON.parse(data);
+                        if(data.result == true){
+                            new Dialog({
+                                mode: 'tips',
+                                tipsType: 'success',
+                                content: "删除成功"
+                            });
+                            search();
+                        }
+                    },
+                    error:function (data) {
                         new Dialog({
                             mode: 'tips',
                             tipsType: 'error',

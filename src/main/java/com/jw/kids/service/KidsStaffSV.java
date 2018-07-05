@@ -28,11 +28,11 @@ public interface KidsStaffSV {
 
     /**
      * 删除
-     * @param tTeacher
+     * @param tId
      * @return
      * @throws GeneralException
      */
-    TTeacher deleteStaff(TTeacher tTeacher) throws GeneralException;
+    TTeacher deleteStaff(String tId) throws GeneralException;
 
     /**
      * 查询单个
