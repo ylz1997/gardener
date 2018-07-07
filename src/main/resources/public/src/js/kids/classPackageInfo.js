@@ -1,5 +1,5 @@
 define(['dialog',
-    'text!src/kids/staffInput.tpl',
+    'text!src/kids/classPackageInput.tpl',
     'jquery',
     'datatables',
     'hdb'
@@ -9,28 +9,6 @@ define(['dialog',
             DataTables,
             Hdb) {
     var table;
-    var sexParam = {};
-
-    $.ajax({
-        url:"/SysPara/getParamByCode",
-        method:"GET",
-        data:{code:"sex"},
-        success:function (callData) {
-            callData = JSON.parse(callData);
-            if(callData.result == true){
-                sexParam = callData.param;
-            }
-        },
-        error:function (data) {
-            if(data.result != true){
-                new Dialog({
-                    mode: 'tips',
-                    tipsType: 'error',
-                    content: data.responseJSON.error
-                });
-            }
-        }
-    })
 
 
     //注册一个判断相等的Helper,判断v1是否等于v2
@@ -52,8 +30,8 @@ define(['dialog',
         return data;
     }
     var genOperation = function (row) {
-        var html = "<a class='modifyBtn' href='javascript:void(0)' tId='" + row.teacherId + "'>修改</a> | ";
-        html = html + "<a class='deleteBtn' href='javascript:void(0)' tId='" + row.teacherId + "'>删除</a>"
+        var html = "<a class='modifyBtn' href='javascript:void(0)' classPackageId='" + row.classPackageId + "'>修改</a> | ";
+        html = html + "<a class='deleteBtn' href='javascript:void(0)' classPackageId='" + row.classPackageId + "'>删除</a>"
         return html;
     }
     var getParam = function () {
@@ -75,20 +53,20 @@ define(['dialog',
             searching: false,
             serverSide: true,
             ajax: {
-                "url": "/Staff/list",
+                "url": "/classPackage/list",
                 "data": function ( d ) {
                     return $.extend( {}, d, getParam() );
                 }
             },
             columns: [
-                {data: 'teacherId', title:"人员编号"},
-                {data: 'teacherNm', title:"姓名"},
-                {data: 'sex', title:"性别",render: function (data, type, row, meta) {
-                    return exchangeDataDic(sexParam, data);
-                }},
-                {data: 'age', title:"年龄"},
+                {data: 'classPackageId', title:"课时包id"},
+                {data: 'classPackageNm', title:"课时包名称"},
+                {data: 'startTime', title:"开始时间"},
+                {data: 'endTime', title:"结束时间"},
+                {data: 'amount', title:"课时数量"},
+                {data: 'price', title:"价格"},
                 {
-                    data: 'cnslColmId',
+                    data: 'classPackageId',
                     title: "操作",
                     render: function (data, type, row, meta) {
                         return genOperation(row);
@@ -98,30 +76,30 @@ define(['dialog',
         });
         table.on( 'draw', function () {
             $(".modifyBtn").click(function () {
-                var tId = $(this).attr("tId");
+                var classPackageId = $(this).attr("classPackageId");
                 $.ajax({
-                    url:"/Staff/get",
+                    url:"/classPackage/get",
                     method:"POST",
-                    data:{tId:tId},
+                    data:{classPackageId:classPackageId},
                     success:function (data) {
                         data = JSON.parse(data);
                         if(data.result == true){
                             var tmp = Hdb.compile(InputTpl);
-                            data.sexParam = sexParam;
+                            /*data.sexParam = sexParam;*/
                             var html = tmp(data);
                             new Dialog(
                                 {
                                     mode:"confirm",
                                     id:"kidsInput",
                                     content:html,
-                                    title:"修改员工信息",
+                                    title:"修改课时包信息",
                                     ok:function () {
                                         var params = new Object();
                                         $(".kidsClz").each(function(){
                                             params[$(this).attr("name")] = $(this).val();
                                         })
                                         $.ajax({
-                                            url:"/Staff/edit",
+                                            url:"/classPackage/edit",
                                             method:"POST",
                                             contentType:"application/json",
                                             data:JSON.stringify(params),
@@ -161,12 +139,12 @@ define(['dialog',
                 })
             })
             $(".deleteBtn").click(function () {
-                var tId = $(this).attr("tId");
+                var classPackageId = $(this).attr("classPackageId");
 
                 $.ajax({
-                    url:"/Staff/delete",
+                    url:"/classPackage/delete",
                     method:"POST",
-                    data:{tId:tId},
+                    data:{classPackageId:classPackageId},
                     success:function (data) {
                         data = JSON.parse(data);
                         if(data.result == true){
@@ -211,7 +189,6 @@ define(['dialog',
     var init = function () {
         $("#btn-add").click(function () {
             var data = {};
-            data.sexParam = sexParam;
 
             var inputTemplate = Hdb.compile(InputTpl);
             var inputHtml = inputTemplate(data);
@@ -219,14 +196,14 @@ define(['dialog',
                 {mode:"confirm",
                     id:"kidsInput",
                     content:inputHtml,
-                    title:"新增员工录入",
+                    title:"新增课时包",
                     ok:function () {
                         var params = new Object();
                         $(".kidsClz").each(function(){
                             params[$(this).attr("name")] = $(this).val();
                         })
                         $.ajax({
-                            url:"/Staff/add",
+                            url:"/classPackage/add",
                             method:"POST",
                             contentType:"application/json",
                             data:JSON.stringify(params),
