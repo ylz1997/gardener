@@ -28,12 +28,10 @@
     </div>
     <div class="form-group">
         <label for="pRelation">监护人关系</label>
-        <select class="form-control kidsClz" id="pRelation" name="pRelation" {{#if tkids.pRelation}}value="{{tkids.pRelation}}"{{/if}} placeholder="请输入监护人关系">
-            <option value="1" {{#equal tkids.pRelation 1}}selected{{/equal}}>爸爸</option>
-            <option value="2" {{#equal tkids.pRelation 2}}selected{{/equal}}>妈妈</option>
-            <option value="3" {{#equal tkids.pRelation 3}}selected{{/equal}}>爷爷</option>
-            <option value="4" {{#equal tkids.pRelation 4}}selected{{/equal}}>奶奶</option>
-            <!--todo 需要更换字典-->
+        <select class="form-control kidsClz" id="pRelation" name="pRelation" {{#if tkids.pRelation}}value="{{tkids.pRelation}}"{{/if}} >
+        {{#each relation}}
+            <option value="{{value}}" {{#equal ../tkids.pRelation value}}selected{{/equal}}>{{name}}</option>
+        {{/each}}
         </select>
     </div>
 
@@ -47,9 +45,9 @@
     </div>
     <div class="form-group">
         <label for="classId">班级</label>
-        <select class="form-control kidsClz" id="classId" name="classId" {{#if tkids.classId}}value="{{tkids.classId}}"{{/if}} placeholder="选择班级">
-        <option value="1" {{#equal tkids.classId 1}} selected{{/equal}}>brown</option>
-        <option value="2" {{#equal tkids.classId 2}} selected{{/equal}}>harverd</option>
-        </select>
+        <select class="form-control kidsClz" id="classId" name="classId" {{#if tkids.classId}}value="{{tkids.classId}}"{{/if}} >
+        {{#each classes}}
+        <option value="{{value}}" {{#equal ../tkids.classId value}}selected{{/equal}}>{{name}}</option>
+        {{/each}}
     </div>
 </form>
