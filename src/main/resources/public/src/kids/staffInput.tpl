@@ -10,7 +10,7 @@
     <div class="radio">
         {{#each sexParam}}
         <label>
-            <input type="radio" name="sex" class="kidsClz" value="{{value}}" {{#equal tStaff.sex value}}checked{{/equal}}>
+            <input type="radio" name="sex" class="kidsClz" value="{{value}}" {{#equal ../tStaff.sex value}}checked{{/equal}}>
             {{name}}
         </label>
         {{/each}}
@@ -19,5 +19,9 @@
     <div class="form-group">
         <label for="age">年龄</label>
         <input type="input" class="form-control kidsClz" id="age" name="age" {{#if tStaff.age}}value="{{tStaff.age}}"{{/if}} placeholder="请输入年龄">
+    </div>
+    <div class="form-group">
+        <label for="personalCode">身份证号</label>
+        <input type="input" class="form-control kidsClz" id="personalCode" name="personalCode" {{#if tStaff.personalCode}}value="{{tStaff.personalCode}}"{{/if}} placeholder="请输入身份证号">
     </div>
 </form>

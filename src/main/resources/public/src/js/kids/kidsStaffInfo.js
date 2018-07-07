@@ -83,6 +83,7 @@ define(['dialog',
             columns: [
                 {data: 'teacherId', title:"人员编号"},
                 {data: 'teacherNm', title:"姓名"},
+                {data: 'personalCode', title:"身份证号"},
                 {data: 'sex', title:"性别",render: function (data, type, row, meta) {
                     return exchangeDataDic(sexParam, data);
                 }},

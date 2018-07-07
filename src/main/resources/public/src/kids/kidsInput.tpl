@@ -15,7 +15,7 @@
     <div class="radio">
         {{#each sexParam}}
         <label>
-            <input type="radio" name="sex" class="kidsClz" value="{{value}}" {{#equal tkids.sex value}}checked{{/equal}}>
+            <input type="radio" name="sex" class="kidsClz" value="{{value}}" {{#equal ../tkids.sex value}}checked{{/equal}}>
             {{name}}
         </label>
         {{/each}}
