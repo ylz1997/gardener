@@ -25,16 +25,16 @@
         </div>
 
         <div class="btn-group" role="group" style="width:30%;margin:10px;" aria-label="...">
-            <button type="button" class="btn btn-success">
-                <span class="glyphicon glyphicon-plus" id="btn-query" aria-hidden="true">查询</span>
+            <button type="button" class="btn btn-success" id="btn-query" >
+                <span class="glyphicon glyphicon-plus" aria-hidden="true">查询</span>
             </button>
         </div>
     </form>
 
     <div class="continer">
         <div class="btn-group" role="group" aria-label="...">
-            <button type="button" class="btn btn-success">
-                <span class="glyphicon glyphicon-plus" id="btn-add" aria-hidden="true">新生档案填写</span>
+            <button type="button" class="btn btn-success" id="btn-add">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true">新生档案填写</span>
             </button>
         </div>
     </div>
