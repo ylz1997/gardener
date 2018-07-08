@@ -1,10 +1,12 @@
 package com.jw.kids.controller;
 
+import com.jw.base.DateUtil;
 import com.jw.base.GeneralException;
 import com.jw.base.JsonUtil;
 import com.jw.kids.bean.TClass;
 import com.jw.kids.bean.TClassPackage;
 import com.jw.kids.bean.TClassPackage;
+import com.jw.kids.bean.TClassPackageVO;
 import com.jw.kids.dao.TClassPackageDAO;
 import com.jw.kids.service.KidsClassPackageSV;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +31,11 @@ public class KidsClassPackageController {
     KidsClassPackageSV kidsClassPackageSV;
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public String addKids(@Valid @RequestBody TClassPackage tClassPackage) throws GeneralException {
-        tClassPackage.setCrtTime(new Date());
-        tClassPackage.setModfTime(new Date());
-        tClassPackage.setOperator(0001L);
-        TClassPackage tClassPackageResult = kidsClassPackageSV.addClassPackage(tClassPackage);
+    public String add(@Valid @RequestBody TClassPackageVO tClassPackageVO) throws GeneralException {
+        tClassPackageVO.setCrtTime(DateUtil.getCurrontTime());
+        tClassPackageVO.setModfTime(DateUtil.getCurrontTime());
+        tClassPackageVO.setOperator(0001L);
+        TClassPackage tClassPackageResult = kidsClassPackageSV.addClassPackage(tClassPackageVO);
         HashMap result = new HashMap();
 
         result.put("tClassPackage", tClassPackageResult);
@@ -42,10 +44,10 @@ public class KidsClassPackageController {
     }
 
     @RequestMapping(value = "/edit",method = RequestMethod.POST)
-    public String editKids(@Valid @RequestBody TClassPackage TClassPackage) throws GeneralException {
-        TClassPackage.setModfTime(new Date());
-        TClassPackage.setOperator(0001L);
-        TClassPackage tClassPackageResult = kidsClassPackageSV.editClassPackage(TClassPackage);
+    public String edit(@Valid @RequestBody TClassPackageVO tClassPackageVO) throws GeneralException {
+        tClassPackageVO.setModfTime(DateUtil.getCurrontTime());
+        tClassPackageVO.setOperator(0001L);
+        TClassPackage tClassPackageResult = kidsClassPackageSV.editClassPackage(tClassPackageVO);
         HashMap result = new HashMap();
 
         result.put("result",true);
@@ -54,29 +56,29 @@ public class KidsClassPackageController {
     }
 
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
-    public String deleteKids(String classPackageId) throws GeneralException {
+    public String delete(String classPackageId) throws GeneralException {
         TClassPackage tClassPackageResult = kidsClassPackageSV.deleteClassPackage(classPackageId);
         HashMap result = new HashMap();
 
         result.put("result",true);
-        result.put("tClassPackage",tClassPackageResult);
+        result.put("tClassPackageVO",tClassPackageResult);
         return JsonUtil.convertObject2Json(result);
     }
 
     @RequestMapping(value = "/get",method = RequestMethod.POST)
-    public String getKids(Long classPackageId) throws GeneralException {
+    public String get(Long classPackageId) throws GeneralException {
         TClassPackage TClassPackage = kidsClassPackageSV.getClassPackageById(classPackageId);
         HashMap result = new HashMap();
 
         result.put("result",true);
-        result.put("tClassPackage",TClassPackage);
+        result.put("tClassPackageVO",TClassPackage);
         return JsonUtil.convertObject2Json(result);
     }
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
-    public String listKids(TClassPackage TClassPackage, Integer start, Integer length, Integer draw) throws GeneralException {
-        List<TClassPackage> listClassPackage = kidsClassPackageSV.listClassPackage(TClassPackage, start, length);
-        Integer total = kidsClassPackageSV.totalClassPackage(TClassPackage);
+    public String list(TClassPackageVO TClassPackageVO, Integer start, Integer length, Integer draw) throws GeneralException {
+        List<TClassPackage> listClassPackage = kidsClassPackageSV.listClassPackage(TClassPackageVO, start, length);
+        Integer total = kidsClassPackageSV.totalClassPackage(TClassPackageVO);
         HashMap result = new HashMap();
 
         result.put("data",listClassPackage);

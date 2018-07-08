@@ -3,6 +3,7 @@ package com.jw.kids.service;
 import com.jw.base.GeneralException;
 import com.jw.kids.bean.TClassPackage;
 import com.jw.kids.bean.TClassPackage;
+import com.jw.kids.bean.TClassPackageVO;
 
 import java.util.List;
 
@@ -21,11 +22,11 @@ public interface KidsClassPackageSV {
 
     /**
      * 修改
-     * @param tClassPackage
+     * @param tClassPackageVO
      * @return
      * @throws GeneralException
      */
-    TClassPackage editClassPackage(TClassPackage tClassPackage) throws GeneralException;
+    TClassPackage editClassPackage(TClassPackageVO tClassPackageVO) throws GeneralException;
 
     /**
      * 删除
@@ -45,11 +46,11 @@ public interface KidsClassPackageSV {
 
     /**
      * 查询列表
-     * @param TClassPackage
+     * @param tClassPackageVO
      * @return
      * @throws GeneralException
      */
-    List<TClassPackage> listClassPackage(TClassPackage TClassPackage, Integer start, Integer length) throws GeneralException;
+    List<TClassPackage> listClassPackage(TClassPackage tClassPackageVO, Integer start, Integer length) throws GeneralException;
 
     /**
      * 查询单个

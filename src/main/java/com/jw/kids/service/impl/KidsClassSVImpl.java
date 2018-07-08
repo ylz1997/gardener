@@ -12,6 +12,7 @@ import com.jw.kids.service.KidsClassSV;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,9 @@ public class KidsClassSVImpl implements KidsClassSV{
     private TClassSchduleDAO tClassSchduleDAO;
     @Autowired
     private TClassPackageDAO tClassPackageDAO;
+
     @Override
+    @Transactional
     public TClassVO addClass(TClassVO tClassVO) throws GeneralException {
         TClass tClass = new TClass();
         BeanUtils.copyProperties(tClassVO, tClass);
@@ -49,6 +52,7 @@ public class KidsClassSVImpl implements KidsClassSV{
         return tClassVO;
     }
 
+    @Transactional
     @Override
     public TClassVO editClass(TClassVO tClassVO) throws GeneralException {
         TClass tClass = new TClass();
@@ -67,6 +71,7 @@ public class KidsClassSVImpl implements KidsClassSV{
     }
 
     @Override
+    @Transactional
     public TClassVO deleteClass(String classId) throws GeneralException {
         TClassVO vo = new TClassVO();
         Long lId;
@@ -134,6 +139,7 @@ public class KidsClassSVImpl implements KidsClassSV{
             TClassPackage classPackage = tClassPackageDAO.selectByPrimaryKey(tClass.getClassPackageId());
             tClassVO.setAmount(classPackage.getAmount());
             tClassVO.setPrice(classPackage.getPrice());
+            tClassVO.setClassPackageNm(classPackage.getClassPackageNm());
         }
         return voList;
     }

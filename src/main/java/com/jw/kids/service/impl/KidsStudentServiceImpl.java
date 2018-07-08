@@ -3,6 +3,7 @@ package com.jw.kids.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.StringUtil;
 import com.jw.base.BasicUtil;
+import com.jw.base.DateUtil;
 import com.jw.base.GeneralException;
 import com.jw.kids.bean.TKids;
 import com.jw.kids.bean.TKidsExample;
@@ -46,7 +47,7 @@ public class KidsStudentServiceImpl implements KidsStudentService {
             throw new GeneralException("KIDS_001");
         }
         TKids tKids = tKidsMapper.selectByPrimaryKey(lKid);
-        tKids.setModfTime(new Date());
+        tKids.setModfTime(DateUtil.getCurrontTime());
         tKidsMapper.deleteByPrimaryKey(lKid);
         return tKids;
     }

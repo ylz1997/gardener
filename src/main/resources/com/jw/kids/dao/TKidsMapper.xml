@@ -17,8 +17,8 @@
       <arg column="phone" javaType="java.lang.Long" jdbcType="BIGINT" />
       <arg column="address" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="class_id" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="crt_time" javaType="java.util.Date" jdbcType="DATE" />
-      <arg column="modf_time" javaType="java.util.Date" jdbcType="DATE" />
+      <arg column="crt_time" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP" />
+      <arg column="modf_time" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP" />
       <arg column="operator" javaType="java.lang.Long" jdbcType="BIGINT" />
       <arg column="rmk" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>

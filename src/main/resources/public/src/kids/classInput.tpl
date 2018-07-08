@@ -10,7 +10,7 @@
         <label for="classPackageId">课时包</label>
         <select class="form-control kidsClz" id="classPackageId" name="classPackageId" {{#if tClassVO.classPackageId}}value="{{tClassVO.classPackageId}}"{{/if}} >
         {{#each allClassPackage}}
-        <option value="{{classPackageId}}" {{#equal ../tClassVO.classPackageId value}}selected{{/equal}}>{{classPackageNm}}</option>
+        <option value="{{classPackageId}}" {{#equal ../tClassVO.classPackageId classPackageId}}selected{{/equal}}>{{classPackageNm}}</option>
         {{/each}}
         </select>
     </div>

@@ -14,6 +14,16 @@ public class TClassVO extends TClass{
 
     private BigDecimal price;
 
+    private String classPackageNm;
+
+    public String getClassPackageNm() {
+        return classPackageNm;
+    }
+
+    public void setClassPackageNm(String classPackageNm) {
+        this.classPackageNm = classPackageNm;
+    }
+
     public int getAmount() {
         return amount;
     }

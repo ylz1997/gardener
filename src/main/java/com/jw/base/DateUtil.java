@@ -1,6 +1,6 @@
 package com.jw.base;
 
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -271,6 +271,49 @@ public final class DateUtil {
         String YYYYMMDDHHMMSSSSS = "yyyyMMddHHmmssSSS";
         String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
         String MM = "MM";
+    }
+
+    /**
+     * 页面传入的日期格式字符串转换成timestamp
+     *
+     * @param date yyyy-MM-dd格式的date字符串
+     * @return 转换后的Timestamp
+     * @author jw
+     */
+    public static Timestamp convertDateStringToTimestamp(String date, String partern) throws GeneralException {
+        if(StringUtils.isEmpty(date)){
+            return null;
+        }
+        SimpleDateFormat sf = new SimpleDateFormat(partern);
+        SimpleDateFormat sfFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            return Timestamp.valueOf(sfFormat.format(sf.parse(date)));
+        }catch(ParseException e){
+            throw new GeneralException("GENERAL_O01");
+        }
+    }
+
+    /**
+     * 将数据库中timestamp格式的,末尾带.0的数据格式化成yyyy-MM-dd格式的字符串
+     *
+     * @param timestamp timestame转换成的字符换 末尾存在.0
+     * @return yyyy-MM-dd格式的字符串
+     * @author jw
+     */
+    public static String convertTimestampToString(Object timestamp, String partern) throws GeneralException {
+        if(null == timestamp || StringUtils.isBlank(timestamp.toString())){
+            return null;
+        }
+
+        String value = timestamp.toString();
+        SimpleDateFormat sf = new SimpleDateFormat(partern);
+
+        try {
+            String val = value.substring(0, value.indexOf("."));
+            return sf.format(sf.parse(val));
+        } catch (ParseException e) {
+            throw new GeneralException("GENERAL_001");
+        }
     }
 
 }

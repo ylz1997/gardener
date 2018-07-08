@@ -3,6 +3,7 @@ package com.jw.kids.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.StringUtil;
 import com.jw.base.BasicUtil;
+import com.jw.base.DateUtil;
 import com.jw.base.GeneralException;
 import com.jw.kids.bean.TTeacher;
 import com.jw.kids.bean.TTeacherExample;
@@ -46,7 +47,7 @@ public class KidsStaffSVImpl implements KidsStaffSV{
             throw new GeneralException("STAFF_001");
         }
         TTeacher tTeacher = teacherDAO.selectByPrimaryKey(lTid);
-        tTeacher.setModfTime(new Date());
+        tTeacher.setModfTime(DateUtil.getCurrontTime());
         teacherDAO.deleteByPrimaryKey(lTid);
         return tTeacher;
     }

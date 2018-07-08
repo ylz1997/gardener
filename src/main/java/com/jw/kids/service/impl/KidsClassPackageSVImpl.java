@@ -3,11 +3,15 @@ package com.jw.kids.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.StringUtil;
 import com.jw.base.BasicUtil;
+import com.jw.base.DateUtil;
 import com.jw.base.GeneralException;
+import com.jw.kids.bean.TClass;
 import com.jw.kids.bean.TClassPackage;
 import com.jw.kids.bean.TClassPackageExample;
+import com.jw.kids.bean.TClassPackageVO;
 import com.jw.kids.dao.TClassPackageDAO;
 import com.jw.kids.service.KidsClassPackageSV;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,9 +36,11 @@ public class KidsClassPackageSVImpl implements KidsClassPackageSV{
     }
 
     @Override
-    public TClassPackage editClassPackage(TClassPackage TClassPackage) throws GeneralException {
-        tClassPackageDAO.updateByPrimaryKey(TClassPackage);
-        return TClassPackage;
+    public TClassPackage editClassPackage(TClassPackageVO tClassPackageVO) throws GeneralException {
+        TClassPackage tClassPackage = new TClassPackage();
+        BeanUtils.copyProperties(tClassPackageVO, tClassPackage);
+        tClassPackageDAO.updateByPrimaryKey(tClassPackage);
+        return tClassPackageVO;
     }
 
     @Override
@@ -46,7 +52,7 @@ public class KidsClassPackageSVImpl implements KidsClassPackageSV{
             throw new GeneralException("CLASS_PACKAGE_001");
         }
         TClassPackage TClassPackage = tClassPackageDAO.selectByPrimaryKey(lTid);
-        TClassPackage.setModfTime(new Date());
+        TClassPackage.setModfTime(DateUtil.getCurrontTime());
         tClassPackageDAO.deleteByPrimaryKey(lTid);
         return TClassPackage;
     }

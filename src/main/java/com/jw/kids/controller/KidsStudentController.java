@@ -1,5 +1,6 @@
 package com.jw.kids.controller;
 
+import com.jw.base.DateUtil;
 import com.jw.base.GeneralException;
 import com.jw.base.JsonUtil;
 import com.jw.kids.bean.TKids;
@@ -29,8 +30,8 @@ public class KidsStudentController {
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public String addKids(@Valid @RequestBody TKids tKids) throws GeneralException {
-        tKids.setCrtTime(new Date());
-        tKids.setModfTime(new Date());
+        tKids.setCrtTime(DateUtil.getCurrontTime());
+        tKids.setModfTime(DateUtil.getCurrontTime());
         tKids.setOperator(0001L);
         TKids kidsResult = kidsStudentService.addKids(tKids);
         HashMap result = new HashMap();
@@ -42,7 +43,7 @@ public class KidsStudentController {
 
     @RequestMapping(value = "/edit",method = RequestMethod.POST)
     public String editKids(@Valid @RequestBody TKids tKids) throws GeneralException {
-        tKids.setModfTime(new Date());
+        tKids.setModfTime(DateUtil.getCurrontTime());
         tKids.setOperator(0001L);
         TKids kidsResult = kidsStudentService.editKids(tKids);
         HashMap result = new HashMap();

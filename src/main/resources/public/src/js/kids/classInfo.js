@@ -86,7 +86,7 @@ define(['dialog',
                 {data: 'classId', title:"班级id"},
                 {data: 'classNm', title:"班级名称"},
                 {data: 'cycle', title:"课程周期"},
-                {data: 'classPackageId', title:"课时包"},
+                {data: 'classPackageNm', title:"课时包"},
                 {data: 'amount', title:"课时数量"},
                 {data: 'price', title:"价格"},
                 {
