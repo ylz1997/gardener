@@ -4,6 +4,7 @@ import com.jw.base.DateUtil;
 import com.jw.base.GeneralException;
 import com.jw.base.JsonUtil;
 import com.jw.kids.bean.TTeacher;
+import com.jw.kids.bean.TTeacherVO;
 import com.jw.kids.service.KidsStaffSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,7 +41,7 @@ public class KidsStaffController {
     }
 
     @RequestMapping(value = "/edit",method = RequestMethod.POST)
-    public String editKids(@Valid @RequestBody TTeacher tTeacher) throws GeneralException {
+    public String editKids(@Valid @RequestBody TTeacherVO tTeacher) throws GeneralException {
         tTeacher.setModfTime(DateUtil.getCurrontTime());
         tTeacher.setOperator(0001L);
         TTeacher tTeacherResult = kidsStaffSV.editStaff(tTeacher);

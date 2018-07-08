@@ -5,6 +5,7 @@ import com.jw.base.GeneralException;
 import com.jw.base.JsonUtil;
 import com.jw.kids.bean.TKids;
 import com.jw.kids.bean.TKidsExample;
+import com.jw.kids.bean.TKidsVO;
 import com.jw.kids.service.KidsStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +30,7 @@ public class KidsStudentController {
     private KidsStudentService kidsStudentService;
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public String addKids(@Valid @RequestBody TKids tKids) throws GeneralException {
+    public String addKids(@Valid @RequestBody TKidsVO tKids) throws GeneralException {
         tKids.setCrtTime(DateUtil.getCurrontTime());
         tKids.setModfTime(DateUtil.getCurrontTime());
         tKids.setOperator(0001L);
@@ -42,7 +43,7 @@ public class KidsStudentController {
     }
 
     @RequestMapping(value = "/edit",method = RequestMethod.POST)
-    public String editKids(@Valid @RequestBody TKids tKids) throws GeneralException {
+    public String editKids(@Valid @RequestBody TKidsVO tKids) throws GeneralException {
         tKids.setModfTime(DateUtil.getCurrontTime());
         tKids.setOperator(0001L);
         TKids kidsResult = kidsStudentService.editKids(tKids);

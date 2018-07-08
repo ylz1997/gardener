@@ -1,6 +1,6 @@
 <form >
     <input type="hidden" class="kidsClz" name="teacherId" id="teacherId" {{#if tStaff.teacherId}}value="{{tStaff.teacherId}}"{{/if}}>
-    <input type="hidden" class="kidsClz" name="crtTime" id="crtTime" {{#if tStaff.crtTime}}value={{tStaff.crtTime}} {{/if}}>
+    <input type="hidden" class="kidsClz" name="strCrtTime" id="strCrtTime" {{#if tStaff.crtTime}}value="{{tStaff.crtTime}}" {{/if}}>
 
     <div class="form-group">
         <label for="teacherNm">姓名</label>
