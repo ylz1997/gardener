@@ -46,8 +46,9 @@
     <div class="form-group">
         <label for="classId">班级</label>
         <select class="form-control kidsClz" id="classId" name="classId" {{#if tkids.classId}}value="{{tkids.classId}}"{{/if}} >
-        {{#each classes}}
-        <option value="{{value}}" {{#equal ../tkids.classId value}}selected{{/equal}}>{{name}}</option>
-        {{/each}}
+            {{#each classes}}
+            <option value="{{value}}" {{#equal ../tkids.classId value}}selected{{/equal}}>{{name}}</option>
+            {{/each}}
+        </select>
     </div>
 </form>

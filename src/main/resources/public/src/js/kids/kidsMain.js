@@ -1,18 +1,22 @@
 define(['text!src/kids/kidsInfoList.tpl',
         'text!src/kids/staffInfoList.tpl',
+        'text!src/kids/classPackageList.tpl',
         'text!src/kids/classList.tpl',
         'src/js/kids/kidsInfo',
         'src/js/kids/kidsStaffInfo',
         'src/js/kids/classPackageInfo',
+        'src/js/kids/classInfo',
         'jquery',
         'dialog',
         'hdb'],
         function (kidsTpl,
                     staffInfoTpl,
+                    classPackageListTpl,
                     classListTpl,
                     KidsInfo,
                     KidsStaffInfo,
                     classPackageInfo,
+                    classInfo,
                     $,
                     Dialog,
                     Hdb) {
@@ -52,8 +56,12 @@ define(['text!src/kids/kidsInfoList.tpl',
             new KidsStaffInfo();
         })
         $("#classPackageInfo").click(function () {
-            $("#contentMain").html(classListTpl);
+            $("#contentMain").html(classPackageListTpl);
             new classPackageInfo();
+        })
+        $("#classInfo").click(function () {
+            $("#contentMain").html(classListTpl);
+            new classInfo();
         })
     }
 

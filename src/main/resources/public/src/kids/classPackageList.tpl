@@ -2,8 +2,8 @@
     <form class="form-inline" style="padding:10px;" role="form">
         <div class="form-group" style="width:30%">
             <div class="input-group">
-                <span class="input-group-addon" >班级名称</span>
-                <input type="text" class="form-control searchParam" id="classNm" placeholder="请输入班级名称" >
+                <span class="input-group-addon" >课时包名称</span>
+                <input type="text" class="form-control searchParam" id="classPackageNm" placeholder="请输入课时包名称" >
             </div>
         </div>
 
@@ -17,7 +17,7 @@
     <div class="continer">
         <div class="btn-group" role="group" aria-label="...">
             <button type="button" class="btn btn-success" id="btn-add">
-                <span class="glyphicon glyphicon-plus"  aria-hidden="true">添加班级</span>
+                <span class="glyphicon glyphicon-plus"  aria-hidden="true">新增课时包</span>
             </button>
         </div>
     </div>
