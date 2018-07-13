@@ -162,29 +162,36 @@ define(['dialog',
             })
             $(".deleteBtn").click(function () {
                 var classId = $(this).attr("classId");
-
-                $.ajax({
-                    url:"/class/delete",
-                    method:"POST",
-                    data:{classId:classId},
-                    success:function (data) {
-                        data = JSON.parse(data);
-                        if(data.result == true){
-                            new Dialog({
-                                mode: 'tips',
-                                tipsType: 'success',
-                                content: "删除成功"
-                            });
-                            search();
-                        }
-                    },
-                    error:function (data) {
-                        new Dialog({
-                            mode: 'tips',
-                            tipsType: 'error',
-                            content: data.responseJSON.error
-                        });
-                        return;
+                new Dialog({
+                    mode: "confirm",
+                    id: "kidsInput",
+                    content: "",
+                    title: "确认删除？",
+                    ok: function () {
+                        $.ajax({
+                            url: "/class/delete",
+                            method: "POST",
+                            data: {classId: classId},
+                            success: function (data) {
+                                data = JSON.parse(data);
+                                if (data.result == true) {
+                                    new Dialog({
+                                        mode: 'tips',
+                                        tipsType: 'success',
+                                        content: "删除成功"
+                                    });
+                                    search();
+                                }
+                            },
+                            error: function (data) {
+                                new Dialog({
+                                    mode: 'tips',
+                                    tipsType: 'error',
+                                    content: data.responseJSON.error
+                                });
+                                return;
+                            }
+                        })
                     }
                 })
             })
