@@ -56,14 +56,12 @@ define(['dialog',
     })
 
     $.ajax({
-        url:"/SysPara/getParamByCode",
+        url:"/class/list",
         method:"GET",
-        data:{code:"class"},
+        data:{start:0, length:10000, draw:1},
         success:function (callData) {
             callData = JSON.parse(callData);
-            if(callData.result == true){
-                classes = callData.param;
-            }
+            classes = callData.data;
         },
         error:function (data) {
             if(data.result != true){
@@ -74,7 +72,7 @@ define(['dialog',
                 });
             }
         }
-    })
+    });
 
     //注册一个判断相等的Helper,判断v1是否等于v2
     Hdb.registerHelper("equal",function(v1,v2,options){
@@ -139,7 +137,12 @@ define(['dialog',
                 {data: 'phone', title:"联系方式"},
                 {data: 'address', title:"家庭住址"},
                 {data: 'classId', title:"所在班级", render: function (data) {
-                    return exchangeDataDic(classes, data);
+                    for(var i=0; i < classes.length; i++){
+                        if(classes[i].classId == data){
+                            return classes[i].classNm;
+                        }
+                    }
+                    return data;
                 }},
                 {data: 'crtTime', title:"创建时间"},
                 {data: 'modfTime', title:"修改时间"},

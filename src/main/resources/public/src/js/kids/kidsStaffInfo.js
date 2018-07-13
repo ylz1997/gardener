@@ -10,6 +10,7 @@ define(['dialog',
             Hdb) {
     var table;
     var sexParam = {};
+    var classes = {};
 
     $.ajax({
         url:"/SysPara/getParamByCode",
@@ -32,6 +33,28 @@ define(['dialog',
         }
     })
 
+    $.ajax({
+        url:"/class/list",
+        method:"GET",
+        data:{start:0, length:10000, draw:1},
+        success:function (callData) {
+            callData = JSON.parse(callData);
+            classes = callData.data;
+            for(var i in classes){
+                classes[i].clzId = classes[i].classId;
+                delete classes[i].classId;
+            }
+        },
+        error:function (data) {
+            if(data.result != true){
+                new Dialog({
+                    mode: 'tips',
+                    tipsType: 'error',
+                    content: data.responseJSON.error
+                });
+            }
+        }
+    });
 
     //注册一个判断相等的Helper,判断v1是否等于v2
     Hdb.registerHelper("equal",function(v1,v2,options){
@@ -108,6 +131,7 @@ define(['dialog',
                         if(data.result == true){
                             var tmp = Hdb.compile(InputTpl);
                             data.sexParam = sexParam;
+                            data.classes = classes;
                             var html = tmp(data);
                             new Dialog(
                                 {
@@ -120,6 +144,15 @@ define(['dialog',
                                         $(".kidsClz").each(function(){
                                             params[$(this).attr("name")] = $(this).val();
                                         })
+                                        var classCheck = new Array();
+                                        $(".kidsCheckClz").each(function () {
+                                            if(this.checked){
+                                                var object = new Object();
+                                                object.classId = $(this).val();
+                                                classCheck.push(object);
+                                            }
+                                        })
+                                        params["classIdArray"] = classCheck;
                                         $.ajax({
                                             url:"/Staff/edit",
                                             method:"POST",
@@ -212,7 +245,7 @@ define(['dialog',
         $("#btn-add").click(function () {
             var data = {};
             data.sexParam = sexParam;
-
+            data.classes = classes;
             var inputTemplate = Hdb.compile(InputTpl);
             var inputHtml = inputTemplate(data);
             new Dialog(

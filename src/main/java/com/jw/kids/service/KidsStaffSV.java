@@ -2,6 +2,7 @@ package com.jw.kids.service;
 
 import com.jw.base.GeneralException;
 import com.jw.kids.bean.TTeacher;
+import com.jw.kids.bean.TTeacherVO;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public interface KidsStaffSV {
      * @return
      * @throws GeneralException
      */
-    TTeacher editStaff(TTeacher tTeacher) throws GeneralException;
+    TTeacherVO editStaff(TTeacherVO tTeacher) throws GeneralException;
 
     /**
      * 删除
@@ -40,7 +41,7 @@ public interface KidsStaffSV {
      * @return
      * @throws GeneralException
      */
-    TTeacher getStaffById(Long tId) throws GeneralException;
+    TTeacherVO getStaffById(Long tId) throws GeneralException;
 
     /**
      * 查询列表

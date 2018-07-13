@@ -93,7 +93,7 @@ public class KidsStudentServiceImpl implements KidsStudentService {
         if(StringUtil.isNotEmpty(tKids.getEnNm())){
             criteria.andEnNmLike("%" +tKids.getEnNm()+ "%");
         }
-        if(null != tKids.getClassId()){
+        if(null != tKids.getClassId() && -1 != tKids.getClassId()){
             criteria.andClassIdEqualTo(tKids.getClassId());
         }
         return example;

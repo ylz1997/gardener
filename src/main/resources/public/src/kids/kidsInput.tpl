@@ -47,7 +47,7 @@
         <label for="classId">班级</label>
         <select class="form-control kidsClz" id="classId" name="classId" {{#if tkids.classId}}value="{{tkids.classId}}"{{/if}} >
             {{#each classes}}
-            <option value="{{value}}" {{#equal ../tkids.classId value}}selected{{/equal}}>{{name}}</option>
+            <option value="{{classId}}" {{#equal ../tkids.classId classId}}selected{{/equal}}>{{classNm}}</option>
             {{/each}}
         </select>
     </div>

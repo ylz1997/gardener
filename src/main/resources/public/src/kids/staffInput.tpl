@@ -24,4 +24,25 @@
         <label for="personalCode">身份证号</label>
         <input type="input" class="form-control kidsClz" id="personalCode" name="personalCode" {{#if tStaff.personalCode}}value="{{tStaff.personalCode}}"{{/if}} placeholder="请输入身份证号">
     </div>
+<!--
+    <div class="form-group">
+        <label for="personalCode">所带班级</label>
+        <input type="input" class="form-control kidsClz" id="classId" name="classId" {{#if tStaff.classId}}value="{{tStaff.classId}}"{{/if}}>
+    </div>
+-->
+
+    <label for="classes">所在班级</label>
+    <div class="radio" id="classes">
+        {{#each classes}}
+        <label>
+            <input type="checkbox" name="classes" class="kidsCheckClz" value="{{clzId}}"
+                  {{#each ../tStaff.classIdArray}}  {{#equal ../clzId classId}}checked{{/equal}}
+                  {{/each}}>
+            {{classNm}}
+        </label>
+        {{/each}}
+    </div>
+
+
+
 </form>

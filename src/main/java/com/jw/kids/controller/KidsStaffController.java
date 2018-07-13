@@ -4,6 +4,7 @@ import com.jw.base.DateUtil;
 import com.jw.base.GeneralException;
 import com.jw.base.JsonUtil;
 import com.jw.kids.bean.TTeacher;
+import com.jw.kids.bean.TTeacherClassRel;
 import com.jw.kids.bean.TTeacherVO;
 import com.jw.kids.service.KidsStaffSV;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class KidsStaffController {
     private KidsStaffSV kidsStaffSV;
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public String addKids(@Valid @RequestBody TTeacher tTeacher) throws GeneralException {
+    public String add(@Valid @RequestBody TTeacher tTeacher) throws GeneralException {
         tTeacher.setCrtTime(DateUtil.getCurrontTime());
         tTeacher.setModfTime(DateUtil.getCurrontTime());
         tTeacher.setOperator(0001L);
@@ -41,7 +42,7 @@ public class KidsStaffController {
     }
 
     @RequestMapping(value = "/edit",method = RequestMethod.POST)
-    public String editKids(@Valid @RequestBody TTeacherVO tTeacher) throws GeneralException {
+    public String edit(@Valid @RequestBody TTeacherVO tTeacher) throws GeneralException {
         tTeacher.setModfTime(DateUtil.getCurrontTime());
         tTeacher.setOperator(0001L);
         TTeacher tTeacherResult = kidsStaffSV.editStaff(tTeacher);
@@ -53,7 +54,7 @@ public class KidsStaffController {
     }
 
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
-    public String deleteKids(String tId) throws GeneralException {
+    public String delete(String tId) throws GeneralException {
         TTeacher tTeacherResult = kidsStaffSV.deleteStaff(tId);
         HashMap result = new HashMap();
 
@@ -63,7 +64,7 @@ public class KidsStaffController {
     }
 
     @RequestMapping(value = "/get",method = RequestMethod.POST)
-    public String getKids(Long tId) throws GeneralException {
+    public String get(Long tId) throws GeneralException {
         TTeacher tTeacher = kidsStaffSV.getStaffById(tId);
         HashMap result = new HashMap();
 
@@ -73,7 +74,7 @@ public class KidsStaffController {
     }
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
-    public String listKids(TTeacher tTeacher, Integer start, Integer length, Integer draw) throws GeneralException {
+    public String list(TTeacher tTeacher, Integer start, Integer length, Integer draw) throws GeneralException {
         List<TTeacher> listTeacher = kidsStaffSV.listStaff(tTeacher, start, length);
         Integer total = kidsStaffSV.totalStaff(tTeacher);
         HashMap result = new HashMap();

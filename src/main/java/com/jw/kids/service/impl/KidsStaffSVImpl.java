@@ -5,12 +5,14 @@ import com.github.pagehelper.StringUtil;
 import com.jw.base.BasicUtil;
 import com.jw.base.DateUtil;
 import com.jw.base.GeneralException;
-import com.jw.kids.bean.TTeacher;
-import com.jw.kids.bean.TTeacherExample;
+import com.jw.kids.bean.*;
+import com.jw.kids.dao.TTeacherClassRelDAO;
 import com.jw.kids.dao.TTeacherDAO;
 import com.jw.kids.service.KidsStaffSV;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -24,6 +26,8 @@ public class KidsStaffSVImpl implements KidsStaffSV{
 
     @Autowired
     TTeacherDAO teacherDAO;
+    @Autowired
+    TTeacherClassRelDAO teacherClassRelDAO;
 
     @Override
     public TTeacher addStaff(TTeacher tTeacher) throws GeneralException {
@@ -33,8 +37,21 @@ public class KidsStaffSVImpl implements KidsStaffSV{
     }
 
     @Override
-    public TTeacher editStaff(TTeacher tTeacher) throws GeneralException {
+    public TTeacherVO editStaff(TTeacherVO tTeacher) throws GeneralException {
         teacherDAO.updateByPrimaryKey(tTeacher);
+
+        TTeacherClassRelExample relExample = new TTeacherClassRelExample();
+        relExample.createCriteria().andTeacherIdEqualTo(tTeacher.getTeacherId());
+        teacherClassRelDAO.deleteByExample(relExample);
+
+        for(TTeacherClassRel tTeacherClassRel: tTeacher.getClassIdArray()){
+            tTeacherClassRel.setRlId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_teacher_class_rel")));
+            tTeacherClassRel.setCrtTime(DateUtil.getCurrontTime());
+            tTeacherClassRel.setModfTime(DateUtil.getCurrontTime());
+            tTeacherClassRel.setTeacherId(tTeacher.getTeacherId());
+            teacherClassRelDAO.insert(tTeacherClassRel);
+        }
+
         return tTeacher;
     }
 
@@ -46,6 +63,11 @@ public class KidsStaffSVImpl implements KidsStaffSV{
         }catch (Exception e){
             throw new GeneralException("STAFF_001");
         }
+        //删除关系表
+        TTeacherClassRelExample relExample = new TTeacherClassRelExample();
+        relExample.createCriteria().andTeacherIdEqualTo(lTid);
+        teacherClassRelDAO.deleteByExample(relExample);
+        //删除员工表
         TTeacher tTeacher = teacherDAO.selectByPrimaryKey(lTid);
         tTeacher.setModfTime(DateUtil.getCurrontTime());
         teacherDAO.deleteByPrimaryKey(lTid);
@@ -53,8 +75,18 @@ public class KidsStaffSVImpl implements KidsStaffSV{
     }
 
     @Override
-    public TTeacher getStaffById(Long tId) throws GeneralException {
-        return teacherDAO.selectByPrimaryKey(tId);
+    public TTeacherVO getStaffById(Long tId) throws GeneralException {
+        TTeacher teacher = teacherDAO.selectByPrimaryKey(tId);
+        TTeacherVO teacherVO = new TTeacherVO();
+        BeanUtils.copyProperties(teacher, teacherVO);
+
+        TTeacherClassRelExample example = new TTeacherClassRelExample();
+        example.createCriteria().andTeacherIdEqualTo(tId);
+        List<TTeacherClassRel> tTeacherClassRel = teacherClassRelDAO.selectByExample(example);
+
+        teacherVO.setClassIdArray(tTeacherClassRel);
+
+        return teacherVO;
     }
 
     @Override

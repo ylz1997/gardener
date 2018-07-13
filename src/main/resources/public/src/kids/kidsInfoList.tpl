@@ -16,8 +16,9 @@
             <div class="input-group">
                 <span class="input-group-addon">班级</span>
                 <select id="classId"  class="form-control searchParam">
+                    <option value="-1">全部</option>
                     {{#each classes}}
-                    <option value="{{this.value}}">{{this.name}}</option>
+                    <option value="{{this.classId}}">{{this.classNm}}</option>
                     {{/each}}
                 </select>
             </div>

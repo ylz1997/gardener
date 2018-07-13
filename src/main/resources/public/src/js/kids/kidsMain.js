@@ -21,17 +21,14 @@ define(['text!src/kids/kidsInfoList.tpl',
                     Dialog,
                     Hdb) {
 
-    var table;
     var classes;
     $.ajax({
-        url:"/SysPara/getParamByCode",
+        url:"/class/list",
         method:"GET",
-        data:{code:"class"},
+        data:{start:0, length:10000, draw:1},
         success:function (callData) {
             callData = JSON.parse(callData);
-            if(callData.result == true){
-                classes = callData.param;
-            }
+            classes = callData.data;
         },
         error:function (data) {
             if(data.result != true){
@@ -42,7 +39,7 @@ define(['text!src/kids/kidsInfoList.tpl',
                 });
             }
         }
-    })
+    });
 
     var eventInit = function(){
         $("#kidsInfo").click(function () {
