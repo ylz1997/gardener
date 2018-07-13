@@ -26,54 +26,31 @@ public class KidsClassSVImpl implements KidsClassSV{
 
     @Autowired
     private TClassDAO tClassDAO;
-    @Autowired
+/*    @Autowired
     private TClassSchduleDAO tClassSchduleDAO;
     @Autowired
-    private TClassPackageDAO tClassPackageDAO;
+    private TClassPackageDAO tClassPackageDAO;*/
 
     @Override
-    @Transactional
-    public TClassVO addClass(TClassVO tClassVO) throws GeneralException {
-        TClass tClass = new TClass();
-        BeanUtils.copyProperties(tClassVO, tClass);
+    public TClass addClass(TClass tClass) throws GeneralException {
         tClass.setClassId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_class")));
         tClassDAO.insert(tClass);
-
-        if(tClassVO.getSchduleList() == null){
-            return tClassVO;
-        }
-        for(TClassSchdule schdule: tClassVO.getSchduleList()){
-            BeanUtils.copyProperties(tClassVO, schdule);
-            schdule.setSchduleId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_class")));
-            schdule.setClassId(tClass.getClassId());
-            tClassSchduleDAO.insert(schdule);
-        }
-
-        return tClassVO;
+        return tClass;
     }
 
     @Transactional
     @Override
-    public TClassVO editClass(TClassVO tClassVO) throws GeneralException {
+    public TClass editClass(TClass tClassVO) throws GeneralException {
         TClass tClass = new TClass();
         BeanUtils.copyProperties(tClassVO, tClass);
         tClassDAO.updateByPrimaryKey(tClass);
 
-        if(tClassVO.getSchduleList() == null){
-            return tClassVO;
-        }
-        for(TClassSchdule schdule: tClassVO.getSchduleList()){
-            BeanUtils.copyProperties(tClassVO, schdule);
-            tClassSchduleDAO.updateByPrimaryKey(schdule);
-        }
-
         return tClassVO;
     }
 
     @Override
     @Transactional
-    public TClassVO deleteClass(String classId) throws GeneralException {
-        TClassVO vo = new TClassVO();
+    public TClass deleteClass(String classId) throws GeneralException {
         Long lId;
         try{
             lId = Long.parseLong(classId);
@@ -81,33 +58,17 @@ public class KidsClassSVImpl implements KidsClassSV{
             throw new GeneralException("CLASS_001");
         }
         TClass tClass = tClassDAO.selectByPrimaryKey(lId);
-        BeanUtils.copyProperties(tClass, vo);
         tClassDAO.deleteByPrimaryKey(lId);
-
-        TClassSchduleExample example = new TClassSchduleExample();
-        example.createCriteria().andClassIdEqualTo(lId);
-        vo.setSchduleList(tClassSchduleDAO.selectByExample(example));
-
-        for(TClassSchdule tClassSchdule: vo.getSchduleList()){
-            tClassSchduleDAO.deleteByPrimaryKey(tClassSchdule.getSchduleId());
-        }
-        return vo;
+        return tClass;
     }
 
     @Override
-    public TClassVO getClassById(Long classId) throws GeneralException {
-        TClassVO vo = new TClassVO();
-        BeanUtils.copyProperties(tClassDAO.selectByPrimaryKey(classId),vo);
-
-        TClassSchduleExample example = new TClassSchduleExample();
-        example.createCriteria().andClassIdEqualTo(vo.getClassId());
-        vo.setSchduleList(tClassSchduleDAO.selectByExample(example));
-
-        return vo;
+    public TClass getClassById(Long classId) throws GeneralException {
+        return tClassDAO.selectByPrimaryKey(classId);
     }
 
     @Override
-    public List<TClassVO> listClass(TClassVO tClassVOCondition, Integer start, Integer length) throws GeneralException {
+    public List<TClass> listClass(TClass tClassVOCondition, Integer start, Integer length) throws GeneralException {
         TClass tClassCondition = new TClass();
         BeanUtils.copyProperties(tClassVOCondition, tClassCondition);
         int page = start/length + 1;
@@ -126,28 +87,11 @@ public class KidsClassSVImpl implements KidsClassSV{
         }
         PageHelper.offsetPage((newPage - 1) * length, newLimit);
 
-        List<TClassVO> voList = new ArrayList<>();
-        for(TClass tClass: tClassDAO.selectByExample(example)){
-            TClassVO tClassVO = new TClassVO();
-            BeanUtils.copyProperties(tClass, tClassVO);
-
-            TClassSchduleExample schduleExample = new TClassSchduleExample();
-            schduleExample.createCriteria().andClassIdEqualTo(tClassVO.getClassId());
-            tClassVO.setSchduleList(tClassSchduleDAO.selectByExample(schduleExample));
-            voList.add(tClassVO);
-
-            TClassPackage classPackage = tClassPackageDAO.selectByPrimaryKey(tClass.getClassPackageId());
-            tClassVO.setAmount(classPackage.getAmount());
-            tClassVO.setPrice(classPackage.getPrice());
-            tClassVO.setClassPackageNm(classPackage.getClassPackageNm());
-        }
-        return voList;
+        return tClassDAO.selectByExample(example);
     }
 
     @Override
-    public Integer totalClass(TClassVO tClassVO) throws GeneralException {
-        TClass tClass = new TClass();
-        BeanUtils.copyProperties(tClassVO, tClass);
+    public Integer totalClass(TClass tClass) throws GeneralException {
         TClassExample example = getExampleByBean(tClass);
         return tClassDAO.selectByExample(example).size();
     }

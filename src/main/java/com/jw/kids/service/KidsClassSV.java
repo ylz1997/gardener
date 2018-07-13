@@ -1,6 +1,7 @@
 package com.jw.kids.service;
 
 import com.jw.base.GeneralException;
+import com.jw.kids.bean.TClass;
 import com.jw.kids.bean.TClassVO;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface KidsClassSV {
      * @return
      * @throws GeneralException
      */
-    TClassVO addClass(TClassVO TClassVO) throws GeneralException;
+    TClass addClass(TClass TClassVO) throws GeneralException;
 
     /**
      * 修改
@@ -24,7 +25,7 @@ public interface KidsClassSV {
      * @return
      * @throws GeneralException
      */
-    TClassVO editClass(TClassVO TClassVO) throws GeneralException;
+    TClass editClass(TClass TClassVO) throws GeneralException;
 
     /**
      * 删除
@@ -32,7 +33,7 @@ public interface KidsClassSV {
      * @return
      * @throws GeneralException
      */
-    TClassVO deleteClass(String tId) throws GeneralException;
+    TClass deleteClass(String tId) throws GeneralException;
 
     /**
      * 查询单个
@@ -40,15 +41,15 @@ public interface KidsClassSV {
      * @return
      * @throws GeneralException
      */
-    TClassVO getClassById(Long tId) throws GeneralException;
+    TClass getClassById(Long tId) throws GeneralException;
 
     /**
      * 查询列表
-     * @param tClassVO
+     * @param tClass
      * @return
      * @throws GeneralException
      */
-    List<TClassVO> listClass(TClassVO tClassVO, Integer start, Integer length) throws GeneralException;
+    List<TClass> listClass(TClass tClass, Integer start, Integer length) throws GeneralException;
 
     /**
      * 查询单个
@@ -56,5 +57,5 @@ public interface KidsClassSV {
      * @param
      * @throws GeneralException
      */
-    Integer totalClass(TClassVO tClassVO) throws GeneralException;
+    Integer totalClass(TClass tClass) throws GeneralException;
 }

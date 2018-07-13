@@ -85,10 +85,8 @@ define(['dialog',
             columns: [
                 {data: 'classId', title:"班级id"},
                 {data: 'classNm', title:"班级名称"},
-                {data: 'cycle', title:"课程周期"},
-                {data: 'classPackageNm', title:"课时包"},
-                {data: 'amount', title:"课时数量"},
-                {data: 'price', title:"价格"},
+                {data: 'crtTime', title:"创建时间"},
+                {data: 'modfTime', title:"更新时间"},
                 {
                     data: 'classId',
                     title: "操作",
