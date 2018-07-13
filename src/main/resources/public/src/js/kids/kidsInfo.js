@@ -2,17 +2,19 @@ define(['dialog',
     'text!src/kids/kidsInput.tpl',
     'jquery',
     'datatables',
-    'hdb'
+    'hdb',
+    'text!src/kids/chargeClass.tpl'
 ],function (Dialog,
             KidsInput,
             $,
             DataTables,
-            Hdb) {
+            Hdb,
+            ChargeTpl) {
     var table;
     var sexParam = {};
     var relation = {};
     var classes = {};
-
+    var classPackage = {};
     $.ajax({
         url:"/SysPara/getParamByCode",
         method:"GET",
@@ -74,6 +76,25 @@ define(['dialog',
         }
     });
 
+    $.ajax({
+        url:"/classPackage/list",
+        method:"GET",
+        data:{start:0, length:10000, draw:1},
+        success:function (callData) {
+            callData = JSON.parse(callData);
+            classPackage = callData.data;
+        },
+        error:function (data) {
+            if(data.result != true){
+                new Dialog({
+                    mode: 'tips',
+                    tipsType: 'error',
+                    content: data.responseJSON.error
+                });
+            }
+        }
+    });
+
     //注册一个判断相等的Helper,判断v1是否等于v2
     Hdb.registerHelper("equal",function(v1,v2,options){
         if(v1==v2){
@@ -93,8 +114,9 @@ define(['dialog',
         return data;
     }
     var genOperation = function (row) {
-        var html = "<a class='modifyBtn' href='javascript:void(0)' kId='" + row.kId + "'>修改</a> |";
-        html = html + "<a class='deleteBtn' href='javascript:void(0)' kId='" + row.kId + "'>删除</a>";
+        var html = "<a class='modifyBtn' href='javascript:void(0)' kId='" + row.kId + "'>修改</a> | ";
+        html = html + "<a class='deleteBtn' href='javascript:void(0)' kId='" + row.kId + "'>删除</a> | ";
+        html = html + "<a class='chargeBtn' href='javascript:void(0)' kId='" + row.kId + "'>充值课时</a>";
 
         return html;
     }
@@ -123,7 +145,6 @@ define(['dialog',
                 }
             },
             columns: [
-                {data: 'kId', title:"人员编号"},
                 {data: 'chNm', title:"中文名"},
                 {data: 'enNm', title:"英文名"},
                 {data: 'sex', title:"性别",render: function (data, type, row, meta) {
@@ -136,6 +157,7 @@ define(['dialog',
                 }},
                 {data: 'phone', title:"联系方式"},
                 {data: 'address', title:"家庭住址"},
+                {data: 'amount', title:"剩余课时"},
                 {data: 'classId', title:"所在班级", render: function (data) {
                     for(var i=0; i < classes.length; i++){
                         if(classes[i].classId == data){
@@ -144,8 +166,6 @@ define(['dialog',
                     }
                     return data;
                 }},
-                {data: 'crtTime', title:"创建时间"},
-                {data: 'modfTime', title:"修改时间"},
                 {
                     data: 'cnslColmId',
                     title: "操作",
@@ -247,6 +267,50 @@ define(['dialog',
                         return;
                     }
                 })
+            })
+
+            $(".chargeBtn").click(function () {
+                var kId = $(this).attr("kId");
+                var chargeData = {};
+                chargeData.classPackage = classPackage;
+                var chargeTemplate = Hdb.compile(ChargeTpl);
+                var chargeHtml = chargeTemplate(chargeData);
+
+                new Dialog(
+                    {
+                        mode:"confirm",
+                        id:"kidsInput",
+                        content:chargeHtml,
+                        title:"充值课时包",
+                        ok:function () {
+                            var classPackageId = $("#classPackageId").val();
+                            $.ajax({
+                                url:"/Kids/charge",
+                                method:"POST",
+                                data:{kId:kId, classPackageId:classPackageId},
+                                success:function (data) {
+                                    data = JSON.parse(data);
+                                    if(data.result == true){
+                                        new Dialog({
+                                            mode: 'tips',
+                                            tipsType: 'success',
+                                            content: "充值成功"
+                                        });
+                                        search();
+                                    }
+                                },
+                                error:function (data) {
+                                    new Dialog({
+                                        mode: 'tips',
+                                        tipsType: 'error',
+                                        content: data.responseJSON.error
+                                    });
+                                    return;
+                                }
+                            })
+                        },
+                    });
+
             })
         });
 

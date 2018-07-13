@@ -20,8 +20,6 @@
         </label>
         {{/each}}
     </div>
-
-
     <div class="form-group">
         <label for="pNm">监护人姓名</label>
         <input type="input" class="form-control kidsClz" id="pNm" name="pNm" {{#if tkids.pNm}}value="{{tkids.pNm}}"{{/if}} placeholder="请输入监护人姓名">
@@ -50,5 +48,9 @@
             <option value="{{classId}}" {{#equal ../tkids.classId classId}}selected{{/equal}}>{{classNm}}</option>
             {{/each}}
         </select>
+    </div>
+    <div class="form-group">
+        <label for="address">剩余课时</label>
+        <input type="input" readonly class="form-control kidsClz" id="amount" name="amount" {{#if tkids.amount}}value="{{tkids.amount}}"{{else}}value=0{{/if}}>
     </div>
 </form>
