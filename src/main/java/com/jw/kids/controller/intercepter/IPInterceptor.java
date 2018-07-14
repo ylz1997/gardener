@@ -23,11 +23,6 @@ public class IPInterceptor implements HandlerInterceptor {
         LOG.info("USER IP ADDRESS IS =>"+ipAddress);
         if(!StringUtils.isNotBlank(ipAddress))
             return false;
-/*        ipFilter=new ZwIpFilter();
-        ipFilter.setModule("sino-bankflow");//模块
-        ipFilter.setIp(ipAddress);//ip地址
-        ipFilter.setMark(0);//白名单
-        List<ZwIpFilter> ips=ipFilterMapper.select(ipFilter);*/
         if(!"192.168.1.51".equals(ipAddress)){
             response.getWriter().append("<h1 style=\"text-align:center;\">Not allowed!</h1>");
             return false;
