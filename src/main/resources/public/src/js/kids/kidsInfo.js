@@ -115,9 +115,9 @@ define(['dialog',
     }
     var genOperation = function (row) {
         var html = "<a class='modifyBtn' href='javascript:void(0)' kId='" + row.kId + "'>修改</a> | ";
-        html = html + "<a class='deleteBtn' href='javascript:void(0)' kId='" + row.kId + "'>删除</a> | ";
-        html = html + "<a class='chargeBtn' href='javascript:void(0)' kId='" + row.kId + "'>充值课时</a>";
-
+        html = html + "<a class='deleteBtn' href='javascript:void(0)' kId='" + row.kId + "' chNm='" + row.chNm + "'>删除</a> | ";
+        html = html + "<a class='chargeBtn' href='javascript:void(0)' kId='" + row.kId + "'>充值课时</a> | ";
+        html = html + "<a class='history' href='javascript:void(0)' kId='" + row.kId + "'>上课历史查询</a>";
         return html;
     }
     var getParam = function () {
@@ -243,9 +243,11 @@ define(['dialog',
             })
             $(".deleteBtn").click(function () {
                 var kId = $(this).attr("kId");
+                var chNm = $(this).attr("chNm");
+
                 new Dialog({mode:"confirm",
                     id:"kidsInput",
-                    content:"",
+                    content:"学生："+chNm,
                     title:"确认删除？",
                     ok:function () {
                         $.ajax({

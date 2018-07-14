@@ -76,7 +76,7 @@ define(['dialog',
     }
     var genOperation = function (row) {
         var html = "<a class='modifyBtn' href='javascript:void(0)' tId='" + row.teacherId + "'>修改</a> | ";
-        html = html + "<a class='deleteBtn' href='javascript:void(0)' tId='" + row.teacherId + "'>删除</a>"
+        html = html + "<a class='deleteBtn' href='javascript:void(0)' tId='" + row.teacherId + "' teacherNm='" + row.teacherNm + "'>删除</a>"
         return html;
     }
     var getParam = function () {
@@ -195,10 +195,11 @@ define(['dialog',
             })
             $(".deleteBtn").click(function () {
                 var tId = $(this).attr("tId");
+                var teacherNm = $(this).attr("teacherNm");
                 new Dialog({
                     mode: "confirm",
                     id: "kidsInput",
-                    content: "",
+                    content: "教师姓名："+teacherNm,
                     title: "确认删除？",
                     ok: function () {
                         $.ajax({
