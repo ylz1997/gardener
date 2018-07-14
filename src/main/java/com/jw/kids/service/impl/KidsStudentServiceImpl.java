@@ -13,6 +13,7 @@ import com.jw.kids.dao.TKidsDAO;
 import com.jw.kids.service.KidsStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
@@ -33,6 +34,7 @@ public class KidsStudentServiceImpl implements KidsStudentService {
     private TClassPackageDAO tClassPackageDAO;
 
     @Override
+    @Transactional
     public TKids addKids(TKids tKids) throws GeneralException {
         tKids.setkId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_kids")));
         tKids.setAmount(0);
@@ -41,12 +43,14 @@ public class KidsStudentServiceImpl implements KidsStudentService {
     }
 
     @Override
+    @Transactional
     public TKids editKids(TKids tKids) throws GeneralException {
         tKidsDAO.updateByPrimaryKey(tKids);
         return tKids;
     }
 
     @Override
+    @Transactional
     public TKids deleteKids(String kId) throws GeneralException {
         Long lKid;
         try{
@@ -87,6 +91,7 @@ public class KidsStudentServiceImpl implements KidsStudentService {
     }
 
     @Override
+    @Transactional
     public HashMap charge(String kid, String classPackageId) throws GeneralException {
         Long lKid;
         Long lClassPackageId;

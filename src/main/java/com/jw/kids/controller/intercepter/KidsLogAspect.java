@@ -40,8 +40,12 @@ public class KidsLogAspect {
         Map resultMap = (Map) JsonUtil.convertJson2Object(result, Map.class);
         Map tkidsMap = (Map) resultMap.get("tKids");
         TKids tKids = new TKids();
-        tkidsMap.put("crtTime", DateUtil.convertDateStringToTimestamp((String)tkidsMap.get("crtTime"), "yyyy-MM-dd HH:mm:ss"));
-        tkidsMap.put("modfTime", DateUtil.convertDateStringToTimestamp((String)tkidsMap.get("modfTime"), "yyyy-MM-dd HH:mm:ss"));
+        if(tkidsMap.get("crtTime")!=null){
+            tkidsMap.put("crtTime", DateUtil.convertDateStringToTimestamp((String)tkidsMap.get("crtTime"), "yyyy-MM-dd HH:mm:ss"));
+        }
+        if(tkidsMap.get("modfTime")!=null){
+            tkidsMap.put("modfTime", DateUtil.convertDateStringToTimestamp((String)tkidsMap.get("modfTime"), "yyyy-MM-dd HH:mm:ss"));
+        }
         BeanUtils.populate(tKids, tkidsMap);
         for(String opType:opTypes){
             if("charge".equals(opType)){

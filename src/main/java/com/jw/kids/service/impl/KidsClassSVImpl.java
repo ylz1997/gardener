@@ -32,6 +32,7 @@ public class KidsClassSVImpl implements KidsClassSV{
     private TClassPackageDAO tClassPackageDAO;*/
 
     @Override
+    @Transactional
     public TClass addClass(TClass tClass) throws GeneralException {
         tClass.setClassId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_class")));
         tClassDAO.insert(tClass);

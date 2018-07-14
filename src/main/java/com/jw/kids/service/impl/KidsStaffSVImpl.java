@@ -30,6 +30,7 @@ public class KidsStaffSVImpl implements KidsStaffSV{
     TTeacherClassRelDAO teacherClassRelDAO;
 
     @Override
+    @Transactional
     public TTeacher addStaff(TTeacher tTeacher) throws GeneralException {
         tTeacher.setTeacherId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_teacher")));
         teacherDAO.insert(tTeacher);
@@ -37,6 +38,7 @@ public class KidsStaffSVImpl implements KidsStaffSV{
     }
 
     @Override
+    @Transactional
     public TTeacherVO editStaff(TTeacherVO tTeacher) throws GeneralException {
         teacherDAO.updateByPrimaryKey(tTeacher);
 
@@ -56,6 +58,7 @@ public class KidsStaffSVImpl implements KidsStaffSV{
     }
 
     @Override
+    @Transactional
     public TTeacher deleteStaff(String tId) throws GeneralException {
         Long lTid = null;
         try{

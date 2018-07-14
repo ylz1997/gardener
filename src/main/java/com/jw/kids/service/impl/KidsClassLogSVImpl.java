@@ -10,6 +10,7 @@ import com.jw.kids.dao.TClassLogDAO;
 import com.jw.kids.service.KidsClassLogSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
     TClassLogDAO classLogDao;
 
     @Override
+    @Transactional
     public TClassLog add(TClassLog tClassLog) throws GeneralException {
         tClassLog.setLogId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_teacher")));
         classLogDao.insert(tClassLog);
@@ -31,12 +33,14 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
     }
 
     @Override
+    @Transactional
     public TClassLog edit(TClassLog tClassLog) throws GeneralException {
         classLogDao.updateByPrimaryKey(tClassLog);
         return tClassLog;
     }
 
     @Override
+    @Transactional
     public TClassLog delete(String tId) throws GeneralException {
         Long lTid = null;
         try{
