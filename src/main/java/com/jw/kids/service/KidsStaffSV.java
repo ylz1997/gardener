@@ -17,7 +17,7 @@ public interface KidsStaffSV {
      * @return
      * @throws GeneralException
      */
-    TTeacher addStaff(TTeacher tTeacher) throws GeneralException;
+    TTeacher addStaff(TTeacherVO tTeacher) throws GeneralException;
 
     /**
      * 修改

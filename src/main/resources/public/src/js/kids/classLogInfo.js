@@ -1,5 +1,5 @@
 define(['dialog',
-    'text!src/kids/classPackageInput.tpl',
+    'text!src/kids/classLogInput.tpl',
     'jquery',
     'datatables',
     'hdb'
@@ -9,7 +9,30 @@ define(['dialog',
             DataTables,
             Hdb) {
     var table;
-
+    var getKidsByClassId = function (classId) {
+        var allKids;
+        //获取所有课时包
+        $.ajax({
+            url:"/Kids/list",
+            method:"GET",
+            data:{start:0,length:20000,draw:1,classId:classId},
+            async:false,
+            success:function (callData) {
+                callData = JSON.parse(callData);
+                allKids = callData.data;
+            },
+            error:function (data) {
+                if(data.result != true){
+                    new Dialog({
+                        mode: 'tips',
+                        tipsType: 'error',
+                        content: data.responseJSON.error
+                    });
+                }
+            }
+        })
+        return allKids;
+    }
 
     //注册一个判断相等的Helper,判断v1是否等于v2
     Hdb.registerHelper("equal",function(v1,v2,options){
@@ -30,8 +53,10 @@ define(['dialog',
         return data;
     }
     var genOperation = function (row) {
-        var html = "<a class='modifyBtn' href='javascript:void(0)' classPackageId='" + row.classPackageId + "'>修改</a> | ";
-        html = html + "<a class='deleteBtn' href='javascript:void(0)' classPackageId='" + row.classPackageId + "' classPackageNm='" + row.classPackageNm +"'>删除</a>"
+        var html = "<a class='modifyBtn' href='javascript:void(0)' logId='" + row.logId + "'>查看明细</a> | ";
+/*
+        html = html + "<a class='deleteBtn' href='javascript:void(0)' logId='" + row.logId + "'>删除</a>"
+*/
         return html;
     }
     var getParam = function () {
@@ -53,39 +78,32 @@ define(['dialog',
             searching: false,
             serverSide: true,
             ajax: {
-                "url": "/classPackage/list",
+                "url": "/kidsLog/list",
                 "data": function ( d ) {
                     return $.extend( {}, d, getParam() );
                 }
             },
             columns: [
-                {data: 'classPackageId', title:"课时包id"},
-                {data: 'classPackageNm', title:"课时包名称"},
-                {data: 'startTime', title:"开始时间"},
-                {data: 'endTime', title:"结束时间"},
-                {data: 'amount', title:"课时数量"},
-                {data: 'price', title:"价格"},
-                {
-                    data: 'classPackageId',
-                    title: "操作",
-                    render: function (data, type, row, meta) {
-                        return genOperation(row);
-                    }
-                }
+                //{data: 'classId', title:"日志id"},
+                {data: 'teacherNm', title:"教师姓名"},
+                {data: 'classNm', title:"班级"},
+                {data: 'content', title:"课堂日志"},
+                {data: 'crtTime', title:"日志时间"},
+                {data: 'rmk', title:"上课时间"}
             ]
         });
         table.on( 'draw', function () {
-            $(".modifyBtn").click(function () {
-                var classPackageId = $(this).attr("classPackageId");
+/*            $(".modifyBtn").click(function () {
+                var classId = $(this).attr("classId");
                 $.ajax({
-                    url:"/classPackage/get",
+                    url:"/class/get",
                     method:"POST",
-                    data:{classPackageId:classPackageId},
+                    data:{classId:classId},
                     success:function (data) {
                         data = JSON.parse(data);
                         if(data.result == true){
                             var tmp = Hdb.compile(InputTpl);
-                            /*data.sexParam = sexParam;*/
+                            data.allClassPackage = getAllPackage();
                             var html = tmp(data);
                             new Dialog(
                                 {
@@ -99,7 +117,7 @@ define(['dialog',
                                             params[$(this).attr("name")] = $(this).val();
                                         })
                                         $.ajax({
-                                            url:"/classPackage/edit",
+                                            url:"/class/edit",
                                             method:"POST",
                                             contentType:"application/json",
                                             data:JSON.stringify(params),
@@ -139,19 +157,17 @@ define(['dialog',
                 })
             })
             $(".deleteBtn").click(function () {
-                var classPackageId = $(this).attr("classPackageId");
-                var classPackageNm = $(this).attr("classPackageNm");
-
+                var classId = $(this).attr("classId");
                 new Dialog({
                     mode: "confirm",
                     id: "kidsInput",
-                    content: "课时包:" + classPackageNm,
+                    content: "",
                     title: "确认删除？",
                     ok: function () {
                         $.ajax({
-                            url: "/classPackage/delete",
+                            url: "/class/delete",
                             method: "POST",
-                            data: {classPackageId: classPackageId},
+                            data: {classId: classId},
                             success: function (data) {
                                 data = JSON.parse(data);
                                 if (data.result == true) {
@@ -174,30 +190,14 @@ define(['dialog',
                         })
                     }
                 })
-            })
+            })*/
         });
-
-        /*        table.on( 'draw', function () {
-                    $(".deleteBtn").click(function () {
-                        deleteConfirm($(this).attr("cnslid"));
-                    })
-                    $(".downloadTmpBtn").click(function(){
-                        window.location.href = "/kmConsult/downldConsult?cnsultTmpltId="+$(this).attr("tmpltId")+"&v=" + new Date().getTime();
-                    });
-                    $(".modifyBtn").click(function(){
-                        new AddConsult(searchList, $(this).attr("cnslId"));
-                    });
-                    $(".link-consult").click(function(){
-                        var cnslId = $(this).attr("cnslId");
-                        var tmpltId = $(this).attr("tmpltId");
-                        window.open('/src/consult/consultDataManageList.html?cnslId=' + cnslId + '&tmpltId=' + tmpltId);
-                    });
-                });*/
     }
 
     var init = function () {
         $("#btn-add").click(function () {
             var data = {};
+            //data.allClassPackage = getAllPackage();
 
             var inputTemplate = Hdb.compile(InputTpl);
             var inputHtml = inputTemplate(data);
@@ -205,14 +205,15 @@ define(['dialog',
                 {mode:"confirm",
                     id:"kidsInput",
                     content:inputHtml,
-                    title:"新增课时包",
+                    title:"新增课堂日志",
                     ok:function () {
                         var params = new Object();
                         $(".kidsClz").each(function(){
                             params[$(this).attr("name")] = $(this).val();
                         })
+
                         $.ajax({
-                            url:"/classPackage/add",
+                            url:"/kidsLog/add",
                             method:"POST",
                             contentType:"application/json",
                             data:JSON.stringify(params),
@@ -245,7 +246,6 @@ define(['dialog',
         $("#btn-query").click(function () {
             search();
         })
-
     }
 
     return init;

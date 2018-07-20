@@ -23,7 +23,7 @@ public class IPInterceptor implements HandlerInterceptor {
         LOG.info("USER IP ADDRESS IS =>"+ipAddress);
         if(!StringUtils.isNotBlank(ipAddress))
             return false;
-        if(!"192.168.1.51".equals(ipAddress)){
+        if(!"192.168.13.1".equals(ipAddress)){
             response.getWriter().append("<h1 style=\"text-align:center;\">Not allowed!</h1>");
             return false;
         }

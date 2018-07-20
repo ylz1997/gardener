@@ -2,10 +2,12 @@ define(['text!src/kids/kidsInfoList.tpl',
         'text!src/kids/staffInfoList.tpl',
         'text!src/kids/classPackageList.tpl',
         'text!src/kids/classList.tpl',
+        'text!src/kids/classLogList.tpl',
         'src/js/kids/kidsInfo',
         'src/js/kids/kidsStaffInfo',
         'src/js/kids/classPackageInfo',
         'src/js/kids/classInfo',
+        'src/js/kids/classLogInfo',
         'jquery',
         'dialog',
         'hdb'],
@@ -13,10 +15,12 @@ define(['text!src/kids/kidsInfoList.tpl',
                     staffInfoTpl,
                     classPackageListTpl,
                     classListTpl,
+                    classLogListTpl,
                     KidsInfo,
                     KidsStaffInfo,
                     classPackageInfo,
                     classInfo,
+                    classLogInfo,
                     $,
                     Dialog,
                     Hdb) {
@@ -60,6 +64,11 @@ define(['text!src/kids/kidsInfoList.tpl',
             $("#contentMain").html(classListTpl);
             new classInfo();
         })
+        $("#classLogInfo").click(function () {
+            $("#contentMain").html(classLogListTpl);
+            new classLogInfo();
+        })
+
     }
 
     $(document).ready(function () {

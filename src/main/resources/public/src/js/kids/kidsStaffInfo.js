@@ -266,6 +266,16 @@ define(['dialog',
                         $(".kidsClz").each(function(){
                             params[$(this).attr("name")] = $(this).val();
                         })
+                        var classCheck = new Array();
+                        $(".kidsCheckClz").each(function () {
+                            if(this.checked){
+                                var object = new Object();
+                                object.classId = $(this).val();
+                                classCheck.push(object);
+                            }
+                        })
+                        params["classIdArray"] = classCheck;
+
                         $.ajax({
                             url:"/Staff/add",
                             method:"POST",

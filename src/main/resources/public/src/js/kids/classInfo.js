@@ -55,7 +55,7 @@ define(['dialog',
     }
     var genOperation = function (row) {
         var html = "<a class='modifyBtn' href='javascript:void(0)' classId='" + row.classId + "'>修改</a> | ";
-        html = html + "<a class='deleteBtn' href='javascript:void(0)' classId='" + row.classId + "'>删除</a>"
+        html = html + "<a class='deleteBtn' href='javascript:void(0)' classId='" + row.classId + "' classNm='" + row.classNm + "'>删除</a>"
         return html;
     }
     var getParam = function () {
@@ -114,7 +114,7 @@ define(['dialog',
                                     mode:"confirm",
                                     id:"kidsInput",
                                     content:html,
-                                    title:"修改课时包信息",
+                                    title:"修改班级信息",
                                     ok:function () {
                                         var params = new Object();
                                         $(".kidsClz").each(function(){
@@ -162,10 +162,11 @@ define(['dialog',
             })
             $(".deleteBtn").click(function () {
                 var classId = $(this).attr("classId");
+                var classNm = $(this).attr("classNm");
                 new Dialog({
                     mode: "confirm",
                     id: "kidsInput",
-                    content: "",
+                    content: "班级名称："+classNm,
                     title: "确认删除？",
                     ok: function () {
                         $.ajax({
@@ -226,7 +227,7 @@ define(['dialog',
                 {mode:"confirm",
                     id:"kidsInput",
                     content:inputHtml,
-                    title:"新增课时包",
+                    title:"新增班级",
                     ok:function () {
                         var params = new Object();
                         $(".kidsClz").each(function(){

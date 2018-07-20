@@ -17,8 +17,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 /**
  * Created by funnyZpC on 2017/9/8.
  */
-@Configuration("admimWebConfig")
-@Primary
+/*@Configuration("admimWebConfig")
+@Primary*/
 public class WebConfiguration extends WebMvcConfigurerAdapter {
 /*    @Bean
     GlobalExceptionHandler getGlobalExceptionHandler() {

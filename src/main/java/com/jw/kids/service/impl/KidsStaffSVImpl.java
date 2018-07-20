@@ -31,9 +31,11 @@ public class KidsStaffSVImpl implements KidsStaffSV{
 
     @Override
     @Transactional
-    public TTeacher addStaff(TTeacher tTeacher) throws GeneralException {
+    public TTeacher addStaff(TTeacherVO tTeacher) throws GeneralException {
         tTeacher.setTeacherId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_teacher")));
         teacherDAO.insert(tTeacher);
+
+        updateTClassRelByVo(tTeacher);
         return tTeacher;
     }
 
@@ -46,13 +48,7 @@ public class KidsStaffSVImpl implements KidsStaffSV{
         relExample.createCriteria().andTeacherIdEqualTo(tTeacher.getTeacherId());
         teacherClassRelDAO.deleteByExample(relExample);
 
-        for(TTeacherClassRel tTeacherClassRel: tTeacher.getClassIdArray()){
-            tTeacherClassRel.setRlId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_teacher_class_rel")));
-            tTeacherClassRel.setCrtTime(DateUtil.getCurrontTime());
-            tTeacherClassRel.setModfTime(DateUtil.getCurrontTime());
-            tTeacherClassRel.setTeacherId(tTeacher.getTeacherId());
-            teacherClassRelDAO.insert(tTeacherClassRel);
-        }
+        updateTClassRelByVo(tTeacher);
 
         return tTeacher;
     }
@@ -127,5 +123,19 @@ public class KidsStaffSVImpl implements KidsStaffSV{
             criteria.andTeacherNmLike("%" + tTeacher.getTeacherNm() + "%");
         }
         return example;
+    }
+
+    private boolean updateTClassRelByVo(TTeacherVO tTeacher) throws GeneralException {
+        if(tTeacher == null){
+            return false;
+        }
+        for(TTeacherClassRel tTeacherClassRel: tTeacher.getClassIdArray()){
+            tTeacherClassRel.setRlId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_teacher_class_rel")));
+            tTeacherClassRel.setCrtTime(DateUtil.getCurrontTime());
+            tTeacherClassRel.setModfTime(DateUtil.getCurrontTime());
+            tTeacherClassRel.setTeacherId(tTeacher.getTeacherId());
+            teacherClassRelDAO.insert(tTeacherClassRel);
+        }
+        return true;
     }
 }

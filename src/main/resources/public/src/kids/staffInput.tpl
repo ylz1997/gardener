@@ -32,7 +32,7 @@
 -->
 
     <label for="classes">所在班级</label>
-    <div class="radio" id="classes">
+    <div class="checkbox" id="classes">
         {{#each classes}}
         <label>
             <input type="checkbox" name="classes" class="kidsCheckClz" value="{{clzId}}"

@@ -29,7 +29,7 @@ public class KidsStaffController {
     private KidsStaffSV kidsStaffSV;
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public String add(@Valid @RequestBody TTeacher tTeacher) throws GeneralException {
+    public String add(@Valid @RequestBody TTeacherVO tTeacher) throws GeneralException {
         tTeacher.setCrtTime(DateUtil.getCurrontTime());
         tTeacher.setModfTime(DateUtil.getCurrontTime());
         tTeacher.setOperator(0001L);

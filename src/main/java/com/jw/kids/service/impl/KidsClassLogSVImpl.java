@@ -2,12 +2,15 @@ package com.jw.kids.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.jw.base.BasicUtil;
+import com.jw.base.Constants;
 import com.jw.base.DateUtil;
 import com.jw.base.GeneralException;
-import com.jw.kids.bean.TClassLog;
-import com.jw.kids.bean.TClassLogExample;
+import com.jw.kids.bean.*;
 import com.jw.kids.dao.TClassLogDAO;
+import com.jw.kids.dao.TClassLogDetailDAO;
 import com.jw.kids.service.KidsClassLogSV;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,18 +26,48 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
 
     @Autowired
     TClassLogDAO classLogDao;
+    @Autowired
+    TClassLogDetailDAO classLogDetailDAO;
+
+    private Logger logger = LoggerFactory.getLogger(KidsClassLogSVImpl.class);
+
+
 
     @Override
     @Transactional
-    public TClassLog add(TClassLog tClassLog) throws GeneralException {
-        tClassLog.setLogId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_teacher")));
+    public TClassLogVO add(TClassLogVO tClassLog) throws GeneralException {
+        if(tClassLog == null){
+            logger.error("============tClassLog is null==============");
+            return null;
+        }
+
+        tClassLog.setLogId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_class_log")));
         classLogDao.insert(tClassLog);
+
+        for(TTeacher teacher :tClassLog.getTeacherList()){
+            TClassLogDetail tClassLogDetail = new TClassLogDetail();
+            tClassLogDetail.setCrtTime(DateUtil.getCurrontTime());
+            tClassLogDetail.setDetailLogId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_class_log_detail")));
+            tClassLogDetail.setLogId(tClassLog.getLogId());
+            tClassLogDetail.setLogObjId(Constants.LOG_OBJ_TYPE_CD.LOG_OBJ_TYEP_TEACHER);
+            classLogDetailDAO.insert(tClassLogDetail);
+        }
+
+        for(TKids tKids :tClassLog.getKidsList()){
+            TClassLogDetail tClassLogDetail = new TClassLogDetail();
+            tClassLogDetail.setCrtTime(DateUtil.getCurrontTime());
+            tClassLogDetail.setDetailLogId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_class_log_detail")));
+            tClassLogDetail.setLogId(tClassLog.getLogId());
+            tClassLogDetail.setLogObjId(Constants.LOG_OBJ_TYPE_CD.LOG_OBJ_TYPE_KIDS);
+            classLogDetailDAO.insert(tClassLogDetail);
+        }
+
         return tClassLog;
     }
 
     @Override
     @Transactional
-    public TClassLog edit(TClassLog tClassLog) throws GeneralException {
+    public TClassLogVO edit(TClassLogVO tClassLog) throws GeneralException {
         classLogDao.updateByPrimaryKey(tClassLog);
         return tClassLog;
     }
