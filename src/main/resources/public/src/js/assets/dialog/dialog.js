@@ -54,6 +54,14 @@ define(['css!src/css/toastr/toastr.min' ,'text!/src/js/assets/dialog/confirm.tpl
                 })
             }
             $("#"+options.id).modal({backdrop:false });
+
+
+            $("#"+options.id).on('shown.bs.modal', function () {
+                //alert(1);
+                if(options.callbak){
+                    options.callbak();
+                }
+            })
         }
     }
 

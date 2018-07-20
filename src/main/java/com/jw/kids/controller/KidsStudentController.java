@@ -39,7 +39,7 @@ public class KidsStudentController {
         TKids kidsResult = kidsStudentService.addKids(tKids);
         HashMap result = new HashMap();
 
-        result.put("tkids",kidsResult);
+        result.put("tKids",kidsResult);
         result.put("result",true);
         return JsonUtil.convertObject2Json(result);
     }
@@ -52,7 +52,7 @@ public class KidsStudentController {
         HashMap result = new HashMap();
 
         result.put("result",true);
-        result.put("tkids",kidsResult);
+        result.put("tKids",kidsResult);
         return JsonUtil.convertObject2Json(result);
     }
 
@@ -63,7 +63,7 @@ public class KidsStudentController {
         HashMap result = new HashMap();
 
         result.put("result",true);
-        result.put("tkids",kidsResult);
+        result.put("tKids",kidsResult);
         return JsonUtil.convertObject2Json(result);
     }
 
@@ -73,7 +73,7 @@ public class KidsStudentController {
         HashMap result = new HashMap();
 
         result.put("result",true);
-        result.put("tkids",kidsResult);
+        result.put("tKids",kidsResult);
         return JsonUtil.convertObject2Json(result);
     }
 

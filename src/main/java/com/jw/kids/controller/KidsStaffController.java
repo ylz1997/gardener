@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jw
@@ -83,6 +84,16 @@ public class KidsStaffController {
         result.put("recordTotal",total);
         result.put("recordsFiltered",total);
         result.put("draw", draw);
+        return JsonUtil.convertObject2Json(result);
+    }
+
+
+    @RequestMapping(value = "/listByClassId",method = RequestMethod.GET)
+    public String listByClassId(Long classId) throws GeneralException {
+        List<Map> listTeacherClass = kidsStaffSV.listByClassId(classId);
+        HashMap result = new HashMap();
+
+        result.put("data",listTeacherClass);
         return JsonUtil.convertObject2Json(result);
     }
 }

@@ -6,6 +6,7 @@ import com.jw.base.BasicUtil;
 import com.jw.base.DateUtil;
 import com.jw.base.GeneralException;
 import com.jw.kids.bean.*;
+import com.jw.kids.dao.ClassManageDAO;
 import com.jw.kids.dao.TTeacherClassRelDAO;
 import com.jw.kids.dao.TTeacherDAO;
 import com.jw.kids.service.KidsStaffSV;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jw
@@ -25,9 +27,11 @@ import java.util.List;
 public class KidsStaffSVImpl implements KidsStaffSV{
 
     @Autowired
-    TTeacherDAO teacherDAO;
+    private TTeacherDAO teacherDAO;
     @Autowired
-    TTeacherClassRelDAO teacherClassRelDAO;
+    private TTeacherClassRelDAO teacherClassRelDAO;
+    @Autowired
+    private ClassManageDAO classManageDAO;
 
     @Override
     @Transactional
@@ -114,6 +118,11 @@ public class KidsStaffSVImpl implements KidsStaffSV{
         TTeacherExample example = getExampleByBean(tTeacher);
         return teacherDAO.selectByExample(example).size();
     }
+
+    public List<Map> listByClassId(Long classId){
+        return classManageDAO.listByClassId(classId);
+    }
+
 
     private TTeacherExample getExampleByBean(TTeacher tTeacher){
         TTeacherExample example = new TTeacherExample();

@@ -6,8 +6,8 @@ package com.jw.base;
 public final class Constants {
 
     public interface LOG_OBJ_TYPE_CD{
-        short LOG_OBJ_TYEP_TEACHER = 1;
-        short LOG_OBJ_TYPE_KIDS = 2;
+        byte LOG_OBJ_TYEP_TEACHER = 1;
+        byte LOG_OBJ_TYPE_KIDS = 2;
     }
     //存放系统常用配置
     public interface SYSTEM_CONFIG {

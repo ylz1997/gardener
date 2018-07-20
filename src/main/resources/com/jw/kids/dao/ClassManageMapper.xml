@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jw.kids.dao.ClassManageDAO" >
+<select id="listByClassId" parameterType="java.lang.Long" resultType="java.util.HashMap">
+        SELECT
+        t.teacher_id as teacherId,
+        teacher_nm as teacherNm,
+        r.class_id as classId,
+        c.class_nm as classNm
+    FROM
+        t_teacher t,
+        t_teacher_class_rel r,
+        t_class c
+    WHERE
+        t.teacher_id = r.teacher_id
+    AND r.class_id = c.class_id
+    AND r.class_id = #{classId,jdbcType=BIGINT};
+</select>
+</mapper>

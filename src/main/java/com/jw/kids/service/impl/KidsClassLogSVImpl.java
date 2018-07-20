@@ -1,6 +1,7 @@
 package com.jw.kids.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.StringUtil;
 import com.jw.base.BasicUtil;
 import com.jw.base.Constants;
 import com.jw.base.DateUtil;
@@ -44,12 +45,14 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
         tClassLog.setLogId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_class_log")));
         classLogDao.insert(tClassLog);
 
+
         for(TTeacher teacher :tClassLog.getTeacherList()){
             TClassLogDetail tClassLogDetail = new TClassLogDetail();
             tClassLogDetail.setCrtTime(DateUtil.getCurrontTime());
             tClassLogDetail.setDetailLogId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_class_log_detail")));
             tClassLogDetail.setLogId(tClassLog.getLogId());
-            tClassLogDetail.setLogObjId(Constants.LOG_OBJ_TYPE_CD.LOG_OBJ_TYEP_TEACHER);
+            tClassLogDetail.setLogObjId(teacher.getTeacherId());
+            tClassLogDetail.setLogType(Constants.LOG_OBJ_TYPE_CD.LOG_OBJ_TYEP_TEACHER);
             classLogDetailDAO.insert(tClassLogDetail);
         }
 
@@ -58,7 +61,9 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
             tClassLogDetail.setCrtTime(DateUtil.getCurrontTime());
             tClassLogDetail.setDetailLogId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_class_log_detail")));
             tClassLogDetail.setLogId(tClassLog.getLogId());
-            tClassLogDetail.setLogObjId(Constants.LOG_OBJ_TYPE_CD.LOG_OBJ_TYPE_KIDS);
+            tClassLogDetail.setLogType(Constants.LOG_OBJ_TYPE_CD.LOG_OBJ_TYPE_KIDS);
+            tClassLogDetail.setLogObjId(tKids.getkId());
+
             classLogDetailDAO.insert(tClassLogDetail);
         }
 
@@ -110,22 +115,22 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
         }
         PageHelper.offsetPage((newPage - 1) * length, newLimit);
 
-        return classLogDao.selectByExample(example);
+        return classLogDao.selectByExampleWithBLOBs(example);
     }
 
     @Override
     public Integer total(TClassLog TClassLog) throws GeneralException {
         TClassLogExample example = getExampleByBean(TClassLog);
-        return classLogDao.selectByExample(example).size();
+        return classLogDao.selectByExampleWithBLOBs(example).size();
     }
 
     private TClassLogExample getExampleByBean(TClassLog tClassLog){
         TClassLogExample example = new TClassLogExample();
         TClassLogExample.Criteria criteria = example.createCriteria();
         example.setOrderByClause(" modf_Time desc ");
-  /*      if(StringUtil.isNotEmpty(tClassLog.getcl())){
-            criteria.andTeacherNmLike("%" + TClassLog.geTClassLogNm() + "%");
-        }*/
+        if(null != tClassLog.getClassId()){
+            criteria.andClassIdEqualTo(tClassLog.getClassId());
+        }
         return example;
     }
 }

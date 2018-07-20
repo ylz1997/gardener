@@ -5,6 +5,7 @@ import com.jw.kids.bean.TTeacher;
 import com.jw.kids.bean.TTeacherVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jw
@@ -58,4 +59,6 @@ public interface KidsStaffSV {
      * @throws GeneralException
      */
     Integer totalStaff(TTeacher tTeacher) throws GeneralException;
+
+    List<Map> listByClassId(Long classId);
 }

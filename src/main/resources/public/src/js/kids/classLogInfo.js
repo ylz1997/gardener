@@ -9,6 +9,54 @@ define(['dialog',
             DataTables,
             Hdb) {
     var table;
+    var classes;
+    $.ajax({
+        url:"/class/list",
+        method:"GET",
+        data:{start:0, length:10000, draw:1},
+        success:function (callData) {
+            callData = JSON.parse(callData);
+            classes = callData.data;
+            for(var i in classes){
+                classes[i].clzId = classes[i].classId;
+                delete classes[i].classId;
+            }
+        },
+        error:function (data) {
+            if(data.result != true){
+                new Dialog({
+                    mode: 'tips',
+                    tipsType: 'error',
+                    content: data.responseJSON.error
+                });
+            }
+        }
+    });
+
+    var getTeacherByClassId = function (classID) {
+        var teachers;
+        $.ajax({
+            url:"/Staff/listByClassId",
+            method:"GET",
+            data:{start:0, length:10000, draw:1, classId:classID},
+            async:false,
+            success:function (callData) {
+                callData = JSON.parse(callData);
+                teachers = callData.data;
+            },
+            error:function (data) {
+                if(data.result != true){
+                    new Dialog({
+                        mode: 'tips',
+                        tipsType: 'error',
+                        content: data.responseJSON.error
+                    });
+                }
+            }
+        });
+        return teachers;
+    }
+
     var getKidsByClassId = function (classId) {
         var allKids;
         //获取所有课时包
@@ -197,8 +245,7 @@ define(['dialog',
     var init = function () {
         $("#btn-add").click(function () {
             var data = {};
-            //data.allClassPackage = getAllPackage();
-
+            data.classes = classes;
             var inputTemplate = Hdb.compile(InputTpl);
             var inputHtml = inputTemplate(data);
             new Dialog(
@@ -206,11 +253,59 @@ define(['dialog',
                     id:"kidsInput",
                     content:inputHtml,
                     title:"新增课堂日志",
+                    callbak:function () {
+                        $(".kidsClzLogChangeClick").change(function () {
+                            var classId = $(this).val();
+                            var classKidsList = getKidsByClassId(classId);
+                            var classTeacherList = getTeacherByClassId(classId);
+                            var targetKidsHtml = "";
+                            var targetTeacherHtml = "";
+
+                            for(var i=0; i < classKidsList.length; i++){
+                                targetKidsHtml += "<label><input type=\"checkbox\" name=\"classes\" class=\"kidsCheckClz\" value='"+ classKidsList[i].kId + "'/>" +
+                                    classKidsList[i].chNm + "</label>";
+                            }
+                            if(!targetKidsHtml){
+                                targetKidsHtml = "暂无数据...";
+                            }
+                            $("#kidsList").html(targetKidsHtml);
+
+                            for(var i=0; i < classTeacherList.length; i++){
+                                targetTeacherHtml += "<label><input type=\"checkbox\" name=\"classes\" class=\"teacherCheckClz\" value='"+ classTeacherList[i].teacherId + "'/>" +
+                                    classTeacherList[i].teacherNm + "</label>";
+                            }
+                            if(!targetTeacherHtml){
+                                targetTeacherHtml = "暂无数据...";
+                            }
+                            $("#teacherList").html(targetTeacherHtml);
+                        })
+                    },
                     ok:function () {
                         var params = new Object();
-                        $(".kidsClz").each(function(){
+                        $(".kidsClzLog").each(function(){
                             params[$(this).attr("name")] = $(this).val();
                         })
+
+                        var kidsCheckClz = new Array();
+                        $(".kidsCheckClz").each(function () {
+                            if(this.checked){
+                                var object = new Object();
+                                object.kId = $(this).val();
+                                kidsCheckClz.push(object);
+                            }
+                        })
+                        params["kidsList"] = kidsCheckClz;
+
+                        var teacherCheckClz = new Array();
+                        $(".teacherCheckClz").each(function () {
+                            if(this.checked){
+                                var object = new Object();
+                                object.teacherId = $(this).val();
+                                teacherCheckClz.push(object);
+                            }
+                        })
+                        params["teacherList"] = teacherCheckClz;
+
 
                         $.ajax({
                             url:"/kidsLog/add",
