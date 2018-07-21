@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jw
@@ -40,7 +41,7 @@ public class KidsClassLogController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(TClassLog tClassLog, Integer start, Integer length, Integer draw) throws GeneralException {
-        List<TClassLog> list = kidsClassLogSV.list(tClassLog, start, length);
+        List<Map> list = kidsClassLogSV.list(tClassLog, start, length);
         Integer total = kidsClassLogSV.total(tClassLog);
         HashMap result = new HashMap();
 

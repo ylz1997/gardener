@@ -1,5 +1,6 @@
 <form >
     <input type="hidden" class="kidsClzLog" name="logId" id="logId" {{#if tClassLog.logId}}value="{{tClassLog.logId}}"{{/if}}>
+    <input type="hidden" class="kidsClzLog" name="strCrtTime" id="strCrtTime" {{#if tClassLog.crtTime}}value="{{tClassLog.crtTime}}"{{/if}}>
 
     <div class="form-group">
         <label for="classId">班级</label>
@@ -13,7 +14,7 @@
 
     <div class="form-group">
         <label for="strCrtTime">上课时间</label>
-        <input type="input" class="form-control kidsClzLog" name="strCrtTime" id="strCrtTime" {{#if tClassLog.crtTime}}value="{{tClassLog.crtTime}}"{{/if}} placeholder="请按照yyyy-MM-dd HH:mm:ss填写日期">
+        <input type="input" class="form-control kidsClzLog" name="strClassTime" id="strClassTime" {{#if tClassLog.classTime}}value="{{tClassLog.classTime}}"{{/if}} placeholder="请按照yyyy-MM-dd HH:mm:ss填写日期">
     </div>
     <label for="kidsList">教师</label>
     <div class="checkbox" id="teacherList">

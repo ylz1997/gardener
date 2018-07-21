@@ -7,6 +7,7 @@ import com.jw.kids.bean.TClassLog;
 import com.jw.kids.bean.TClassLogVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jw
@@ -51,7 +52,7 @@ public interface KidsClassLogSV {
      * @return
      * @throws GeneralException
      */
-    List<TClassLog> list(TClassLog tClassLog, Integer start, Integer length) throws GeneralException;
+    List<Map> list(TClassLog tClassLog, Integer start, Integer length) throws GeneralException;
 
     /**
      * 查询单个

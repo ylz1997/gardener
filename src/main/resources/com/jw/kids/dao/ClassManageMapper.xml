@@ -16,4 +16,25 @@
     AND r.class_id = c.class_id
     AND r.class_id = #{classId,jdbcType=BIGINT};
 </select>
+<select id="listClassLog" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+    SELECT
+    log_id as logId,
+    l.class_id as classId,
+    content as content,
+    l.crt_time as crtTime,
+    class_time as classTime,
+    class_nm as classNm
+FROM
+    t_class_log l,
+    t_class t
+WHERE
+    t.class_id = l.class_id
+    <if test="classId != null">
+        AND t.class_id = #{classId,jdbcType=BIGINT}
+    </if>
+    limit #{start, jdbcType=INT}, #{end, jdbcType=INT}
+    order by crtTime desc;
+</select>
+
+
 </mapper>

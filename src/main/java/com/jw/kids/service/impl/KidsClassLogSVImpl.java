@@ -7,6 +7,7 @@ import com.jw.base.Constants;
 import com.jw.base.DateUtil;
 import com.jw.base.GeneralException;
 import com.jw.kids.bean.*;
+import com.jw.kids.dao.ClassManageDAO;
 import com.jw.kids.dao.TClassLogDAO;
 import com.jw.kids.dao.TClassLogDetailDAO;
 import com.jw.kids.service.KidsClassLogSV;
@@ -16,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jw
@@ -26,9 +29,11 @@ import java.util.List;
 public class KidsClassLogSVImpl implements KidsClassLogSV {
 
     @Autowired
-    TClassLogDAO classLogDao;
+    private TClassLogDAO classLogDao;
     @Autowired
-    TClassLogDetailDAO classLogDetailDAO;
+    private TClassLogDetailDAO classLogDetailDAO;
+    @Autowired
+    private ClassManageDAO classManageDAO;
 
     private Logger logger = LoggerFactory.getLogger(KidsClassLogSVImpl.class);
 
@@ -98,8 +103,8 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
     }
 
     @Override
-    public List<TClassLog> list(TClassLog tClassLog, Integer start, Integer length) throws GeneralException {
-        int page = start/length + 1;
+    public List<Map> list(TClassLog tClassLog, Integer start, Integer length) throws GeneralException {
+/*        int page = start/length + 1;
 
         TClassLogExample example = getExampleByBean(tClassLog);
         //分页信息
@@ -113,9 +118,15 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
         if(newLimit == null || newLimit == 0){
             newLimit = 10;
         }
-        PageHelper.offsetPage((newPage - 1) * length, newLimit);
+        PageHelper.offsetPage((newPage - 1) * length, newLimit);*/
 
-        return classLogDao.selectByExampleWithBLOBs(example);
+        HashMap params = new HashMap<>();
+        if(tClassLog != null && tClassLog.getClassId()!=null && tClassLog.getClassId()!=-1l){
+            params.put("classId", tClassLog.getClassId());
+        }
+        params.put("start", start);
+        params.put("end", start+length);
+        return classManageDAO.listClassLog(params);
     }
 
     @Override
@@ -128,7 +139,7 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
         TClassLogExample example = new TClassLogExample();
         TClassLogExample.Criteria criteria = example.createCriteria();
         example.setOrderByClause(" modf_Time desc ");
-        if(null != tClassLog.getClassId()){
+        if((null != tClassLog.getClassId()) && (-1l != tClassLog.getClassId())){
             criteria.andClassIdEqualTo(tClassLog.getClassId());
         }
         return example;

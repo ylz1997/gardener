@@ -133,11 +133,11 @@ define(['dialog',
             },
             columns: [
                 //{data: 'classId', title:"日志id"},
-                {data: 'teacherNm', title:"教师姓名"},
+                //{data: 'teacherNm', title:"教师姓名"},
                 {data: 'classNm', title:"班级"},
                 {data: 'content', title:"课堂日志"},
                 {data: 'crtTime', title:"日志时间"},
-                {data: 'rmk', title:"上课时间"}
+                {data: 'classTime', title:"上课时间"}
             ]
         });
         table.on( 'draw', function () {
@@ -262,7 +262,7 @@ define(['dialog',
                             var targetTeacherHtml = "";
 
                             for(var i=0; i < classKidsList.length; i++){
-                                targetKidsHtml += "<label><input type=\"checkbox\" name=\"classes\" class=\"kidsCheckClz\" value='"+ classKidsList[i].kId + "'/>" +
+                                targetKidsHtml += "<label><input type=\"checkbox\" name=\"classes\" checked class=\"kidsCheckClz\" value='"+ classKidsList[i].kId + "'/>" +
                                     classKidsList[i].chNm + "</label>";
                             }
                             if(!targetKidsHtml){
@@ -271,7 +271,7 @@ define(['dialog',
                             $("#kidsList").html(targetKidsHtml);
 
                             for(var i=0; i < classTeacherList.length; i++){
-                                targetTeacherHtml += "<label><input type=\"checkbox\" name=\"classes\" class=\"teacherCheckClz\" value='"+ classTeacherList[i].teacherId + "'/>" +
+                                targetTeacherHtml += "<label><input type=\"checkbox\" name=\"classes\" checked class=\"teacherCheckClz\" value='"+ classTeacherList[i].teacherId + "'/>" +
                                     classTeacherList[i].teacherNm + "</label>";
                             }
                             if(!targetTeacherHtml){

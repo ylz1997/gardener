@@ -27,5 +27,5 @@
         </div>
     </div>
     <table id="list-contain" class="display">
-    </table>a
+    </table>
 </div>
