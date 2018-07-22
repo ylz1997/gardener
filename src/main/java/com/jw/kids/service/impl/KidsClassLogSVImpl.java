@@ -151,13 +151,4 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
         result.setKidsList(classLogDetailDAO.selectByExample(teacherExample));
         return result;
     }
-/*    private TClassLogExample getExampleByBean(TClassLog tClassLog){
-        TClassLogExample example = new TClassLogExample();
-        TClassLogExample.Criteria criteria = example.createCriteria();
-        example.setOrderByClause(" modf_Time desc ");
-        if((null != tClassLog.getClassId()) && (-1l != tClassLog.getClassId())){
-            criteria.andClassIdEqualTo(tClassLog.getClassId());
-        }
-        return example;
-    }*/
 }

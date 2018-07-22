@@ -50,4 +50,14 @@ public class TClassLogVO extends TClassLog {
     public void setKidsList(List<TClassLogDetail> kidsList) {
         this.kidsList = kidsList;
     }
+
+    @Override
+    public String toString() {
+        return "TClassLogVO{" +
+                "strCrtTime='" + strCrtTime + '\'' +
+                ", strClassTime='" + strClassTime + '\'' +
+                ", teacherList=" + teacherList +
+                ", kidsList=" + kidsList +
+                '}' + "::super:"+ super.toString();
+    }
 }

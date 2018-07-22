@@ -286,4 +286,18 @@ public class TClassLogDetail {
     public void setRmk(String rmk) {
         this.rmk = rmk == null ? null : rmk.trim();
     }
+
+    @Override
+    public String toString() {
+        return "TClassLogDetail{" +
+                "detailLogId=" + detailLogId +
+                ", logId=" + logId +
+                ", logType=" + logType +
+                ", logObjId=" + logObjId +
+                ", unit=" + unit +
+                ", crtTime=" + crtTime +
+                ", operator=" + operator +
+                ", rmk='" + rmk + '\'' +
+                '}';
+    }
 }

@@ -9,7 +9,10 @@ import java.util.Map;
  * @desc
  */
 public interface ClassManageDAO {
+
     List<Map> listByClassId(Long classId);
 
     List<Map> listClassLog(HashMap params);
+
+    List<Map> listLogDetail(Map params);
 }

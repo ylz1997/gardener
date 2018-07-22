@@ -2,16 +2,67 @@ define(['dialog',
     'text!src/kids/staffInput.tpl',
     'jquery',
     'datatables',
-    'hdb'
+    'hdb',
+    'text!src/kids/classLogInput.tpl',
+    'text!src/kids/viewLogDetail.tpl'
 ],function (Dialog,
             InputTpl,
             $,
             DataTables,
-            Hdb) {
+            Hdb,
+            ClassLogInput,
+            ViewLogDetail) {
     var table;
     var sexParam = {};
     var classes = {};
+    var getTeacherByClassId = function (classID) {
+        var teachers;
+        $.ajax({
+            url:"/Staff/listByClassId",
+            method:"GET",
+            data:{start:0, length:10000, draw:1, classId:classID},
+            async:false,
+            success:function (callData) {
+                callData = JSON.parse(callData);
+                teachers = callData.data;
+            },
+            error:function (data) {
+                if(data.result != true){
+                    new Dialog({
+                        mode: 'tips',
+                        tipsType: 'error',
+                        content: data.responseJSON.error
+                    });
+                }
+            }
+        });
+        return teachers;
+    }
 
+    var getKidsByClassId = function (classId) {
+        var allKids;
+        //获取所有课时包
+        $.ajax({
+            url:"/Kids/list",
+            method:"GET",
+            data:{start:0,length:20000,draw:1,classId:classId},
+            async:false,
+            success:function (callData) {
+                callData = JSON.parse(callData);
+                allKids = callData.data;
+            },
+            error:function (data) {
+                if(data.result != true){
+                    new Dialog({
+                        mode: 'tips',
+                        tipsType: 'error',
+                        content: data.responseJSON.error
+                    });
+                }
+            }
+        })
+        return allKids;
+    }
     $.ajax({
         url:"/SysPara/getParamByCode",
         method:"GET",
@@ -76,7 +127,12 @@ define(['dialog',
     }
     var genOperation = function (row) {
         var html = "<a class='modifyBtn' href='javascript:void(0)' tId='" + row.teacherId + "'>修改</a> | ";
-        html = html + "<a class='deleteBtn' href='javascript:void(0)' tId='" + row.teacherId + "' teacherNm='" + row.teacherNm + "'>删除</a>"
+        html = html + "<a class='deleteBtn' href='javascript:void(0)' tId='" + row.teacherId + "' teacherNm='" + row.teacherNm + "'>删除</a> | "
+        html = html + "<a class='history' href='javascript:void(0)' teacherId='" + row.teacherId + "'>上课历史查询</a>";
+        return html;
+    }
+    var genHisOperation = function (row) {
+        var html = "<a class='viewLog' href='javascript:void(0)' logId='" + row.logId + "'>查看课堂日志</a> | ";
         return html;
     }
     var getParam = function () {
@@ -228,6 +284,110 @@ define(['dialog',
                         })
                     }
                 })
+            })
+            $(".history").click(function () {
+                var teacherId = $(this).attr("teacherId");
+                var chargeHtml = ViewLogDetail;
+                new Dialog(
+                    {
+                        mode:"confirm",
+                        id:"viewHis",
+                        content:chargeHtml,
+                        title:"查看课堂历史",
+                        callbak:function () {
+                            var hisTable = $("#list-contain-history").DataTable( {
+                                lengthChange: true,
+                                lengthMenu: [ 5, 10],
+                                searching: false,
+                                serverSide: true,
+                                ajax: {
+                                    "url": "/KidsLogDetail/list",
+                                    "data": function ( d ) {
+                                        return $.extend( {}, d, {logObjId:teacherId, logType:1} );
+                                    }
+                                },
+                                columns: [
+                                    {data: 'classTime', title:"上课时间"},
+                                    {
+                                        data: 'logId',
+                                        title: "操作",
+                                        render: function (data, type, row, meta) {
+                                            return genHisOperation(row);
+                                        }
+                                    }
+                                ]
+                            });
+                            hisTable.on("draw",function () {
+                                $(".viewLog").click(function () {
+                                    var logId = $(this).attr("logId");
+                                    $.ajax({
+                                        url:"/kidsLog/get",
+                                        method:"get",
+                                        data:{logId:logId},
+                                        success:function (data) {
+                                            data = JSON.parse(data);
+                                            if(data.result == true){
+                                                var tmp = Hdb.compile(ClassLogInput);
+                                                data.classes = classes;
+                                                var html = tmp(data);
+                                                new Dialog(
+                                                    {
+                                                        mode:"confirm",
+                                                        id:"kidsInput",
+                                                        content:html,
+                                                        title:"查看课堂日志",
+                                                        callbak:function () {
+                                                            $(".kidsClzLogChangeClick").change(function () {
+                                                                var classId = $(this).val();
+                                                                var classKidsList = getKidsByClassId(classId);
+                                                                var classTeacherList = getTeacherByClassId(classId);
+                                                                var targetKidsHtml = "";
+                                                                var targetTeacherHtml = "";
+
+                                                                for(var i=0; i < classKidsList.length; i++){
+                                                                    targetKidsHtml += "<label><input type=\"checkbox\" name=\"classes\" checked class=\"kidsCheckClz\" value='"+ classKidsList[i].kId + "'/>" +
+                                                                        classKidsList[i].chNm + "</label>";
+                                                                }
+                                                                if(!targetKidsHtml){
+                                                                    targetKidsHtml = "暂无数据...";
+                                                                }
+                                                                $("#kidsList").html(targetKidsHtml);
+
+                                                                for(var i=0; i < classTeacherList.length; i++){
+                                                                    targetTeacherHtml += "<label><input type=\"checkbox\" name=\"classes\" checked class=\"teacherCheckClz\" value='"+ classTeacherList[i].teacherId + "'/>" +
+                                                                        classTeacherList[i].teacherNm + "</label>";
+                                                                }
+                                                                if(!targetTeacherHtml){
+                                                                    targetTeacherHtml = "暂无数据...";
+                                                                }
+                                                                $("#teacherList").html(targetTeacherHtml);
+                                                            })
+
+                                                            $(".kidsClzLogChangeClick").change();
+                                                            $("#classLogForm").find(".kidsClzLog,.teacherCheckClz,.kidsCheckClz").each(function () {
+                                                                $(this).attr("disabled",true);
+                                                            })
+                                                        },
+                                                        ok: function () {
+
+                                                        },
+                                                    });
+                                            }
+                                        },
+                                        error:function (data) {
+                                            debugger;
+                                            new Dialog({
+                                                mode: 'tips',
+                                                tipsType: 'error',
+                                                content: data.responseJSON.error
+                                            });
+                                            return;
+                                        }
+                                    })
+                                })
+                            });
+                        },
+                    });
             })
         });
 

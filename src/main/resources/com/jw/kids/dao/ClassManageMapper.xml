@@ -40,6 +40,23 @@ WHERE
     limit #{start, jdbcType=INTEGER}, #{end, jdbcType=INTEGER};
     </if>
 </select>
+<select id="listLogDetail" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+    SELECT
+        a.detail_log_id AS detailLogId,
+        b.log_id AS logId,
+        b.class_time as classTime
+    FROM
+        t_class_log_detail a,
+        t_class_log b
+    WHERE
+        log_obj_id = #{logObjId,jdbcType=BIGINT}
+    AND log_type = #{logType,jdbcType=TINYINT}
+    and a.log_id = b.log_id
+    ORDER BY b.class_time desc
+    <if test="(start != null) and (end != null)">
+        limit #{start, jdbcType=INTEGER}, #{end, jdbcType=INTEGER};
+    </if>
+</select>
 
 
 </mapper>

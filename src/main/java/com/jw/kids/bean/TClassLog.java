@@ -319,4 +319,19 @@ public class TClassLog {
     public void setContent(String content) {
         this.content = content == null ? null : content.trim();
     }
+
+    @Override
+    public String toString() {
+        return "TClassLog{" +
+                "logId=" + logId +
+                ", teacherId=" + teacherId +
+                ", classId=" + classId +
+                ", crtTime=" + crtTime +
+                ", modfTime=" + modfTime +
+                ", classTime=" + classTime +
+                ", operator=" + operator +
+                ", rmk='" + rmk + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

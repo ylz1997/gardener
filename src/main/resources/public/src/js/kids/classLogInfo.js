@@ -150,7 +150,6 @@ define(['dialog',
         table.on( 'draw', function () {
             $(".viewBtn").click(function () {
                 var logId = $(this).attr("logId");
-                var classId = $(this).attr("classId");
                 $.ajax({
                     url:"/kidsLog/get",
                     method:"get",
