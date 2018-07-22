@@ -157,14 +157,14 @@ define(['dialog',
                         data = JSON.parse(data);
                         if(data.result == true){
                             var tmp = Hdb.compile(InputTpl);
-                            data.allClassPackage = getAllPackage();
+                            data.classes = classes;
                             var html = tmp(data);
                             new Dialog(
                                 {
                                     mode:"confirm",
                                     id:"kidsInput",
                                     content:html,
-                                    title:"修改课时包信息",
+                                    title:"查看课堂日志",
                                     callbak:function () {
                                         $(".kidsClzLogChangeClick").change(function () {
                                             var classId = $(this).val();
@@ -190,6 +190,11 @@ define(['dialog',
                                                 targetTeacherHtml = "暂无数据...";
                                             }
                                             $("#teacherList").html(targetTeacherHtml);
+                                        })
+
+                                        $(".kidsClzLogChangeClick").change();
+                                        $("#classLogForm").find(".kidsClzLog,.teacherCheckClz,.kidsCheckClz").each(function () {
+                                            $(this).attr("disabled",true);
                                         })
                                     },
                                     ok: function () {

@@ -1,20 +1,20 @@
 package com.jw.kids.service.impl;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.StringUtil;
 import com.jw.base.BasicUtil;
 import com.jw.base.Constants;
 import com.jw.base.DateUtil;
 import com.jw.base.GeneralException;
-import com.jw.kids.bean.*;
+import com.jw.kids.bean.TClassLog;
+import com.jw.kids.bean.TClassLogDetail;
+import com.jw.kids.bean.TClassLogDetailExample;
+import com.jw.kids.bean.TClassLogVO;
 import com.jw.kids.dao.ClassManageDAO;
 import com.jw.kids.dao.TClassLogDAO;
 import com.jw.kids.dao.TClassLogDetailDAO;
 import com.jw.kids.service.KidsClassLogSV;
-import org.apache.commons.beanutils.BeanUtils;
-import org.codehaus.jackson.map.util.BeanUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

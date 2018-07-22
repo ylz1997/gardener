@@ -1,4 +1,4 @@
-<form >
+<form id="classLogForm">
     <input type="hidden" class="kidsClzLog" name="logId" id="logId" {{#if tClassLog.logId}}value="{{tClassLog.logId}}"{{/if}}>
     <input type="hidden" class="kidsClzLog" name="strCrtTime" id="strCrtTime" {{#if tClassLog.crtTime}}value="{{tClassLog.crtTime}}"{{/if}}>
 
@@ -40,7 +40,7 @@
     </div>
     <div class="form-group">
         <label for="content">日志内容</label>
-        <textarea class="form-control kidsClzLog" name="content" id="content" rows="5" {{#if tClassLog.content}}value="{{tClassLog.content}}" {{/if}}></textarea>
+        <textarea class="form-control kidsClzLog" name="content" id="content" rows="5">{{#if tClassLog.content}}{{tClassLog.content}}{{/if}}</textarea>
     </div>
 
 </form>
