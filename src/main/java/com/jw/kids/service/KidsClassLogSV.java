@@ -6,6 +6,7 @@ import com.jw.kids.bean.TClassLog;
 import com.jw.kids.bean.TClassLog;
 import com.jw.kids.bean.TClassLogVO;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +45,7 @@ public interface KidsClassLogSV {
      * @return
      * @throws GeneralException
      */
-    TClassLog get(Long id) throws GeneralException;
+    TClassLogVO get(Long id) throws GeneralException, InvocationTargetException, IllegalAccessException;
 
     /**
      * 查询列表
@@ -55,10 +56,11 @@ public interface KidsClassLogSV {
     List<Map> list(TClassLog tClassLog, Integer start, Integer length) throws GeneralException;
 
     /**
-     * 查询单个
+     * 查询列表总数
      * @return
      * @param
      * @throws GeneralException
      */
     Integer total(TClassLog tClassLog) throws GeneralException;
+
 }

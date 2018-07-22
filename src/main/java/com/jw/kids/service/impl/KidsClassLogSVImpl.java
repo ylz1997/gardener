@@ -11,12 +11,15 @@ import com.jw.kids.dao.ClassManageDAO;
 import com.jw.kids.dao.TClassLogDAO;
 import com.jw.kids.dao.TClassLogDetailDAO;
 import com.jw.kids.service.KidsClassLogSV;
+import org.apache.commons.beanutils.BeanUtils;
+import org.codehaus.jackson.map.util.BeanUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +38,8 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
     @Autowired
     private ClassManageDAO classManageDAO;
 
-    private Logger logger = LoggerFactory.getLogger(KidsClassLogSVImpl.class);
 
+    private Logger logger = LoggerFactory.getLogger(KidsClassLogSVImpl.class);
 
 
     @Override
@@ -51,23 +54,23 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
         classLogDao.insert(tClassLog);
 
 
-        for(TTeacher teacher :tClassLog.getTeacherList()){
+        for(TClassLogDetail teacher :tClassLog.getTeacherList()){
             TClassLogDetail tClassLogDetail = new TClassLogDetail();
             tClassLogDetail.setCrtTime(DateUtil.getCurrontTime());
             tClassLogDetail.setDetailLogId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_class_log_detail")));
             tClassLogDetail.setLogId(tClassLog.getLogId());
-            tClassLogDetail.setLogObjId(teacher.getTeacherId());
-            tClassLogDetail.setLogType(Constants.LOG_OBJ_TYPE_CD.LOG_OBJ_TYEP_TEACHER);
+            tClassLogDetail.setLogObjId(teacher.getLogObjId());
+            tClassLogDetail.setLogType(Constants.KIDS_LOG_OBJ_TYPE_CD.LOG_OBJ_TYEP_TEACHER);
             classLogDetailDAO.insert(tClassLogDetail);
         }
 
-        for(TKids tKids :tClassLog.getKidsList()){
+        for(TClassLogDetail tKids :tClassLog.getKidsList()){
             TClassLogDetail tClassLogDetail = new TClassLogDetail();
             tClassLogDetail.setCrtTime(DateUtil.getCurrontTime());
             tClassLogDetail.setDetailLogId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_class_log_detail")));
             tClassLogDetail.setLogId(tClassLog.getLogId());
-            tClassLogDetail.setLogType(Constants.LOG_OBJ_TYPE_CD.LOG_OBJ_TYPE_KIDS);
-            tClassLogDetail.setLogObjId(tKids.getkId());
+            tClassLogDetail.setLogType(Constants.KIDS_LOG_OBJ_TYPE_CD.LOG_OBJ_TYPE_KIDS);
+            tClassLogDetail.setLogObjId(tKids.getLogObjId());
 
             classLogDetailDAO.insert(tClassLogDetail);
         }
@@ -97,32 +100,22 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
         return tClassLog;
     }
 
-    @Override
+/*    @Override
     public TClassLog get(Long id) throws GeneralException {
         return classLogDao.selectByPrimaryKey(id);
-    }
+    }*/
 
     @Override
     public List<Map> list(TClassLog tClassLog, Integer start, Integer length) throws GeneralException {
-/*        int page = start/length + 1;
-
-        TClassLogExample example = getExampleByBean(tClassLog);
-        //分页信息
-        Integer newPage = page;
-        Integer newLimit = length;
-
-        if(newPage == null){
-            newPage = 1;
-        }
-
-        if(newLimit == null || newLimit == 0){
-            newLimit = 10;
-        }
-        PageHelper.offsetPage((newPage - 1) * length, newLimit);*/
 
         HashMap params = new HashMap<>();
-        if(tClassLog != null && tClassLog.getClassId()!=null && tClassLog.getClassId()!=-1l){
-            params.put("classId", tClassLog.getClassId());
+        if(tClassLog != null){
+            if((tClassLog.getClassId() != null) && (tClassLog.getClassId()!=-1l)){
+                params.put("classId", tClassLog.getClassId());
+            }
+            if(tClassLog.getLogId() != null){
+                params.put("logId", tClassLog.getLogId());
+            }
         }
         params.put("start", start);
         params.put("end", start+length);
@@ -130,12 +123,35 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
     }
 
     @Override
-    public Integer total(TClassLog TClassLog) throws GeneralException {
-        TClassLogExample example = getExampleByBean(TClassLog);
-        return classLogDao.selectByExampleWithBLOBs(example).size();
+    public Integer total(TClassLog tClassLog) throws GeneralException {
+        HashMap params = new HashMap<>();
+        if(tClassLog != null){
+            if((tClassLog.getClassId() != null) && (tClassLog.getClassId()!=-1l)){
+                params.put("classId", tClassLog.getClassId());
+            }
+            if(tClassLog.getLogId() != null){
+                params.put("logId", tClassLog.getLogId());
+            }
+        }
+        return classManageDAO.listClassLog(params).size();
     }
 
-    private TClassLogExample getExampleByBean(TClassLog tClassLog){
+    @Override
+    public TClassLogVO get(Long logId) throws InvocationTargetException, IllegalAccessException {
+        TClassLogVO result = new TClassLogVO();
+        TClassLog resultBean = classLogDao.selectByPrimaryKey(logId);
+        BeanUtils.copyProperties(resultBean, result);
+
+        TClassLogDetailExample teacherExample = new TClassLogDetailExample();
+        teacherExample.createCriteria().andLogIdEqualTo(result.getLogId()).andLogTypeEqualTo(Constants.KIDS_LOG_OBJ_TYPE_CD.LOG_OBJ_TYEP_TEACHER);
+        result.setTeacherList(classLogDetailDAO.selectByExample(teacherExample));
+
+        TClassLogDetailExample KidsExample = new TClassLogDetailExample();
+        teacherExample.createCriteria().andLogIdEqualTo(result.getLogId()).andLogTypeEqualTo(Constants.KIDS_LOG_OBJ_TYPE_CD.LOG_OBJ_TYPE_KIDS);
+        result.setKidsList(classLogDetailDAO.selectByExample(teacherExample));
+        return result;
+    }
+/*    private TClassLogExample getExampleByBean(TClassLog tClassLog){
         TClassLogExample example = new TClassLogExample();
         TClassLogExample.Criteria criteria = example.createCriteria();
         example.setOrderByClause(" modf_Time desc ");
@@ -143,5 +159,5 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
             criteria.andClassIdEqualTo(tClassLog.getClassId());
         }
         return example;
-    }
+    }*/
 }

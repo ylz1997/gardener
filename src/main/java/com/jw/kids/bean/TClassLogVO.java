@@ -32,22 +32,22 @@ public class TClassLogVO extends TClassLog {
         setClassTime(DateUtil.convertDateStringToTimestamp(strClassTime,"yyyy-MM-dd HH:mm:ss"));
     }
 
-    private List<TTeacher> teacherList;
-    private List<TKids> kidsList;
+    private List<TClassLogDetail> teacherList;
+    private List<TClassLogDetail> kidsList;
 
-    public List<TTeacher> getTeacherList() {
+    public List<TClassLogDetail> getTeacherList() {
         return teacherList;
     }
 
-    public void setTeacherList(List<TTeacher> teacherList) {
+    public void setTeacherList(List<TClassLogDetail> teacherList) {
         this.teacherList = teacherList;
     }
 
-    public List<TKids> getKidsList() {
+    public List<TClassLogDetail> getKidsList() {
         return kidsList;
     }
 
-    public void setKidsList(List<TKids> kidsList) {
+    public void setKidsList(List<TClassLogDetail> kidsList) {
         this.kidsList = kidsList;
     }
 }

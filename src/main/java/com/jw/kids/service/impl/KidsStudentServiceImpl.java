@@ -71,22 +71,8 @@ public class KidsStudentServiceImpl implements KidsStudentService {
 
     @Override
     public List<TKids> listKids(TKids tKids,Integer start, Integer limit) throws GeneralException {
-        int page = start/limit + 1;
-
         TKidsExample example = getExampleByBean(tKids);
-        //分页信息
-        Integer newPage = page;
-        Integer newLimit = limit;
-
-        if(newPage == null){
-            newPage = 1;
-        }
-
-        if(newLimit == null || newLimit == 0){
-            newLimit = 10;
-        }
-        PageHelper.offsetPage((newPage - 1) * limit, newLimit);
-
+        PageHelper.offsetPage(start, limit);
         return tKidsDAO.selectByExample(example);
     }
 

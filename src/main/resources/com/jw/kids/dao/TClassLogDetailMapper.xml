@@ -13,7 +13,7 @@
       <arg column="log_type" javaType="java.lang.Byte" jdbcType="TINYINT" />
       <arg column="log_obj_id" javaType="java.lang.Long" jdbcType="BIGINT" />
       <arg column="unit" javaType="java.lang.Short" jdbcType="SMALLINT" />
-      <arg column="crt_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="crt_time" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP" />
       <arg column="operator" javaType="java.lang.Long" jdbcType="BIGINT" />
       <arg column="rmk" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>

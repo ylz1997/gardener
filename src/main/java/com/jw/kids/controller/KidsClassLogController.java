@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,15 @@ public class KidsClassLogController {
 
         result.put("tClassLog", tClassLogResult);
         result.put("result",true);
+        return JsonUtil.convertObject2Json(result);
+    }
+
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    public String list(Long logId) throws GeneralException, InvocationTargetException, IllegalAccessException {
+        HashMap result = new HashMap();
+        TClassLogVO tClassLog = kidsClassLogSV.get(logId);
+        result.put("result",true);
+        result.put("tClassLog",tClassLog);
         return JsonUtil.convertObject2Json(result);
     }
 

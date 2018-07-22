@@ -32,8 +32,13 @@ WHERE
     <if test="classId != null">
         AND t.class_id = #{classId,jdbcType=BIGINT}
     </if>
-    limit #{start, jdbcType=INT}, #{end, jdbcType=INT}
-    order by crtTime desc;
+    <if test="logId != null">
+        AND l.log_id = #{logId,jdbcType=BIGINT}
+    </if>
+    order by crtTime desc
+    <if test="(start != null) and (end != null)">
+    limit #{start, jdbcType=INTEGER}, #{end, jdbcType=INTEGER};
+    </if>
 </select>
 
 

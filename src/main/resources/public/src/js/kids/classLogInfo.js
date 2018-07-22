@@ -101,7 +101,7 @@ define(['dialog',
         return data;
     }
     var genOperation = function (row) {
-        var html = "<a class='modifyBtn' href='javascript:void(0)' logId='" + row.logId + "'>查看明细</a> | ";
+        var html = "<a class='viewBtn' href='javascript:void(0)' logId='" + row.logId + "' classId='" + row.classId + "'>查看明细</a> | ";
 /*
         html = html + "<a class='deleteBtn' href='javascript:void(0)' logId='" + row.logId + "'>删除</a>"
 */
@@ -137,16 +137,22 @@ define(['dialog',
                 {data: 'classNm', title:"班级"},
                 {data: 'content', title:"课堂日志"},
                 {data: 'crtTime', title:"日志时间"},
-                {data: 'classTime', title:"上课时间"}
+                {data: 'classTime', title:"上课时间"},
+                {data: 'logId' ,title:"操作",
+                    render:
+                        function (data, type, row, meta) {
+                            return genOperation(row);
+                }}
             ]
         });
         table.on( 'draw', function () {
-/*            $(".modifyBtn").click(function () {
+            $(".viewBtn").click(function () {
+                var logId = $(this).attr("logId");
                 var classId = $(this).attr("classId");
                 $.ajax({
-                    url:"/class/get",
-                    method:"POST",
-                    data:{classId:classId},
+                    url:"/kidsLog/get",
+                    method:"get",
+                    data:{logId:logId},
                     success:function (data) {
                         data = JSON.parse(data);
                         if(data.result == true){
@@ -159,36 +165,35 @@ define(['dialog',
                                     id:"kidsInput",
                                     content:html,
                                     title:"修改课时包信息",
-                                    ok:function () {
-                                        var params = new Object();
-                                        $(".kidsClz").each(function(){
-                                            params[$(this).attr("name")] = $(this).val();
-                                        })
-                                        $.ajax({
-                                            url:"/class/edit",
-                                            method:"POST",
-                                            contentType:"application/json",
-                                            data:JSON.stringify(params),
-                                            success:function (data) {
-                                                data = JSON.parse(data);
-                                                if(data.result == true){
-                                                    new Dialog({
-                                                        mode: 'tips',
-                                                        tipsType: 'success',
-                                                        content: "保存成功"
-                                                    });
-                                                    search();
-                                                }
-                                            },
-                                            error:function (data) {
-                                                new Dialog({
-                                                    mode: 'tips',
-                                                    tipsType: 'error',
-                                                    content: data.responseJSON.error
-                                                });
-                                                return;
+                                    callbak:function () {
+                                        $(".kidsClzLogChangeClick").change(function () {
+                                            var classId = $(this).val();
+                                            var classKidsList = getKidsByClassId(classId);
+                                            var classTeacherList = getTeacherByClassId(classId);
+                                            var targetKidsHtml = "";
+                                            var targetTeacherHtml = "";
+
+                                            for(var i=0; i < classKidsList.length; i++){
+                                                targetKidsHtml += "<label><input type=\"checkbox\" name=\"classes\" checked class=\"kidsCheckClz\" value='"+ classKidsList[i].kId + "'/>" +
+                                                    classKidsList[i].chNm + "</label>";
                                             }
+                                            if(!targetKidsHtml){
+                                                targetKidsHtml = "暂无数据...";
+                                            }
+                                            $("#kidsList").html(targetKidsHtml);
+
+                                            for(var i=0; i < classTeacherList.length; i++){
+                                                targetTeacherHtml += "<label><input type=\"checkbox\" name=\"classes\" checked class=\"teacherCheckClz\" value='"+ classTeacherList[i].teacherId + "'/>" +
+                                                    classTeacherList[i].teacherNm + "</label>";
+                                            }
+                                            if(!targetTeacherHtml){
+                                                targetTeacherHtml = "暂无数据...";
+                                            }
+                                            $("#teacherList").html(targetTeacherHtml);
                                         })
+                                    },
+                                    ok: function () {
+                                        
                                     },
                                 });
                         }
@@ -204,41 +209,6 @@ define(['dialog',
                     }
                 })
             })
-            $(".deleteBtn").click(function () {
-                var classId = $(this).attr("classId");
-                new Dialog({
-                    mode: "confirm",
-                    id: "kidsInput",
-                    content: "",
-                    title: "确认删除？",
-                    ok: function () {
-                        $.ajax({
-                            url: "/class/delete",
-                            method: "POST",
-                            data: {classId: classId},
-                            success: function (data) {
-                                data = JSON.parse(data);
-                                if (data.result == true) {
-                                    new Dialog({
-                                        mode: 'tips',
-                                        tipsType: 'success',
-                                        content: "删除成功"
-                                    });
-                                    search();
-                                }
-                            },
-                            error: function (data) {
-                                new Dialog({
-                                    mode: 'tips',
-                                    tipsType: 'error',
-                                    content: data.responseJSON.error
-                                });
-                                return;
-                            }
-                        })
-                    }
-                })
-            })*/
         });
     }
 
@@ -290,7 +260,7 @@ define(['dialog',
                         $(".kidsCheckClz").each(function () {
                             if(this.checked){
                                 var object = new Object();
-                                object.kId = $(this).val();
+                                object.logObjId = $(this).val();
                                 kidsCheckClz.push(object);
                             }
                         })
@@ -300,7 +270,7 @@ define(['dialog',
                         $(".teacherCheckClz").each(function () {
                             if(this.checked){
                                 var object = new Object();
-                                object.teacherId = $(this).val();
+                                object.logObjId = $(this).val();
                                 teacherCheckClz.push(object);
                             }
                         })

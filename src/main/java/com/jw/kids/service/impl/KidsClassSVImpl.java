@@ -72,21 +72,9 @@ public class KidsClassSVImpl implements KidsClassSV{
     public List<TClass> listClass(TClass tClassVOCondition, Integer start, Integer length) throws GeneralException {
         TClass tClassCondition = new TClass();
         BeanUtils.copyProperties(tClassVOCondition, tClassCondition);
-        int page = start/length + 1;
 
         TClassExample example = getExampleByBean(tClassCondition);
-        //分页信息
-        Integer newPage = page;
-        Integer newLimit = length;
-
-        if(newPage == null){
-            newPage = 1;
-        }
-
-        if(newLimit == null || newLimit == 0){
-            newLimit = 10;
-        }
-        PageHelper.offsetPage((newPage - 1) * length, newLimit);
+        PageHelper.offsetPage(start, length);
 
         return tClassDAO.selectByExample(example);
     }

@@ -68,21 +68,9 @@ public class KidsClassPackageSVImpl implements KidsClassPackageSV{
 
     @Override
     public List<TClassPackage> listClassPackage(TClassPackage TClassPackage, Integer start, Integer length) throws GeneralException {
-        int page = start/length + 1;
 
         TClassPackageExample example = getExampleByBean(TClassPackage);
-        //分页信息
-        Integer newPage = page;
-        Integer newLimit = length;
-
-        if(newPage == null){
-            newPage = 1;
-        }
-
-        if(newLimit == null || newLimit == 0){
-            newLimit = 10;
-        }
-        PageHelper.offsetPage((newPage - 1) * length, newLimit);
+        PageHelper.offsetPage(start, length);
 
         return tClassPackageDAO.selectByExample(example);
     }
