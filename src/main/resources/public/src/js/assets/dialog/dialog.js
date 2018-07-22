@@ -44,13 +44,13 @@ define(['css!src/css/toastr/toastr.min' ,'text!/src/js/assets/dialog/confirm.tpl
             if(options.ok){
                 $("#btnConfirm"+options.id).click(function () {
                     options.ok.call();
-                    $("#"+options.id).remove();
+                    /*$("#"+options.id).remove();*/
                 })
             }
             if(options.cancel){
                 $("#btnCancel"+options.id).click(function () {
                     options.cancel.call();
-                    $("#"+options.id).remove();
+                    /*$("#"+options.id).remove();*/
                 })
             }
             $("#"+options.id).modal({backdrop:false });

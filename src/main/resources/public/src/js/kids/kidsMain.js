@@ -46,29 +46,39 @@ define(['text!src/kids/kidsInfoList.tpl',
     });
 
     var eventInit = function(){
+        $("#begin2").click(function () {
+            $("#begin").click();
+        })
+
         $("#kidsInfo").click(function () {
+            $("#contentMain").removeClass("jumbotron");
             var data = {};
             data.classes = classes;
             $("#contentMain").html(Hdb.compile(kidsTpl)(data));
             new KidsInfo();
         })
         $("#staffInfo").click(function () {
+            $("#contentMain").removeClass("jumbotron");
             $("#contentMain").html(staffInfoTpl);
             new KidsStaffInfo();
         })
         $("#classPackageInfo").click(function () {
+            $("#contentMain").removeClass("jumbotron");
             $("#contentMain").html(classPackageListTpl);
             new classPackageInfo();
         })
         $("#classInfo").click(function () {
+            $("#contentMain").removeClass("jumbotron");
             $("#contentMain").html(classListTpl);
             new classInfo();
         })
         $("#classInfo2").click(function () {
+            $("#contentMain").removeClass("jumbotron");
             $("#contentMain").html(classListTpl);
             new classInfo();
         })
         $("#classLogInfo").click(function () {
+            $("#contentMain").removeClass("jumbotron");
             var data = {};
             data.classes = classes;
 
@@ -76,6 +86,7 @@ define(['text!src/kids/kidsInfoList.tpl',
             new classLogInfo();
         })
         $("#classLogInfo2").click(function () {
+            $("#contentMain").removeClass("jumbotron");
             var data = {};
             data.classes = classes;
 
