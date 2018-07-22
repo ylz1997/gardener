@@ -2,12 +2,14 @@ define(['dialog',
     'text!src/kids/classLogInput.tpl',
     'jquery',
     'datatables',
-    'hdb'
+    'hdb',
+    'datetimepicker'
 ],function (Dialog,
             InputTpl,
             $,
             DataTables,
-            Hdb) {
+            Hdb,
+            datetimepicker) {
     var table;
     var classes;
     $.ajax({
@@ -254,6 +256,11 @@ define(['dialog',
                             }
                             $("#teacherList").html(targetTeacherHtml);
                         })
+                        $("#strClassTime").datetimepicker({
+                            autoclose:true,
+                            language:"ZH-cn",
+                            format: 'yyyy-mm-dd hh:ii:ss'
+                        });
                     },
                     ok:function () {
                         var params = new Object();

@@ -16,6 +16,7 @@ var require = {
         "jquery" : 'src/js/assets/jquery/jquery-3.3.1.min',
         "datatables": 'src/DataTables-1.10.16/js/jquery.dataTables.min',
         "datepicker": 'src/js/assets/datepicker/bootstrap-datepicker.min',
+        "datetimepicker": 'src/js/assets/datetimepicker/bootstrap-datetimepicker.min',
         "bootstrap" : 'src/js/assets/bootstrap/bootstrap.min',
         "hdb" : 'src/js/assets/handlebars/handlebars',
         "dialog" : 'src/js/assets/dialog/dialog',
@@ -35,9 +36,12 @@ var require = {
 	            "deps" :['jquery', 'css!src/css/bootstrap/bootstrap.css']
 	        },
             "datatables" :{
-	            "deps" :['jquery', 'css!/src/DataTables-1.10.16/css/jquery.dataTables.min']
+	            "deps" :['jquery', 'css!src/DataTables-1.10.16/css/jquery.dataTables.min']
             },
-            'ajax': { 'deps': ['jquery'] }
+            'ajax': { 'deps': ['jquery'] },
+            "datetimepicker" :{
+	            "deps" :['css!src/css/datetimepicker/bootstrap-datetimepicker.min']
+            }
         },
     urlArgs: urlArgs()
 
