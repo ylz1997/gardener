@@ -64,7 +64,18 @@ define(['text!src/kids/kidsInfoList.tpl',
             $("#contentMain").html(classListTpl);
             new classInfo();
         })
+        $("#classInfo2").click(function () {
+            $("#contentMain").html(classListTpl);
+            new classInfo();
+        })
         $("#classLogInfo").click(function () {
+            var data = {};
+            data.classes = classes;
+
+            $("#contentMain").html(Hdb.compile(classLogListTpl)(data));
+            new classLogInfo();
+        })
+        $("#classLogInfo2").click(function () {
             var data = {};
             data.classes = classes;
 
