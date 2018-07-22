@@ -17,6 +17,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.InvocationTargetException;
@@ -43,7 +45,7 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
 
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
     public TClassLogVO add(TClassLogVO tClassLog) throws GeneralException {
         if(tClassLog == null){
             logger.error("============tClassLog is null==============");
@@ -63,6 +65,10 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
             tClassLogDetail.setLogType(Constants.KIDS_LOG_OBJ_TYPE_CD.LOG_OBJ_TYEP_TEACHER);
             classLogDetailDAO.insert(tClassLogDetail);
         }
+        throw new GeneralException("KIDS_001");
+
+/*
+
 
         for(TClassLogDetail tKids :tClassLog.getKidsList()){
             TClassLogDetail tClassLogDetail = new TClassLogDetail();
@@ -75,7 +81,8 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
             classLogDetailDAO.insert(tClassLogDetail);
         }
 
-        return tClassLog;
+
+        return tClassLog;*/
     }
 
     @Override
@@ -99,11 +106,6 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
         classLogDao.deleteByPrimaryKey(lTid);
         return tClassLog;
     }
-
-/*    @Override
-    public TClassLog get(Long id) throws GeneralException {
-        return classLogDao.selectByPrimaryKey(id);
-    }*/
 
     @Override
     public List<Map> list(TClassLog tClassLog, Integer start, Integer length) throws GeneralException {
