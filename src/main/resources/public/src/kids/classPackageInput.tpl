@@ -1,4 +1,4 @@
-<form >
+<div >
     <input type="hidden" class="kidsClz" name="classPackageId" id="classPackageId" {{#if tClassPackageVO.classPackageId}}value="{{tClassPackageVO.classPackageId}}"{{/if}}>
     <input type="hidden" class="kidsClz" name="crtTime" id="crtTime" {{#if tClassPackageVO.crtTime}}value={{tClassPackageVO.crtTime}} {{/if}}>
 
@@ -22,4 +22,4 @@
         <label for="price">价格</label>
         <input type="input" class="form-control kidsClz" id="price" name="price" {{#if tClassPackageVO.price}}value="{{tClassPackageVO.price}}"{{/if}} placeholder="请输入价格">
     </div>
-</form>
+</div>

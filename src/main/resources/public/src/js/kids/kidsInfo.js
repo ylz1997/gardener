@@ -173,7 +173,7 @@ define(['dialog',
         var html = "<a class='modifyBtn' href='javascript:void(0)' kId='" + row.kId + "'>修改</a> | ";
         html = html + "<a class='deleteBtn' href='javascript:void(0)' kId='" + row.kId + "' chNm='" + row.chNm + "'>删除</a> | ";
         html = html + "<a class='chargeBtn' href='javascript:void(0)' kId='" + row.kId + "'>充值课时</a> | ";
-        html = html + "<a class='history' href='javascript:void(0)' kId='" + row.kId + "'>上课历史查询</a>";
+        html = html + "<a class='history' href='javascript:void(0)' kId='" + row.kId + "' >上课历史查询</a>";
         return html;
     }
     var genHisOperation = function (row) {

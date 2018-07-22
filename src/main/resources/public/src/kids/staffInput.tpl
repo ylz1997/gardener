@@ -1,4 +1,4 @@
-<form >
+<div >
     <input type="hidden" class="kidsClz" name="teacherId" id="teacherId" {{#if tStaff.teacherId}}value="{{tStaff.teacherId}}"{{/if}}>
     <input type="hidden" class="kidsClz" name="strCrtTime" id="strCrtTime" {{#if tStaff.crtTime}}value="{{tStaff.crtTime}}" {{/if}}>
 
@@ -43,6 +43,4 @@
         {{/each}}
     </div>
 
-
-
-</form>
+</div>
