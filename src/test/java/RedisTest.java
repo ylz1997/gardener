@@ -24,7 +24,11 @@ import java.util.concurrent.TimeUnit;
 //@ContextConfiguration
 //@EnableAutoConfiguration
 public class RedisTest{
-    private MockMvc mvc;
+    @Test
+    public void test(){
+
+    }
+/*    private MockMvc mvc;
     @Autowired
     private RedisTemplate redisTemplate;
     @Autowired
@@ -35,5 +39,5 @@ public class RedisTest{
         TKids kids = service.listKids(new TKids(),0,1).get(0);
         // 插入缓存
         operations.set("testRedis", kids, 100000, TimeUnit.SECONDS);
-    }
+    }*/
 }
