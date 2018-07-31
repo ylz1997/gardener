@@ -14,6 +14,7 @@ import com.jw.kids.service.KidsClassPackageSV;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -29,6 +30,7 @@ public class KidsClassPackageSVImpl implements KidsClassPackageSV{
     TClassPackageDAO tClassPackageDAO;
 
     @Override
+    @Transactional
     public TClassPackage addClassPackage(TClassPackage TClassPackage) throws GeneralException {
         TClassPackage.setClassPackageId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_teacher")));
         tClassPackageDAO.insert(TClassPackage);
@@ -36,6 +38,7 @@ public class KidsClassPackageSVImpl implements KidsClassPackageSV{
     }
 
     @Override
+    @Transactional
     public TClassPackage editClassPackage(TClassPackageVO tClassPackageVO) throws GeneralException {
         TClassPackage tClassPackage = new TClassPackage();
         BeanUtils.copyProperties(tClassPackageVO, tClassPackage);
@@ -44,6 +47,7 @@ public class KidsClassPackageSVImpl implements KidsClassPackageSV{
     }
 
     @Override
+    @Transactional
     public TClassPackage deleteClassPackage(String classPackageId) throws GeneralException {
         Long lTid = null;
         try{
@@ -64,21 +68,9 @@ public class KidsClassPackageSVImpl implements KidsClassPackageSV{
 
     @Override
     public List<TClassPackage> listClassPackage(TClassPackage TClassPackage, Integer start, Integer length) throws GeneralException {
-        int page = start/length + 1;
 
         TClassPackageExample example = getExampleByBean(TClassPackage);
-        //分页信息
-        Integer newPage = page;
-        Integer newLimit = length;
-
-        if(newPage == null){
-            newPage = 1;
-        }
-
-        if(newLimit == null || newLimit == 0){
-            newLimit = 10;
-        }
-        PageHelper.offsetPage((newPage - 1) * length, newLimit);
+        PageHelper.offsetPage(start, length);
 
         return tClassPackageDAO.selectByExample(example);
     }

@@ -2,17 +2,23 @@ define(['dialog',
     'text!src/kids/kidsInput.tpl',
     'jquery',
     'datatables',
-    'hdb'
+    'hdb',
+    'text!src/kids/chargeClass.tpl',
+    'text!src/kids/viewLogDetail.tpl',
+    'text!src/kids/classLogInput.tpl'
 ],function (Dialog,
             KidsInput,
             $,
             DataTables,
-            Hdb) {
+            Hdb,
+            ChargeTpl,
+            ViewLogDetail,
+            ClassLogInput) {
     var table;
     var sexParam = {};
     var relation = {};
     var classes = {};
-
+    var classPackage = {};
     $.ajax({
         url:"/SysPara/getParamByCode",
         method:"GET",
@@ -33,6 +39,55 @@ define(['dialog',
             }
         }
     })
+
+    var getTeacherByClassId = function (classID) {
+        var teachers;
+        $.ajax({
+            url:"/Staff/listByClassId",
+            method:"GET",
+            data:{start:0, length:10000, draw:1, classId:classID},
+            async:false,
+            success:function (callData) {
+                callData = JSON.parse(callData);
+                teachers = callData.data;
+            },
+            error:function (data) {
+                if(data.result != true){
+                    new Dialog({
+                        mode: 'tips',
+                        tipsType: 'error',
+                        content: data.responseJSON.error
+                    });
+                }
+            }
+        });
+        return teachers;
+    }
+
+    var getKidsByClassId = function (classId) {
+        var allKids;
+        //获取所有课时包
+        $.ajax({
+            url:"/Kids/list",
+            method:"GET",
+            data:{start:0,length:20000,draw:1,classId:classId},
+            async:false,
+            success:function (callData) {
+                callData = JSON.parse(callData);
+                allKids = callData.data;
+            },
+            error:function (data) {
+                if(data.result != true){
+                    new Dialog({
+                        mode: 'tips',
+                        tipsType: 'error',
+                        content: data.responseJSON.error
+                    });
+                }
+            }
+        })
+        return allKids;
+    }
 
     $.ajax({
         url:"/SysPara/getParamByCode",
@@ -56,13 +111,14 @@ define(['dialog',
     })
 
     $.ajax({
-        url:"/SysPara/getParamByCode",
+        url:"/class/list",
         method:"GET",
-        data:{code:"class"},
+        data:{start:0, length:10000, draw:1},
         success:function (callData) {
             callData = JSON.parse(callData);
-            if(callData.result == true){
-                classes = callData.param;
+            classes = callData.data;
+            for(var i = 0; i < classes.length; i++){
+                classes[i].clzId = classes[i].classId;
             }
         },
         error:function (data) {
@@ -74,7 +130,26 @@ define(['dialog',
                 });
             }
         }
-    })
+    });
+
+    $.ajax({
+        url:"/classPackage/list",
+        method:"GET",
+        data:{start:0, length:10000, draw:1},
+        success:function (callData) {
+            callData = JSON.parse(callData);
+            classPackage = callData.data;
+        },
+        error:function (data) {
+            if(data.result != true){
+                new Dialog({
+                    mode: 'tips',
+                    tipsType: 'error',
+                    content: data.responseJSON.error
+                });
+            }
+        }
+    });
 
     //注册一个判断相等的Helper,判断v1是否等于v2
     Hdb.registerHelper("equal",function(v1,v2,options){
@@ -95,9 +170,14 @@ define(['dialog',
         return data;
     }
     var genOperation = function (row) {
-        var html = "<a class='modifyBtn' href='javascript:void(0)' kId='" + row.kId + "'>修改</a> |";
-        html = html + "<a class='deleteBtn' href='javascript:void(0)' kId='" + row.kId + "'>删除</a>";
-
+        var html = "<a class='modifyBtn' href='javascript:void(0)' kId='" + row.kId + "'>修改</a> | ";
+        html = html + "<a class='deleteBtn' href='javascript:void(0)' kId='" + row.kId + "' chNm='" + row.chNm + "'>删除</a> | ";
+        html = html + "<a class='chargeBtn' href='javascript:void(0)' kId='" + row.kId + "'>充值课时</a> | ";
+        html = html + "<a class='history' href='javascript:void(0)' kId='" + row.kId + "'>上课历史查询</a>";
+        return html;
+    }
+    var genHisOperation = function (row) {
+        var html = "<a class='viewLog' href='javascript:void(0)' logId='" + row.logId + "'>查看课堂日志</a> | ";
         return html;
     }
     var getParam = function () {
@@ -125,7 +205,7 @@ define(['dialog',
                 }
             },
             columns: [
-                {data: 'kId', title:"人员编号"},
+                {data: 'kId', title:"学生编号"},
                 {data: 'chNm', title:"中文名"},
                 {data: 'enNm', title:"英文名"},
                 {data: 'sex', title:"性别",render: function (data, type, row, meta) {
@@ -138,11 +218,15 @@ define(['dialog',
                 }},
                 {data: 'phone', title:"联系方式"},
                 {data: 'address', title:"家庭住址"},
+                {data: 'amount', title:"剩余课时"},
                 {data: 'classId', title:"所在班级", render: function (data) {
-                    return exchangeDataDic(classes, data);
+                    for(var i=0; i < classes.length; i++){
+                        if(classes[i].classId == data){
+                            return classes[i].classNm;
+                        }
+                    }
+                    return data;
                 }},
-                {data: 'crtTime', title:"创建时间"},
-                {data: 'modfTime', title:"修改时间"},
                 {
                     data: 'cnslColmId',
                     title: "操作",
@@ -220,30 +304,188 @@ define(['dialog',
             })
             $(".deleteBtn").click(function () {
                 var kId = $(this).attr("kId");
-                $.ajax({
-                    url:"/Kids/delete",
-                    method:"POST",
-                    data:{kId:kId},
-                    success:function (data) {
-                        data = JSON.parse(data);
-                        if(data.result == true){
-                            new Dialog({
-                                mode: 'tips',
-                                tipsType: 'success',
-                                content: "删除成功"
-                            });
-                            search();
-                        }
+                var chNm = $(this).attr("chNm");
+
+                new Dialog({mode:"confirm",
+                    id:"kidsInput",
+                    content:"学生："+chNm,
+                    title:"确认删除？",
+                    ok:function () {
+                        $.ajax({
+                            url:"/Kids/delete",
+                            method:"POST",
+                            data:{kId:kId},
+                            success:function (data) {
+                                data = JSON.parse(data);
+                                if(data.result == true){
+                                    new Dialog({
+                                        mode: 'tips',
+                                        tipsType: 'success',
+                                        content: "删除成功"
+                                    });
+                                    search();
+                                }
+                            },
+                            error:function (data) {
+                                new Dialog({
+                                    mode: 'tips',
+                                    tipsType: 'error',
+                                    content: data.responseJSON.error
+                                });
+                                return;
+                            }
+                        })
                     },
-                    error:function (data) {
-                        new Dialog({
-                            mode: 'tips',
-                            tipsType: 'error',
-                            content: data.responseJSON.error
-                        });
-                        return;
-                    }
-                })
+                });
+            })
+
+            $(".history").click(function () {
+                var kId = $(this).attr("kId");
+                var chargeHtml = ViewLogDetail;
+                new Dialog(
+                    {
+                        mode:"confirm",
+                        id:"viewHis",
+                        content:chargeHtml,
+                        title:"查看课堂历史",
+                        callbak:function () {
+                            var hisTable = $("#list-contain-history").DataTable( {
+                                lengthChange: true,
+                                lengthMenu: [ 5, 10],
+                                searching: false,
+                                serverSide: true,
+                                ajax: {
+                                    "url": "/KidsLogDetail/list",
+                                    "data": function ( d ) {
+                                        return $.extend( {}, d, {logObjId:kId, logType:2} );
+                                    }
+                                },
+                                columns: [
+                                    {data: 'classTime', title:"上课时间"},
+                                    {
+                                        data: 'logId',
+                                        title: "操作",
+                                        render: function (data, type, row, meta) {
+                                            return genHisOperation(row);
+                                        }
+                                    }
+                                ]
+                            });
+                            hisTable.on("draw",function () {
+                                $(".viewLog").click(function () {
+                                        var logId = $(this).attr("logId");
+                                        $.ajax({
+                                            url:"/kidsLog/get",
+                                            method:"get",
+                                            data:{logId:logId},
+                                            success:function (data) {
+                                                data = JSON.parse(data);
+                                                if(data.result == true){
+                                                    var tmp = Hdb.compile(ClassLogInput);
+                                                    data.classes = classes;
+                                                    var html = tmp(data);
+                                                    new Dialog(
+                                                        {
+                                                            mode:"confirm",
+                                                            id:"kidsInput",
+                                                            content:html,
+                                                            title:"查看课堂日志",
+                                                            callbak:function () {
+                                                                $(".kidsClzLogChangeClick").change(function () {
+                                                                    var classId = $(this).val();
+                                                                    var classKidsList = getKidsByClassId(classId);
+                                                                    var classTeacherList = getTeacherByClassId(classId);
+                                                                    var targetKidsHtml = "";
+                                                                    var targetTeacherHtml = "";
+
+                                                                    for(var i=0; i < classKidsList.length; i++){
+                                                                        targetKidsHtml += "<label><input type=\"checkbox\" name=\"classes\" checked class=\"kidsCheckClz\" value='"+ classKidsList[i].kId + "'/>" +
+                                                                            classKidsList[i].chNm + "</label>";
+                                                                    }
+                                                                    if(!targetKidsHtml){
+                                                                        targetKidsHtml = "暂无数据...";
+                                                                    }
+                                                                    $("#kidsList").html(targetKidsHtml);
+
+                                                                    for(var i=0; i < classTeacherList.length; i++){
+                                                                        targetTeacherHtml += "<label><input type=\"checkbox\" name=\"classes\" checked class=\"teacherCheckClz\" value='"+ classTeacherList[i].teacherId + "'/>" +
+                                                                            classTeacherList[i].teacherNm + "</label>";
+                                                                    }
+                                                                    if(!targetTeacherHtml){
+                                                                        targetTeacherHtml = "暂无数据...";
+                                                                    }
+                                                                    $("#teacherList").html(targetTeacherHtml);
+                                                                })
+
+                                                                $(".kidsClzLogChangeClick").change();
+                                                                $("#classLogForm").find(".kidsClzLog,.teacherCheckClz,.kidsCheckClz").each(function () {
+                                                                    $(this).attr("disabled",true);
+                                                                })
+                                                            },
+                                                            ok: function () {
+
+                                                            },
+                                                        });
+                                                }
+                                            },
+                                            error:function (data) {
+                                                debugger;
+                                                new Dialog({
+                                                    mode: 'tips',
+                                                    tipsType: 'error',
+                                                    content: data.responseJSON.error
+                                                });
+                                                return;
+                                            }
+                                        })
+                                })
+                            });
+                        },
+                    });
+            })
+
+            $(".chargeBtn").click(function () {
+                var kId = $(this).attr("kId");
+                var chargeData = {};
+                chargeData.classPackage = classPackage;
+                var chargeTemplate = Hdb.compile(ChargeTpl);
+                var chargeHtml = chargeTemplate(chargeData);
+
+                new Dialog(
+                    {
+                        mode:"confirm",
+                        id:"kidsInput",
+                        content:chargeHtml,
+                        title:"充值课时包",
+                        ok:function () {
+                            var classPackageId = $("#classPackageId").val();
+                            $.ajax({
+                                url:"/Kids/charge",
+                                method:"POST",
+                                data:{kId:kId, classPackageId:classPackageId},
+                                success:function (data) {
+                                    data = JSON.parse(data);
+                                    if(data.result == true){
+                                        new Dialog({
+                                            mode: 'tips',
+                                            tipsType: 'success',
+                                            content: "充值成功"
+                                        });
+                                        search();
+                                    }
+                                },
+                                error:function (data) {
+                                    new Dialog({
+                                        mode: 'tips',
+                                        tipsType: 'error',
+                                        content: data.responseJSON.error
+                                    });
+                                    return;
+                                }
+                            })
+                        },
+                    });
+
             })
         });
 

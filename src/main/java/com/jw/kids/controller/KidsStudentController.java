@@ -6,6 +6,7 @@ import com.jw.base.JsonUtil;
 import com.jw.kids.bean.TKids;
 import com.jw.kids.bean.TKidsExample;
 import com.jw.kids.bean.TKidsVO;
+import com.jw.kids.controller.aop.KidsLog;
 import com.jw.kids.service.KidsStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,52 +31,54 @@ public class KidsStudentController {
     private KidsStudentService kidsStudentService;
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public String addKids(@Valid @RequestBody TKidsVO tKids) throws GeneralException {
+    @KidsLog(operType = "add")
+    public String add(@Valid @RequestBody TKidsVO tKids) throws GeneralException {
         tKids.setCrtTime(DateUtil.getCurrontTime());
         tKids.setModfTime(DateUtil.getCurrontTime());
         tKids.setOperator(0001L);
         TKids kidsResult = kidsStudentService.addKids(tKids);
         HashMap result = new HashMap();
 
-        result.put("tkids",kidsResult);
+        result.put("tKids",kidsResult);
         result.put("result",true);
         return JsonUtil.convertObject2Json(result);
     }
-
+    @KidsLog(operType = "edit")
     @RequestMapping(value = "/edit",method = RequestMethod.POST)
-    public String editKids(@Valid @RequestBody TKidsVO tKids) throws GeneralException {
+    public String edit(@Valid @RequestBody TKidsVO tKids) throws GeneralException {
         tKids.setModfTime(DateUtil.getCurrontTime());
         tKids.setOperator(0001L);
         TKids kidsResult = kidsStudentService.editKids(tKids);
         HashMap result = new HashMap();
 
         result.put("result",true);
-        result.put("tkids",kidsResult);
+        result.put("tKids",kidsResult);
         return JsonUtil.convertObject2Json(result);
     }
 
+    @KidsLog(operType = "delete")
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
-    public String deleteKids(String kId) throws GeneralException {
+    public String delete(String kId) throws GeneralException {
         TKids kidsResult = kidsStudentService.deleteKids(kId);
         HashMap result = new HashMap();
 
         result.put("result",true);
-        result.put("tkids",kidsResult);
+        result.put("tKids",kidsResult);
         return JsonUtil.convertObject2Json(result);
     }
 
     @RequestMapping(value = "/get",method = RequestMethod.POST)
-    public String getKids(Long kId) throws GeneralException {
+    public String get(Long kId) throws GeneralException {
         TKids kidsResult = kidsStudentService.getKidsById(kId);
         HashMap result = new HashMap();
 
         result.put("result",true);
-        result.put("tkids",kidsResult);
+        result.put("tKids",kidsResult);
         return JsonUtil.convertObject2Json(result);
     }
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
-    public String listKids(TKids tKids, Integer start, Integer length, Integer draw) throws GeneralException {
+    public String list(TKids tKids, Integer start, Integer length, Integer draw) throws GeneralException {
         List<TKids> listTkids = kidsStudentService.listKids(tKids, start, length);
         Integer total = kidsStudentService.totalKids(tKids);
         HashMap result = new HashMap();
@@ -86,4 +89,15 @@ public class KidsStudentController {
         result.put("draw", draw);
         return JsonUtil.convertObject2Json(result);
     }
+    @KidsLog(operType = "charge")
+    @RequestMapping(value = "/charge",method = RequestMethod.POST)
+    public String charge(String kId, String classPackageId) throws GeneralException {
+
+        HashMap result = kidsStudentService.charge(kId, classPackageId);
+
+        result.put("result",true);
+
+        return JsonUtil.convertObject2Json(result);
+    }
+
 }

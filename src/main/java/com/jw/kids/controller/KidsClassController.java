@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,11 +27,11 @@ public class KidsClassController {
     KidsClassSV kidsClassSV;
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public String add(@Valid @RequestBody TClassVO tClassVO) throws GeneralException {
-        tClassVO.setCrtTime(DateUtil.getCurrontTime());
-        tClassVO.setModfTime(DateUtil.getCurrontTime());
-        tClassVO.setOperator(0001L);
-        TClass tClassResult = kidsClassSV.addClass(tClassVO);
+    public String add(@Valid @RequestBody TClassVO tClass) throws GeneralException {
+        tClass.setCrtTime(DateUtil.getCurrontTime());
+        tClass.setModfTime(DateUtil.getCurrontTime());
+        tClass.setOperator(0001L);
+        TClass tClassResult = kidsClassSV.addClass(tClass);
         HashMap result = new HashMap();
 
         result.put("tClass", tClassResult);
@@ -41,10 +40,10 @@ public class KidsClassController {
     }
 
     @RequestMapping(value = "/edit",method = RequestMethod.POST)
-    public String edit(@Valid @RequestBody TClassVO TClassVO) throws GeneralException {
-        TClassVO.setModfTime(DateUtil.getCurrontTime());
-        TClassVO.setOperator(0001L);
-        TClass tClassResult = kidsClassSV.editClass(TClassVO);
+    public String edit(@Valid @RequestBody TClassVO tClass) throws GeneralException {
+        tClass.setModfTime(DateUtil.getCurrontTime());
+        tClass.setOperator(0001L);
+        TClass tClassResult = kidsClassSV.editClass(tClass);
         HashMap result = new HashMap();
 
         result.put("result",true);
@@ -64,18 +63,18 @@ public class KidsClassController {
 
     @RequestMapping(value = "/get",method = RequestMethod.POST)
     public String get(Long classId) throws GeneralException {
-        TClassVO tClassVO = kidsClassSV.getClassById(classId);
+        TClass tClass = kidsClassSV.getClassById(classId);
         HashMap result = new HashMap();
 
         result.put("result",true);
-        result.put("tClassVO",tClassVO);
+        result.put("tClass",tClass);
         return JsonUtil.convertObject2Json(result);
     }
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
-    public String list(TClassVO tClassVO, Integer start, Integer length, Integer draw) throws GeneralException {
-        List<TClassVO> listClass = kidsClassSV.listClass(tClassVO, start, length);
-        Integer total = kidsClassSV.totalClass(tClassVO);
+    public String list(TClass tClass, Integer start, Integer length, Integer draw) throws GeneralException {
+        List<TClass> listClass = kidsClassSV.listClass(tClass, start, length);
+        Integer total = kidsClassSV.totalClass(tClass);
         HashMap result = new HashMap();
 
         result.put("data",listClass);

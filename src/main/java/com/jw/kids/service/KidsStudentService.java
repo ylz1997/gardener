@@ -5,7 +5,9 @@ import com.jw.kids.bean.TKids;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jw
@@ -59,4 +61,7 @@ public interface KidsStudentService {
      * @throws GeneralException
      */
     Integer totalKids(TKids tKids) throws GeneralException;
+
+    HashMap charge(String kid, String classPackageId) throws GeneralException;
+
 }

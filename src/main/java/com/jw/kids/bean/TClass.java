@@ -352,4 +352,20 @@ public class TClass {
     public void setRmk(String rmk) {
         this.rmk = rmk == null ? null : rmk.trim();
     }
+
+    @Override
+    public String toString() {
+        return "TClass{" +
+                "classId=" + classId +
+                ", classNm='" + classNm + '\'' +
+                ", cycle='" + cycle + '\'' +
+                ", classPackageId=" + classPackageId +
+                ", beginTime=" + beginTime +
+                ", endTime=" + endTime +
+                ", crtTime=" + crtTime +
+                ", modfTime=" + modfTime +
+                ", operator=" + operator +
+                ", rmk='" + rmk + '\'' +
+                '}';
+    }
 }

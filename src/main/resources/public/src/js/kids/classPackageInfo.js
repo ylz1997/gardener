@@ -31,7 +31,7 @@ define(['dialog',
     }
     var genOperation = function (row) {
         var html = "<a class='modifyBtn' href='javascript:void(0)' classPackageId='" + row.classPackageId + "'>修改</a> | ";
-        html = html + "<a class='deleteBtn' href='javascript:void(0)' classPackageId='" + row.classPackageId + "'>删除</a>"
+        html = html + "<a class='deleteBtn' href='javascript:void(0)' classPackageId='" + row.classPackageId + "' classPackageNm='" + row.classPackageNm +"'>删除</a>"
         return html;
     }
     var getParam = function () {
@@ -140,29 +140,38 @@ define(['dialog',
             })
             $(".deleteBtn").click(function () {
                 var classPackageId = $(this).attr("classPackageId");
+                var classPackageNm = $(this).attr("classPackageNm");
 
-                $.ajax({
-                    url:"/classPackage/delete",
-                    method:"POST",
-                    data:{classPackageId:classPackageId},
-                    success:function (data) {
-                        data = JSON.parse(data);
-                        if(data.result == true){
-                            new Dialog({
-                                mode: 'tips',
-                                tipsType: 'success',
-                                content: "删除成功"
-                            });
-                            search();
-                        }
-                    },
-                    error:function (data) {
-                        new Dialog({
-                            mode: 'tips',
-                            tipsType: 'error',
-                            content: data.responseJSON.error
-                        });
-                        return;
+                new Dialog({
+                    mode: "confirm",
+                    id: "kidsInput",
+                    content: "课时包:" + classPackageNm,
+                    title: "确认删除？",
+                    ok: function () {
+                        $.ajax({
+                            url: "/classPackage/delete",
+                            method: "POST",
+                            data: {classPackageId: classPackageId},
+                            success: function (data) {
+                                data = JSON.parse(data);
+                                if (data.result == true) {
+                                    new Dialog({
+                                        mode: 'tips',
+                                        tipsType: 'success',
+                                        content: "删除成功"
+                                    });
+                                    search();
+                                }
+                            },
+                            error: function (data) {
+                                new Dialog({
+                                    mode: 'tips',
+                                    tipsType: 'error',
+                                    content: data.responseJSON.error
+                                });
+                                return;
+                            }
+                        })
                     }
                 })
             })
