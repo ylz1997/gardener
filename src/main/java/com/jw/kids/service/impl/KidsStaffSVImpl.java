@@ -119,6 +119,9 @@ public class KidsStaffSVImpl implements KidsStaffSV{
         if(StringUtil.isNotEmpty(tTeacher.getTeacherNm())){
             criteria.andTeacherNmLike("%" + tTeacher.getTeacherNm() + "%");
         }
+        if(null != tTeacher.getDuty()){
+            criteria.andDutyEqualTo(tTeacher.getDuty());
+        }
         return example;
     }
 

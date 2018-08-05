@@ -15,6 +15,7 @@ define(['dialog',
     var table;
     var sexParam = {};
     var classes = {};
+    var duties = {};
     var getTeacherByClassId = function (classID) {
         var teachers;
         $.ajax({
@@ -83,6 +84,28 @@ define(['dialog',
             }
         }
     })
+
+    $.ajax({
+        url:"/SysPara/getParamByCode",
+        method:"GET",
+        data:{code:"duties"},
+        success:function (callData) {
+            callData = JSON.parse(callData);
+            if(callData.result == true){
+                duties = callData.param;
+            }
+        },
+        error:function (data) {
+            if(data.result != true){
+                new Dialog({
+                    mode: 'tips',
+                    tipsType: 'error',
+                    content: data.responseJSON.error
+                });
+            }
+        }
+    })
+
 
     $.ajax({
         url:"/class/list",
@@ -161,11 +184,14 @@ define(['dialog',
             },
             columns: [
                 {data: 'teacherId', title:"人员编号"},
-                {data: 'teacherNm', title:"姓名"},
+                {data: 'teacherNm', title:"中文名"},
+                {data: 'teacherEnNm', title:"英文"},
                 {data: 'sex', title:"性别",render: function (data, type, row, meta) {
                     return exchangeDataDic(sexParam, data);
                 }},
-                {data: 'age', title:"年龄"},
+                {data: 'duty', title:"岗位",render: function (data, type, row, meta) {
+                    return exchangeDataDic(duties, data);
+                }},
                 {
                     data: 'cnslColmId',
                     title: "操作",
@@ -188,6 +214,7 @@ define(['dialog',
                             var tmp = Hdb.compile(InputTpl);
                             data.sexParam = sexParam;
                             data.classes = classes;
+                            data.duties = duties;
                             var html = tmp(data);
                             new Dialog(
                                 {
@@ -414,6 +441,7 @@ define(['dialog',
             var data = {};
             data.sexParam = sexParam;
             data.classes = classes;
+            data.duties = duties;
             var inputTemplate = Hdb.compile(InputTpl);
             var inputHtml = inputTemplate(data);
             new Dialog(

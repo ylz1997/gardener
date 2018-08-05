@@ -10,8 +10,6 @@
         <label for="enNm">英文名</label>
         <input type="input" class="form-control kidsClz" name="enNm" id="enNm" {{#if tKids.enNm}}value="{{tKids.enNm}}"{{/if}} placeholder="请输入英文名">
     </div>
-
-
     <div class="radio">
         {{#each sexParam}}
         <label>
@@ -19,6 +17,14 @@
             {{name}}
         </label>
         {{/each}}
+    </div>
+    <div class="form-group">
+        <label for="strBirthday">出生日期</label>
+        <input type="input" class="form-control kidsClz" id="strBirthday" name="strBirthday" {{#if tKids.birthday}}value="{{tKids.birthday}}"{{/if}} placeholder="请输入出生日期">
+    </div>
+    <div class="form-group">
+        <label for="contractNo">协议编号</label>
+        <input type="input" class="form-control kidsClz" id="contractNo" name="contractNo" {{#if tKids.contractNo}}value="{{tKids.contractNo}}"{{/if}} placeholder="请输入协议编号">
     </div>
     <div class="form-group">
         <label for="pNm">监护人姓名</label>
@@ -50,7 +56,30 @@
         </select>
     </div>
     <div class="form-group">
-        <label for="address">剩余课时</label>
+        <label for="consultantId">顾问</label>
+        <select class="form-control kidsClz" id="consultantId" name="consultantId" {{#if tKids.consultantId}}value="{{tKids.consultantId}}"{{/if}} >
+            {{#each consultants}}
+            <option value="{{teacherId}}" {{#equal ../tKids.consultantId teacherId}}selected{{/equal}}>{{teacherNm}}</option>
+            {{/each}}
+        </select>
+    </div>
+    <label for="ifAppAccount">是否开通app账号</label>
+    <div class="radio" id="ifAppAccount">
+        <label>
+            <input type="radio" name="ifAppAccount" class="kidsClz" value="1" {{#equal tKids.ifAppAccount 1}}checked{{/equal}}>
+            是
+        </label>
+        <label>
+            <input type="radio" name="ifAppAccount" class="kidsClz" value="0" {{#equal tKids.ifAppAccount 0}}checked{{/equal}}>
+            否
+        </label>
+    </div>
+    <div class="form-group">
+        <label for="telephoneTime">电辅时间</label>
+        <input type="input" class="form-control kidsClz" id="strTelephoneTime" name="strTelephoneTime" {{#if tKids.telephoneTime}}value="{{tKids.telephoneTime}}"{{else}}value=0{{/if}}>
+    </div>
+    <div class="form-group">
+        <label for="amount">剩余课时</label>
         <input type="input" readonly class="form-control kidsClz" id="amount" name="amount" {{#if tKids.amount}}value="{{tKids.amount}}"{{else}}value=0{{/if}}>
     </div>
 </form>

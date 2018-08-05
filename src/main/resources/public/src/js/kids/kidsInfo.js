@@ -18,6 +18,7 @@ define(['dialog',
     var sexParam = {};
     var relation = {};
     var classes = {};
+    var consultants = {};
     var classPackage = {};
     $.ajax({
         url:"/SysPara/getParamByCode",
@@ -39,6 +40,30 @@ define(['dialog',
             }
         }
     })
+
+    var getTeacherByClassId = function (classID) {
+        var teachers;
+        $.ajax({
+            url:"/Staff/listByClassId",
+            method:"GET",
+            data:{start:0, length:10000, draw:1, classId:classID},
+            async:false,
+            success:function (callData) {
+                callData = JSON.parse(callData);
+                teachers = callData.data;
+            },
+            error:function (data) {
+                if(data.result != true){
+                    new Dialog({
+                        mode: 'tips',
+                        tipsType: 'error',
+                        content: data.responseJSON.error
+                    });
+                }
+            }
+        });
+        return teachers;
+    }
 
     var getTeacherByClassId = function (classID) {
         var teachers;
@@ -131,6 +156,26 @@ define(['dialog',
             }
         }
     });
+
+    $.ajax({
+        url:"/Staff/list",
+        method:"GET",
+        data:{start:0, length:10000, draw:1, duty:2},
+        success:function (callData) {
+            callData = JSON.parse(callData);
+            consultants = callData.data;
+        },
+        error:function (data) {
+            if(data.result != true){
+                new Dialog({
+                    mode: 'tips',
+                    tipsType: 'error',
+                    content: data.responseJSON.error
+                });
+            }
+        }
+    });
+
 
     $.ajax({
         url:"/classPackage/list",
@@ -250,6 +295,7 @@ define(['dialog',
                             data.sexParam = sexParam;
                             data.relation = relation;
                             data.classes = classes;
+                            data.consultants = consultants;
                             var html = tmp(data);
                             new Dialog(
                                 {
@@ -513,7 +559,7 @@ define(['dialog',
             data.sexParam = sexParam;
             data.relation = relation;
             data.classes = classes;
-
+            data.consultants = consultants;
             var inputTemplate = Hdb.compile(KidsInput);
             var inputHtml = inputTemplate(data);
             new Dialog(
