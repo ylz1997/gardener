@@ -76,7 +76,7 @@
     </div>
     <div class="form-group">
         <label for="telephoneTime">电辅时间</label>
-        <input type="input" class="form-control kidsClz" id="strTelephoneTime" name="strTelephoneTime" {{#if tKids.telephoneTime}}value="{{tKids.telephoneTime}}"{{else}}value=0{{/if}}>
+        <input type="input" class="form-control kidsClz" id="telephoneTime" name="telephoneTime" {{#if tKids.telephoneTime}}value="{{tKids.telephoneTime}}"{{else}}{{/if}}>
     </div>
     <div class="form-group">
         <label for="amount">剩余课时</label>

@@ -5,7 +5,8 @@ define(['dialog',
     'hdb',
     'text!src/kids/chargeClass.tpl',
     'text!src/kids/viewLogDetail.tpl',
-    'text!src/kids/classLogInput.tpl'
+    'text!src/kids/classLogInput.tpl',
+    'text!src/kids/kidsReAddClass.tpl'
 ],function (Dialog,
             KidsInput,
             $,
@@ -13,7 +14,8 @@ define(['dialog',
             Hdb,
             ChargeTpl,
             ViewLogDetail,
-            ClassLogInput) {
+            ClassLogInput,
+            KidsReAddInput) {
     var table;
     var sexParam = {};
     var relation = {};
@@ -218,7 +220,7 @@ define(['dialog',
         var html = "<a class='modifyBtn' href='javascript:void(0)' kId='" + row.kId + "'>修改</a> | ";
         html = html + "<a class='deleteBtn' href='javascript:void(0)' kId='" + row.kId + "' chNm='" + row.chNm + "'>删除</a> | ";
         html = html + "<a class='chargeBtn' href='javascript:void(0)' kId='" + row.kId + "'>充值课时</a> | ";
-        html = html + "<a class='history' href='javascript:void(0)' kId='" + row.kId + "'>上课历史查询</a>";
+        html = html + "<a class='history' href='javascript:void(0)' kId='" + row.kId + "'>考勤查询</a>";
         return html;
     }
     var genHisOperation = function (row) {
@@ -387,12 +389,12 @@ define(['dialog',
 
             $(".history").click(function () {
                 var kId = $(this).attr("kId");
-                var chargeHtml = ViewLogDetail;
+                var viewLogHtml = ViewLogDetail;
                 new Dialog(
                     {
                         mode:"confirm",
                         id:"viewHis",
-                        content:chargeHtml,
+                        content:viewLogHtml,
                         title:"查看课堂历史",
                         callbak:function () {
                             var hisTable = $("#list-contain-history").DataTable( {
@@ -403,7 +405,7 @@ define(['dialog',
                                 ajax: {
                                     "url": "/KidsLogDetail/list",
                                     "data": function ( d ) {
-                                        return $.extend( {}, d, {logObjId:kId, logType:2} );
+                                        return $.extend( {}, d, {logObjId:kId, logType:$("#logType").val()} );
                                     }
                                 },
                                 columns: [
@@ -418,6 +420,51 @@ define(['dialog',
                                 ]
                             });
                             hisTable.on("draw",function () {
+                                $("#btn-readd-clz").click(function () {
+                                    new Dialog({
+                                        mode:"confirm",
+                                        id:"kidsInput",
+                                        content:KidsReAddInput,
+                                        title:"补一节课",
+                                        ok:function () {
+                                            var params = new Object();
+                                            $(".kidsReAddClzLog").each(function(){
+                                                params[$(this).attr("name")] = $(this).val();
+                                            })
+                                            params.logObjId = kId;
+                                            $.ajax({
+                                                url:"/KidsLogDetail/add",
+                                                method:"POST",
+                                                contentType:"application/json",
+                                                data:JSON.stringify(params),
+                                                success:function (data) {
+                                                    data = JSON.parse(data);
+                                                    if(data.result == true){
+                                                        new Dialog({
+                                                            mode: 'tips',
+                                                            tipsType: 'success',
+                                                            content: "保存成功"
+                                                        });
+                                                    }
+                                                    search();
+                                                },
+                                                error:function (data) {
+                                                    debugger;
+                                                    new Dialog({
+                                                        mode: 'tips',
+                                                        tipsType: 'error',
+                                                        content: data.responseJSON.error
+                                                    });
+                                                    return;
+                                                }
+                                            })
+                                        }
+                                    });
+
+                                })
+                                $("#logType").change(function(){
+                                    hisTable.ajax.reload();
+                                })
                                 $(".viewLog").click(function () {
                                         var logId = $(this).attr("logId");
                                         $.ajax({
@@ -586,6 +633,7 @@ define(['dialog',
                                         content: "保存成功"
                                     });
                                 }
+                                search();
                             },
                             error:function (data) {
                                 debugger;

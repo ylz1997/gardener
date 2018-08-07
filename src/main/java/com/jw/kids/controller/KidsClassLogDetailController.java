@@ -5,6 +5,7 @@ import com.jw.base.JsonUtil;
 import com.jw.kids.bean.TClassLogDetail;
 import com.jw.kids.service.KidsClassLogDetailSV;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,4 +33,12 @@ public class KidsClassLogDetailController {
         return JsonUtil.convertObject2Json(result);
     }
 
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String add(@RequestBody TClassLogDetail tClassLogDetail) throws GeneralException {
+        TClassLogDetail logDetail = kidsClassLogDetailSV.add(tClassLogDetail);
+        HashMap result = new HashMap();
+        result.put("tClassLogDetail", logDetail);
+        result.put("result",true);
+        return JsonUtil.convertObject2Json(result);
+    }
 }
