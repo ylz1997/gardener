@@ -1,5 +1,5 @@
 <div class="form-group">
-    <label for="classTime">上课时间</label>
+    <label for="strClassTime">上课时间</label>
     <input type="input" class="form-control kidsReAddClzLog" name="strClassTime" id="strClassTime" {{#if classTime}}value="{{classTime}}" disabled="disabled"{{/if}} placeholder="请按照yyyy-MM-dd HH:mm:ss填写日期">
 </div>
 <div class="form-group">
