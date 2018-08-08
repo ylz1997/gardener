@@ -43,13 +43,14 @@ WHERE
 <select id="listLogDetail" parameterType="java.util.HashMap" resultType="java.util.HashMap">
     SELECT
         a.detail_log_id AS detailLogId,
-        b.log_id AS logId,
-        b.class_time as classTime
+        a.log_id AS logId,
+        a.class_time as classTime,
+        a.log_type as logType,
+        a.rmk as rmk
     FROM
-        t_class_log_detail a,
-        t_class_log b
+        t_class_log_detail a
     where
-        a.log_id = b.log_id
+        1 = 1
     and
     <if test="logObjId != null">
         log_obj_id = #{logObjId,jdbcType=BIGINT}
@@ -60,7 +61,7 @@ WHERE
     <if test="logType != -1 and logType != null ">
         and log_type = #{logType,jdbcType=TINYINT}
     </if>
-    ORDER BY b.class_time desc
+    ORDER BY a.class_time desc
     <if test="(start != null) and (end != null)">
         limit #{start, jdbcType=INTEGER}, #{end, jdbcType=INTEGER};
     </if>

@@ -3,6 +3,7 @@ package com.jw.kids.controller;
 import com.jw.base.GeneralException;
 import com.jw.base.JsonUtil;
 import com.jw.kids.bean.TClassLogDetail;
+import com.jw.kids.bean.TClassLogDetailVO;
 import com.jw.kids.service.KidsClassLogDetailSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,7 +35,7 @@ public class KidsClassLogDetailController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String add(@RequestBody TClassLogDetail tClassLogDetail) throws GeneralException {
+    public String add(@RequestBody TClassLogDetailVO tClassLogDetail) throws GeneralException {
         TClassLogDetail logDetail = kidsClassLogDetailSV.add(tClassLogDetail);
         HashMap result = new HashMap();
         result.put("tClassLogDetail", logDetail);

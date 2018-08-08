@@ -61,6 +61,7 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
             tClassLogDetail.setLogId(tClassLog.getLogId());
             tClassLogDetail.setLogObjId(teacher.getLogObjId());
             tClassLogDetail.setLogType(Constants.KIDS_LOG_OBJ_TYPE_CD.LOG_OBJ_TYEP_TEACHER);
+            tClassLogDetail.setClassTime(tClassLog.getClassTime());
             classLogDetailDAO.insert(tClassLogDetail);
         }
 
@@ -71,7 +72,7 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
             tClassLogDetail.setLogId(tClassLog.getLogId());
             tClassLogDetail.setLogType(Constants.KIDS_LOG_OBJ_TYPE_CD.LOG_OBJ_TYPE_KIDS);
             tClassLogDetail.setLogObjId(tKids.getLogObjId());
-
+            tClassLogDetail.setClassTime(tClassLog.getClassTime());
             classLogDetailDAO.insert(tClassLogDetail);
         }
 
