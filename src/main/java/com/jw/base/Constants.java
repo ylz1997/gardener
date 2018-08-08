@@ -7,7 +7,9 @@ public final class Constants {
 
     public interface KIDS_LOG_OBJ_TYPE_CD{
         byte LOG_OBJ_TYEP_TEACHER = 1;
-        byte LOG_OBJ_TYPE_KIDS = 2;
+        byte LOG_OBJ_TYPE_KIDS = 2;//
+        byte LOG_OBJ_TYPE_KIDS_READD = 3;//补课
+        byte LOG_OBJ_TYEP_KIDS_TELE = 4;//电辅
     }
     //存放系统常用配置
     public interface SYSTEM_CONFIG {

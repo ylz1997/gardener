@@ -1,5 +1,6 @@
 package com.jw.kids.service;
 
+import com.jw.base.GeneralException;
 import com.jw.kids.bean.TClassLogDetail;
 
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.Map;
  * @desc
  */
 public interface KidsClassLogDetailSV {
+    TClassLogDetail add(TClassLogDetail tClassLogDetail) throws GeneralException;
 
     HashMap listLogDetail(TClassLogDetail tClassLogDetail, Integer start, Integer end);
 

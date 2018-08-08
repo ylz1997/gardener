@@ -1,26 +1,25 @@
-<div class="container-fluid" id="containerDiv">
-<!--    <form class="form-inline" style="padding:10px;" role="form">
+
+<div class="container-fluid">
+    <form class="form-inline" style="padding:10px;" role="form">
         <div class="form-group" style="width:30%">
             <div class="input-group">
-                <span class="input-group-addon" >员工姓名</span>
-                <input type="text" class="form-control searchParam" id="teacherNm" placeholder="请输入员工姓名" >
+                <span class="input-group-addon">上课类型</span>
+                <select id="logType"  class="form-control viewLogsearchParam">
+                    <option value="-1">全部</option>
+                    <option value="2">正常考勤</option>
+                    <option value="3">补课考勤</option>
+                </select>
             </div>
         </div>
+    </form>
 
-        <div class="btn-group" role="group" style="width:30%;margin:10px;" aria-label="...">
-            <button type="button" class="btn btn-success"  id="btn-query" >
-                <span class="glyphicon glyphicon-plus"aria-hidden="true">查询</span>
-            </button>
-        </div>
-    </form>-->
-
-<!--    <div class="continer">
+    <div class="continer">
         <div class="btn-group" role="group" aria-label="...">
-            <button type="button" class="btn btn-success" id="btn-add">
-                <span class="glyphicon glyphicon-plus"  aria-hidden="true">新员工档案填写</span>
+            <button type="button" class="btn btn-success" id="btn-readd-clz">
+                <span class="glyphicon glyphicon-plus"  aria-hidden="true">补一节课</span>
             </button>
         </div>
-    </div>-->
+    </div>
     <table id="list-contain-history" class="display">
     </table>
 </div>

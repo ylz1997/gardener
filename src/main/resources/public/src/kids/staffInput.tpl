@@ -3,10 +3,13 @@
     <input type="hidden" class="kidsClz" name="strCrtTime" id="strCrtTime" {{#if tStaff.crtTime}}value="{{tStaff.crtTime}}" {{/if}}>
 
     <div class="form-group">
-        <label for="teacherNm">姓名</label>
+        <label for="teacherNm">中文名</label>
         <input type="input" class="form-control kidsClz" name="teacherNm" id="teacherNm" {{#if tStaff.teacherNm}}value="{{tStaff.teacherNm}}"{{/if}} placeholder="请输入中文名">
     </div>
-
+    <div class="form-group">
+        <label for="teacherNm">英文名</label>
+        <input type="input" class="form-control kidsClz" name="teacherEnNm" id="teacherEnNm" {{#if tStaff.teacherEnNm}}value="{{tStaff.teacherEnNm}}"{{/if}} placeholder="请输入英文名">
+    </div>
     <div class="radio">
         {{#each sexParam}}
         <label>
@@ -15,22 +18,18 @@
         </label>
         {{/each}}
     </div>
-
     <div class="form-group">
-        <label for="age">年龄</label>
-        <input type="input" class="form-control kidsClz" id="age" name="age" {{#if tStaff.age}}value="{{tStaff.age}}"{{/if}} placeholder="请输入年龄">
+        <label for="cdNumber">身份证号</label>
+        <input type="input" class="form-control kidsClz" id="cdNumber" name="cdNumber" {{#if tStaff.cdNumber}}value="{{tStaff.cdNumber}}"{{/if}} placeholder="请输入身份证号">
     </div>
     <div class="form-group">
-        <label for="personalCode">身份证号</label>
-        <input type="input" class="form-control kidsClz" id="personalCode" name="personalCode" {{#if tStaff.personalCode}}value="{{tStaff.personalCode}}"{{/if}} placeholder="请输入身份证号">
+        <label for="duty">岗位</label>
+        <select class="form-control kidsClz" id="duty" name="duty" {{#if tStaff.classId}}value="{{tStaff.classId}}"{{/if}} >
+            {{#each duties}}
+            <option value="{{value}}" {{#equal ../tStaff.duty value}}selected{{/equal}}>{{name}}</option>
+            {{/each}}
+        </select>
     </div>
-<!--
-    <div class="form-group">
-        <label for="personalCode">所带班级</label>
-        <input type="input" class="form-control kidsClz" id="classId" name="classId" {{#if tStaff.classId}}value="{{tStaff.classId}}"{{/if}}>
-    </div>
--->
-
     <label for="classes">所在班级</label>
     <div class="checkbox" id="classes">
         {{#each classes}}

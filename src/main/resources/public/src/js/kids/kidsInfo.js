@@ -5,7 +5,8 @@ define(['dialog',
     'hdb',
     'text!src/kids/chargeClass.tpl',
     'text!src/kids/viewLogDetail.tpl',
-    'text!src/kids/classLogInput.tpl'
+    'text!src/kids/classLogInput.tpl',
+    'text!src/kids/kidsReAddClass.tpl'
 ],function (Dialog,
             KidsInput,
             $,
@@ -13,11 +14,13 @@ define(['dialog',
             Hdb,
             ChargeTpl,
             ViewLogDetail,
-            ClassLogInput) {
+            ClassLogInput,
+            KidsReAddInput) {
     var table;
     var sexParam = {};
     var relation = {};
     var classes = {};
+    var consultants = {};
     var classPackage = {};
     $.ajax({
         url:"/SysPara/getParamByCode",
@@ -39,6 +42,30 @@ define(['dialog',
             }
         }
     })
+
+    var getTeacherByClassId = function (classID) {
+        var teachers;
+        $.ajax({
+            url:"/Staff/listByClassId",
+            method:"GET",
+            data:{start:0, length:10000, draw:1, classId:classID},
+            async:false,
+            success:function (callData) {
+                callData = JSON.parse(callData);
+                teachers = callData.data;
+            },
+            error:function (data) {
+                if(data.result != true){
+                    new Dialog({
+                        mode: 'tips',
+                        tipsType: 'error',
+                        content: data.responseJSON.error
+                    });
+                }
+            }
+        });
+        return teachers;
+    }
 
     var getTeacherByClassId = function (classID) {
         var teachers;
@@ -133,6 +160,26 @@ define(['dialog',
     });
 
     $.ajax({
+        url:"/Staff/list",
+        method:"GET",
+        data:{start:0, length:10000, draw:1, duty:2},
+        success:function (callData) {
+            callData = JSON.parse(callData);
+            consultants = callData.data;
+        },
+        error:function (data) {
+            if(data.result != true){
+                new Dialog({
+                    mode: 'tips',
+                    tipsType: 'error',
+                    content: data.responseJSON.error
+                });
+            }
+        }
+    });
+
+
+    $.ajax({
         url:"/classPackage/list",
         method:"GET",
         data:{start:0, length:10000, draw:1},
@@ -173,7 +220,7 @@ define(['dialog',
         var html = "<a class='modifyBtn' href='javascript:void(0)' kId='" + row.kId + "'>修改</a> | ";
         html = html + "<a class='deleteBtn' href='javascript:void(0)' kId='" + row.kId + "' chNm='" + row.chNm + "'>删除</a> | ";
         html = html + "<a class='chargeBtn' href='javascript:void(0)' kId='" + row.kId + "'>充值课时</a> | ";
-        html = html + "<a class='history' href='javascript:void(0)' kId='" + row.kId + "'>上课历史查询</a>";
+        html = html + "<a class='history' href='javascript:void(0)' kId='" + row.kId + "'>考勤查询</a>";
         return html;
     }
     var genHisOperation = function (row) {
@@ -250,6 +297,7 @@ define(['dialog',
                             data.sexParam = sexParam;
                             data.relation = relation;
                             data.classes = classes;
+                            data.consultants = consultants;
                             var html = tmp(data);
                             new Dialog(
                                 {
@@ -341,12 +389,12 @@ define(['dialog',
 
             $(".history").click(function () {
                 var kId = $(this).attr("kId");
-                var chargeHtml = ViewLogDetail;
+                var viewLogHtml = ViewLogDetail;
                 new Dialog(
                     {
                         mode:"confirm",
                         id:"viewHis",
-                        content:chargeHtml,
+                        content:viewLogHtml,
                         title:"查看课堂历史",
                         callbak:function () {
                             var hisTable = $("#list-contain-history").DataTable( {
@@ -357,7 +405,7 @@ define(['dialog',
                                 ajax: {
                                     "url": "/KidsLogDetail/list",
                                     "data": function ( d ) {
-                                        return $.extend( {}, d, {logObjId:kId, logType:2} );
+                                        return $.extend( {}, d, {logObjId:kId, logType:$("#logType").val()} );
                                     }
                                 },
                                 columns: [
@@ -372,6 +420,51 @@ define(['dialog',
                                 ]
                             });
                             hisTable.on("draw",function () {
+                                $("#btn-readd-clz").click(function () {
+                                    new Dialog({
+                                        mode:"confirm",
+                                        id:"kidsInput",
+                                        content:KidsReAddInput,
+                                        title:"补一节课",
+                                        ok:function () {
+                                            var params = new Object();
+                                            $(".kidsReAddClzLog").each(function(){
+                                                params[$(this).attr("name")] = $(this).val();
+                                            })
+                                            params.logObjId = kId;
+                                            $.ajax({
+                                                url:"/KidsLogDetail/add",
+                                                method:"POST",
+                                                contentType:"application/json",
+                                                data:JSON.stringify(params),
+                                                success:function (data) {
+                                                    data = JSON.parse(data);
+                                                    if(data.result == true){
+                                                        new Dialog({
+                                                            mode: 'tips',
+                                                            tipsType: 'success',
+                                                            content: "保存成功"
+                                                        });
+                                                    }
+                                                    search();
+                                                },
+                                                error:function (data) {
+                                                    debugger;
+                                                    new Dialog({
+                                                        mode: 'tips',
+                                                        tipsType: 'error',
+                                                        content: data.responseJSON.error
+                                                    });
+                                                    return;
+                                                }
+                                            })
+                                        }
+                                    });
+
+                                })
+                                $("#logType").change(function(){
+                                    hisTable.ajax.reload();
+                                })
                                 $(".viewLog").click(function () {
                                         var logId = $(this).attr("logId");
                                         $.ajax({
@@ -513,7 +606,7 @@ define(['dialog',
             data.sexParam = sexParam;
             data.relation = relation;
             data.classes = classes;
-
+            data.consultants = consultants;
             var inputTemplate = Hdb.compile(KidsInput);
             var inputHtml = inputTemplate(data);
             new Dialog(
@@ -540,6 +633,7 @@ define(['dialog',
                                         content: "保存成功"
                                     });
                                 }
+                                search();
                             },
                             error:function (data) {
                                 debugger;
