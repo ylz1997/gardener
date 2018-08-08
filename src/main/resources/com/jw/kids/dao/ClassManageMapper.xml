@@ -48,10 +48,18 @@ WHERE
     FROM
         t_class_log_detail a,
         t_class_log b
-    WHERE
+    where
+        a.log_id = b.log_id
+    and
+    <if test="logObjId != null">
         log_obj_id = #{logObjId,jdbcType=BIGINT}
-    AND log_type = #{logType,jdbcType=TINYINT}
-    and a.log_id = b.log_id
+    </if>
+    <if test="logType == -1">
+        AND( log_type = 2 or log_type = 3)
+    </if>
+    <if test="logType != -1 and logType != null ">
+        and log_type = #{logType,jdbcType=TINYINT}
+    </if>
     ORDER BY b.class_time desc
     <if test="(start != null) and (end != null)">
         limit #{start, jdbcType=INTEGER}, #{end, jdbcType=INTEGER};
