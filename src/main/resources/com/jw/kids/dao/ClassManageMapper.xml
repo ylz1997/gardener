@@ -22,7 +22,7 @@
     l.class_id as classId,
     content as content,
     l.crt_time as crtTime,
-    class_time as classTime,
+    l.class_time as classTime,
     class_nm as classNm
 FROM
     t_class_log l,

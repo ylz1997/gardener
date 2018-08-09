@@ -1,6 +1,6 @@
 <div class="form-group">
     <label for="strClassTime">上课时间</label>
-    <input type="input" class="form-control kidsReAddClzLog" name="strClassTime" id="strClassTime" {{#if classTime}}value="{{classTime}}" disabled="disabled"{{/if}} placeholder="请按照yyyy-MM-dd HH:mm:ss填写日期">
+    <input type="input" class="form-control kidsReAddClzLog" name="strClassTime" id="strClassTime" autocomplete="off" {{#if classTime}}value="{{classTime}}" disabled="disabled"{{/if}} placeholder="请按照yyyy-MM-dd HH:mm:ss填写日期">
 </div>
 <div class="form-group">
     <label for="rmk">备注</label>

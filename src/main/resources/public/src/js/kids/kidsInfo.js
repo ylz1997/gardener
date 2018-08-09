@@ -6,7 +6,8 @@ define(['dialog',
     'text!src/kids/chargeClass.tpl',
     'text!src/kids/viewLogDetail.tpl',
     'text!src/kids/classLogInput.tpl',
-    'text!src/kids/kidsReAddClass.tpl'
+    'text!src/kids/kidsReAddClass.tpl',
+    'datetimepicker'
 ],function (Dialog,
             KidsInput,
             $,
@@ -15,7 +16,8 @@ define(['dialog',
             ChargeTpl,
             ViewLogDetail,
             ClassLogInput,
-            KidsReAddInput) {
+            KidsReAddInput,
+            datetimepicker) {
     var table;
     var sexParam = {};
     var relation = {};
@@ -444,6 +446,13 @@ define(['dialog',
                                         id:"kidsInput",
                                         content:reAddTplInput,
                                         title:"补一节课",
+                                        callbak:function () {
+                                            $("#strClassTime").datetimepicker({
+                                                autoclose:true,
+                                                language:"ZH-cn",
+                                                format: 'yyyy-mm-dd hh:ii:ss'
+                                            });
+                                        },
                                         ok:function () {
                                             var params = new Object();
                                             $(".kidsReAddClzLog").each(function(){
@@ -490,6 +499,13 @@ define(['dialog',
                                         id:"kidsInput",
                                         content:reAddTplInput,
                                         title:"补一节课",
+                                        callbak:function () {
+                                            $("#strClassTime").datetimepicker({
+                                                autoclose:true,
+                                                language:"ZH-cn",
+                                                format: 'yyyy-mm-dd hh:ii:ss'
+                                            });
+                                        },
                                         ok:function () {
                                             var params = new Object();
                                             $(".kidsReAddClzLog").each(function(){
