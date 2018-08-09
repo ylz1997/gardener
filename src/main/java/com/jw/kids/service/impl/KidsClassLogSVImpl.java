@@ -4,13 +4,11 @@ import com.jw.base.BasicUtil;
 import com.jw.base.Constants;
 import com.jw.base.DateUtil;
 import com.jw.base.GeneralException;
-import com.jw.kids.bean.TClassLog;
-import com.jw.kids.bean.TClassLogDetail;
-import com.jw.kids.bean.TClassLogDetailExample;
-import com.jw.kids.bean.TClassLogVO;
+import com.jw.kids.bean.*;
 import com.jw.kids.dao.ClassManageDAO;
 import com.jw.kids.dao.TClassLogDAO;
 import com.jw.kids.dao.TClassLogDetailDAO;
+import com.jw.kids.dao.TKidsDAO;
 import com.jw.kids.service.KidsClassLogSV;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +35,8 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
     private TClassLogDetailDAO classLogDetailDAO;
     @Autowired
     private ClassManageDAO classManageDAO;
+    @Autowired
+    private TKidsDAO tKidsDAO;
 
 
     private Logger logger = LoggerFactory.getLogger(KidsClassLogSVImpl.class);
@@ -74,6 +74,11 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
             tClassLogDetail.setLogObjId(tKids.getLogObjId());
             tClassLogDetail.setClassTime(tClassLog.getClassTime());
             classLogDetailDAO.insert(tClassLogDetail);
+
+            //消掉学生的课时
+            TKids tKidsConsume = tKidsDAO.selectByPrimaryKey(tClassLogDetail.getLogObjId());
+            tKidsConsume.setAmount(tKidsConsume.getAmount() - 1);
+            tKidsDAO.updateByPrimaryKey(tKidsConsume);
         }
 
         return tClassLog;
