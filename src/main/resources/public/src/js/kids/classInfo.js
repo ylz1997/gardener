@@ -8,8 +8,29 @@ define(['dialog',
             $,
             DataTables,
             Hdb) {
+    var classLevel;
     var table;
-    var dynClassSchdule = '<input type="input" name="classSchdule" placeholder="请输入上课时间">';
+    $.ajax({
+        url:"/SysPara/getParamByCode",
+        method:"GET",
+        data:{code:"classLevel"},
+        success:function (callData) {
+            callData = JSON.parse(callData);
+            if(callData.result == true){
+                classLevel = callData.param;
+            }
+        },
+        error:function (data) {
+            if(data.result != true){
+                new Dialog({
+                    mode: 'tips',
+                    tipsType: 'error',
+                    content: data.responseJSON.error
+                });
+            }
+        }
+    });
+
     var getAllPackage = function () {
         var allClassPackage;
         //获取所有课时包
@@ -108,6 +129,7 @@ define(['dialog',
                         if(data.result == true){
                             var tmp = Hdb.compile(InputTpl);
                             data.allClassPackage = getAllPackage();
+                            data.classLevel = classLevel;
                             var html = tmp(data);
                             new Dialog(
                                 {
@@ -220,7 +242,7 @@ define(['dialog',
         $("#btn-add").click(function () {
             var data = {};
             data.allClassPackage = getAllPackage();
-
+            data.classLevel = classLevel;
             var inputTemplate = Hdb.compile(InputTpl);
             var inputHtml = inputTemplate(data);
             new Dialog(

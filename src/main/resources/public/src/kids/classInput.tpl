@@ -6,19 +6,16 @@
         <label for="classNm">班级名称</label>
         <input type="input" class="form-control kidsClz" name="classNm" id="classNm" {{#if tClass.classNm}}value="{{tClass.classNm}}"{{/if}} placeholder="请输入班级名称">
     </div>
-<!--    <div class="form-group">
-        <div class="radio">
-            {{#each classCycle}}
-            <label>
-                <input type="radio" name="cycle" class="kidsClz" value="{{value}}" {{#equal ../tClass.cycle value}}checked{{/equal}}>
-                {{name}}
-            </label>
-            {{/each}}
-        </div>
-        <button type="button" class="btn btn-success"  id="btn-query"  id="addClassSchdule">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true" title="添加一个上课时间">添加</span>
-        </button>
-        <div class="schdule">
-        </div>
-    </div>-->
+    <div class="form-group">
+        <label for="classLevel">课程级别</label>
+        <select class="form-control kidsClz" id="classLevel" name="classLevel" {{#if tClass.classLevel}}value="{{tClass.classLevel}}"{{/if}} >
+        {{#each classLevel}}
+        <option value="{{value}}" {{#equal ../tClass.classLevel value}}selected{{/equal}}>{{name}}</option>
+        {{/each}}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="classTime">上课时间</label>
+        <input type="input" class="form-control kidsClz" name="classTime" id="classTime" {{#if tClass.classTime}}value="{{tClass.classTime}}"{{/if}} placeholder="请输入上课时间">
+    </div>
 </form>

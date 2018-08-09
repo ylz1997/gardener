@@ -44,7 +44,7 @@ define(['dialog',
                 });
             }
         }
-    })
+    });
 
     var getTeacherByClassId = function (classID) {
         var teachers;
