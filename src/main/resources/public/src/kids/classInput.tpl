@@ -14,7 +14,11 @@
         </select>
     </div>
     <div class="form-group">
-        <label for="classTime">上课时间</label>
-        <input type="input" class="form-control kidsClz" name="classTime" id="classTime" {{#if tClass.classTime}}value="{{tClass.classTime}}"{{/if}} placeholder="请输入上课时间">
+        <label for="classLevel">带班老师</label>
+        <select class="form-control kidsClz" id="teacherId" name="teacherId" {{#if tClass.teacherId}}value="{{tClass.teacherId}}"{{/if}} >
+        {{#each teachers}}
+        <option value="{{teacherId}}" {{#equal ../tClass.teacherId value}}selected{{/equal}}>{{teacherNm}}</option>
+        {{/each}}
+        </select>
     </div>
 </form>

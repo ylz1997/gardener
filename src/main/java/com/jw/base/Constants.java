@@ -5,7 +5,7 @@ package com.jw.base;
  */
 public final class Constants {
     public interface KIDS_CLASS_TEACHER_LOG_REL_TYPE_CD{
-        byte CLASS_TEACHER_LOG_REL_ASSISTANT = 2;//助教
+        byte CLASS_TEACHER_LOG_REL_ASSISTANT = 2;//课程顾问
         byte CLASS_TEACHER_LOG_REL_TEACHER = 1;//带班老师
 
     }

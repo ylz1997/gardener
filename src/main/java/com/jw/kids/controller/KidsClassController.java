@@ -73,7 +73,7 @@ public class KidsClassController {
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public String list(TClass tClass, Integer start, Integer length, Integer draw) throws GeneralException {
-        List<TClass> listClass = kidsClassSV.listClass(tClass, start, length);
+        List<TClassVO> listClass = kidsClassSV.listClass(tClass, start, length);
         Integer total = kidsClassSV.totalClass(tClass);
         HashMap result = new HashMap();
 

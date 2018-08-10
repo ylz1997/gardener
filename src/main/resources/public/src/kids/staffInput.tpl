@@ -30,7 +30,7 @@
             {{/each}}
         </select>
     </div>
-    <label for="classes">所在班级</label>
+<!--    <label for="classes">所在班级</label>
     <div class="checkbox" id="classes">
         {{#each classes}}
         <label>
@@ -40,7 +40,7 @@
             {{classNm}}
         </label>
         {{/each}}
-    </div>
+    </div>-->
 
 
 

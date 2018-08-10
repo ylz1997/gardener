@@ -40,7 +40,6 @@ public class KidsClassLogDetailSVImpl implements KidsClassLogDetailSV{
     @Override
     public TClassLogDetail add(TClassLogDetail tClassLogDetail) throws GeneralException {
         tClassLogDetail.setDetailLogId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("T_CLASS_LOG_DETAIL")));
-        tClassLogDetail.setLogType(LOG_OBJ_TYPE_KIDS_READD);
         tClassLogDetail.setCrtTime(DateUtil.getCurrontTime());
         tClassLogDetailDAO.insert(tClassLogDetail);
         return tClassLogDetail;

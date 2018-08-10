@@ -56,7 +56,7 @@ WHERE
         log_obj_id = #{logObjId,jdbcType=BIGINT}
     </if>
     <if test="logType == -1">
-        AND( log_type = 2 or log_type = 3)
+        AND( log_type = 2 or log_type = 3 or log_type = 4)
     </if>
     <if test="logType != -1 and logType != null ">
         and log_type = #{logType,jdbcType=TINYINT}

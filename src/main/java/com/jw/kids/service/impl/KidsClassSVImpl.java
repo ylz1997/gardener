@@ -11,6 +11,7 @@ import com.jw.kids.dao.TClassPackageDAO;
 import com.jw.kids.dao.TClassSchduleDAO;
 import com.jw.kids.dao.TTeacherClassRelDAO;
 import com.jw.kids.service.KidsClassSV;
+import org.codehaus.jackson.map.util.BeanUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,19 +80,47 @@ public class KidsClassSVImpl implements KidsClassSV{
     }
 
     @Override
-    public TClass getClassById(Long classId) throws GeneralException {
-        return tClassDAO.selectByPrimaryKey(classId);
+    public TClassVO getClassById(Long classId) throws GeneralException {
+        TClass tClass = tClassDAO.selectByPrimaryKey(classId);
+        TClassVO vo = new TClassVO();
+        BeanUtils.copyProperties(tClass,vo);
+        TTeacherClassRelExample tTeacherClassRelExample = new TTeacherClassRelExample();
+        tTeacherClassRelExample.createCriteria().andClassIdEqualTo(vo.getClassId());
+        List<TTeacherClassRel> listR = tTeacherClassRelDAO.selectByExample(tTeacherClassRelExample);
+        if (listR.size() > 1) {
+            throw new GeneralException("CLASS_002");
+        }
+        if(listR.size() > 0){
+            vo.setTeacherId(listR.get(0).getTeacherId());
+        }
+        return vo;
     }
 
     @Override
-    public List<TClass> listClass(TClass tClassVOCondition, Integer start, Integer length) throws GeneralException {
+    public List<TClassVO> listClass(TClass tClassVOCondition, Integer start, Integer length) throws GeneralException {
         TClass tClassCondition = new TClass();
         BeanUtils.copyProperties(tClassVOCondition, tClassCondition);
 
         TClassExample example = getExampleByBean(tClassCondition);
         PageHelper.offsetPage(start, length);
 
-        return tClassDAO.selectByExample(example);
+        List<TClass> list = tClassDAO.selectByExample(example);
+        List<TClassVO> listVo = new ArrayList<>();
+        for(TClass tClass: list){
+            TClassVO vo = new TClassVO();
+            BeanUtils.copyProperties(tClass,vo);
+            TTeacherClassRelExample tTeacherClassRelExample = new TTeacherClassRelExample();
+            tTeacherClassRelExample.createCriteria().andClassIdEqualTo(vo.getClassId());
+            List<TTeacherClassRel> listR = tTeacherClassRelDAO.selectByExample(tTeacherClassRelExample);
+            if (listR.size() > 1) {
+                throw new GeneralException("CLASS_002");
+            }
+            if(listR.size() > 0){
+                vo.setTeacherId(listR.get(0).getTeacherId());
+            }
+            listVo.add(vo);
+        }
+        return listVo;
     }
 
     @Override

@@ -10,6 +10,7 @@ define(['dialog',
             Hdb) {
     var classLevel;
     var table;
+    var teachers;
     $.ajax({
         url:"/SysPara/getParamByCode",
         method:"GET",
@@ -31,6 +32,24 @@ define(['dialog',
         }
     });
 
+    $.ajax({
+        url:"/Staff/list",
+        method:"GET",
+        data:{start:0, length:10000, draw:1, duty:1},
+        success:function (callData) {
+            callData = JSON.parse(callData);
+            teachers = callData.data;
+        },
+        error:function (data) {
+            if(data.result != true){
+                new Dialog({
+                    mode: 'tips',
+                    tipsType: 'error',
+                    content: data.responseJSON.error
+                });
+            }
+        }
+    });
     var getAllPackage = function () {
         var allClassPackage;
         //获取所有课时包
@@ -130,6 +149,7 @@ define(['dialog',
                             var tmp = Hdb.compile(InputTpl);
                             data.allClassPackage = getAllPackage();
                             data.classLevel = classLevel;
+                            data.teachers = teachers;
                             var html = tmp(data);
                             new Dialog(
                                 {
@@ -243,6 +263,7 @@ define(['dialog',
             var data = {};
             data.allClassPackage = getAllPackage();
             data.classLevel = classLevel;
+            data.teachers = teachers;
             var inputTemplate = Hdb.compile(InputTpl);
             var inputHtml = inputTemplate(data);
             new Dialog(

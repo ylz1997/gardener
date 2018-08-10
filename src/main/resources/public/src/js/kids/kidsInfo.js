@@ -230,11 +230,14 @@ define(['dialog',
         var html = "";
         if(row.logId){
             html = "<a class='viewLog' href='javascript:void(0)' logId='" + row.logId + "'>查看课堂日志</a>";
-        }
-        else if(row.detailLogId){
+        }else if(row.logType == 3){
             readdRow[row.detailLogId] = row;
             html = "<a class='viewReaddLog' href='javascript:void(0)' detailLogId='" + row.detailLogId + "'>查看补课日志</a>";
+        }else if(row.logType == 4){
+            readdRow[row.detailLogId] = row;
+            html = "<a class='viewReaddLog' href='javascript:void(0)' detailLogId='" + row.detailLogId + "'>查看电辅记录</a>";
         }
+
         return html;
     }
     var getParam = function () {
@@ -435,6 +438,9 @@ define(['dialog',
                                         if(data == "3"){
                                             return "补课";
                                         }
+                                        if(data == "4"){
+                                            return "电辅";
+                                        }
                                     }}
                                 ]
                             });
@@ -445,7 +451,7 @@ define(['dialog',
                                         mode:"confirm",
                                         id:"kidsInput",
                                         content:reAddTplInput,
-                                        title:"补一节课",
+                                        title:"补课",
                                         callbak:function () {
                                             $("#strClassTime").datetimepicker({
                                                 autoclose:true,
@@ -459,6 +465,8 @@ define(['dialog',
                                                 params[$(this).attr("name")] = $(this).val();
                                             })
                                             params.logObjId = kId;
+                                            params.logType = 3;
+
                                             $.ajax({
                                                 url:"/KidsLogDetail/add",
                                                 method:"POST",
@@ -488,17 +496,73 @@ define(['dialog',
                                         }
                                     });
                                 })
+
+                                $("#btn-telCall-clz").click(function () {
+                                    var dataParam = {};
+                                    dataParam.operType = "reAdd";
+                                    var reAddTplInput = Hdb.compile(KidsReAddInput)(dataParam);
+                                    new Dialog({
+                                        mode:"confirm",
+                                        id:"kidsInput",
+                                        content:reAddTplInput,
+                                        title:"电辅",
+                                        callbak:function () {
+                                            $("#strClassTime").datetimepicker({
+                                                autoclose:true,
+                                                language:"ZH-cn",
+                                                format: 'yyyy-mm-dd hh:ii:ss'
+                                            });
+                                        },
+                                        ok:function () {
+                                            var params = new Object();
+                                            $(".kidsReAddClzLog").each(function(){
+                                                params[$(this).attr("name")] = $(this).val();
+                                            })
+                                            params.logObjId = kId;
+                                            params.logType = 4;
+
+                                            $.ajax({
+                                                url:"/KidsLogDetail/add",
+                                                method:"POST",
+                                                contentType:"application/json",
+                                                data:JSON.stringify(params),
+                                                success:function (data) {
+                                                    data = JSON.parse(data);
+                                                    if(data.result == true){
+                                                        new Dialog({
+                                                            mode: 'tips',
+                                                            tipsType: 'success',
+                                                            content: "保存成功"
+                                                        });
+                                                    }
+                                                    hisTable.ajax.reload();
+                                                },
+                                                error:function (data) {
+                                                    debugger;
+                                                    new Dialog({
+                                                        mode: 'tips',
+                                                        tipsType: 'error',
+                                                        content: data.responseJSON.error
+                                                    });
+                                                    return;
+                                                }
+                                            })
+                                        }
+                                    });
+                                })
+
                                 $("#logType").change(function(){
                                     hisTable.ajax.reload();
                                 })
                                 $(".viewReaddLog").click(function () {
                                     var detailLogId = $(this).attr("detailLogId");
+                                    readdRow.operType = "telCall";
                                     var reAddTplInput = Hdb.compile(KidsReAddInput)(readdRow[detailLogId]);
                                     new Dialog({
                                         mode:"confirm",
                                         id:"kidsInput",
                                         content:reAddTplInput,
-                                        title:"补一节课",
+                                        title:"补课或电辅",
                                         callbak:function () {
                                             $("#strClassTime").datetimepicker({
                                                 autoclose:true,

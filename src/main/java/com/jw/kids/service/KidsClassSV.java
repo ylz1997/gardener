@@ -41,7 +41,7 @@ public interface KidsClassSV {
      * @return
      * @throws GeneralException
      */
-    TClass getClassById(Long tId) throws GeneralException;
+    TClassVO getClassById(Long tId) throws GeneralException;
 
     /**
      * 查询列表
@@ -49,7 +49,7 @@ public interface KidsClassSV {
      * @return
      * @throws GeneralException
      */
-    List<TClass> listClass(TClass tClass, Integer start, Integer length) throws GeneralException;
+    List<TClassVO> listClass(TClass tClass, Integer start, Integer length) throws GeneralException;
 
     /**
      * 查询单个
