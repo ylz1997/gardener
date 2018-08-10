@@ -17,7 +17,7 @@ public interface KidsClassSV {
      * @return
      * @throws GeneralException
      */
-    TClass addClass(TClass TClassVO) throws GeneralException;
+    TClass addClass(TClassVO TClassVO) throws GeneralException;
 
     /**
      * 修改

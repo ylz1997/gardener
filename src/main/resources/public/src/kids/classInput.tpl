@@ -1,7 +1,6 @@
 <form >
     <input type="hidden" class="kidsClz" name="classId" id="classId" {{#if tClass.classId}}value="{{tClass.classId}}"{{/if}}>
     <input type="hidden" class="kidsClz" name="strCrtTime" id="strCrtTime" {{#if tClass.crtTime}}value="{{tClass.crtTime}}" {{/if}}>
-
     <div class="form-group">
         <label for="classNm">班级名称</label>
         <input type="input" class="form-control kidsClz" name="classNm" id="classNm" {{#if tClass.classNm}}value="{{tClass.classNm}}"{{/if}} placeholder="请输入班级名称">

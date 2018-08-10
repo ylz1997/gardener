@@ -288,7 +288,6 @@ define(['dialog',
                     $(".schdule").append(dynClassSchdule);
                 })
         });
-
         tableInit();
         $("#btn-query").click(function () {
             search();

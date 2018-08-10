@@ -14,6 +14,8 @@ public class TClassVO extends TClass{
 
     private String strCrtTime;
 
+    private Long teacherId;
+
     public String getStrCrtTime() {
         return strCrtTime;
     }
@@ -21,6 +23,14 @@ public class TClassVO extends TClass{
     public void setStrCrtTime(String strCrtTime) throws GeneralException {
         this.strCrtTime = strCrtTime;
         setCrtTime(DateUtil.convertDateStringToTimestamp(strCrtTime,"yyyy-MM-dd HH:mm:ss"));
+    }
+
+    public Long getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(Long teacherId) {
+        this.teacherId = teacherId;
     }
 
     //课时数量

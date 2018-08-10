@@ -4,7 +4,11 @@ package com.jw.base;
  * 常量类
  */
 public final class Constants {
+    public interface KIDS_CLASS_TEACHER_LOG_REL_TYPE_CD{
+        byte CLASS_TEACHER_LOG_REL_ASSISTANT = 2;//助教
+        byte CLASS_TEACHER_LOG_REL_TEACHER = 1;//带班老师
 
+    }
     public interface KIDS_LOG_OBJ_TYPE_CD{
         byte LOG_OBJ_TYEP_TEACHER = 1;
         byte LOG_OBJ_TYPE_KIDS = 2;//

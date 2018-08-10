@@ -3,11 +3,13 @@ package com.jw.kids.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.StringUtil;
 import com.jw.base.BasicUtil;
+import com.jw.base.DateUtil;
 import com.jw.base.GeneralException;
 import com.jw.kids.bean.*;
 import com.jw.kids.dao.TClassDAO;
 import com.jw.kids.dao.TClassPackageDAO;
 import com.jw.kids.dao.TClassSchduleDAO;
+import com.jw.kids.dao.TTeacherClassRelDAO;
 import com.jw.kids.service.KidsClassSV;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.jw.base.Constants.KIDS_CLASS_TEACHER_LOG_REL_TYPE_CD.CLASS_TEACHER_LOG_REL_TEACHER;
 
 /**
  * @author jw
@@ -26,6 +30,8 @@ public class KidsClassSVImpl implements KidsClassSV{
 
     @Autowired
     private TClassDAO tClassDAO;
+    @Autowired
+    private TTeacherClassRelDAO tTeacherClassRelDAO;
 /*    @Autowired
     private TClassSchduleDAO tClassSchduleDAO;
     @Autowired
@@ -33,10 +39,19 @@ public class KidsClassSVImpl implements KidsClassSV{
 
     @Override
     @Transactional
-    public TClass addClass(TClass tClass) throws GeneralException {
-        tClass.setClassId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_class")));
-        tClassDAO.insert(tClass);
-        return tClass;
+    public TClass addClass(TClassVO tClassVO) throws GeneralException {
+        tClassVO.setClassId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_class")));
+        tClassDAO.insert(tClassVO);
+
+        TTeacherClassRel tTeacherClassRel = new TTeacherClassRel();
+        tTeacherClassRel.setRlId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_teacher_class_rel")));
+        tTeacherClassRel.setTeacherId(tClassVO.getTeacherId());
+        tTeacherClassRel.setClassId(tClassVO.getClassId());
+        tTeacherClassRel.setRlType(CLASS_TEACHER_LOG_REL_TEACHER);
+        tTeacherClassRel.setCrtTime(DateUtil.getCurrontTime());
+        tTeacherClassRel.setModfTime(tTeacherClassRel.getCrtTime());
+        tTeacherClassRelDAO.insert(tTeacherClassRel);
+        return tClassVO;
     }
 
     @Transactional
