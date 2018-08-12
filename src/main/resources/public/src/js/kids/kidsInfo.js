@@ -232,10 +232,10 @@ define(['dialog',
             html = "<a class='viewLog' href='javascript:void(0)' logId='" + row.logId + "'>查看课堂日志</a>";
         }else if(row.logType == 3){
             readdRow[row.detailLogId] = row;
-            html = "<a class='viewReaddLog' href='javascript:void(0)' detailLogId='" + row.detailLogId + "'>查看补课日志</a>";
+            html = "<a class='viewReaddLog' href='javascript:void(0)' detailLogId='" + row.detailLogId + "' logType='reAdd'>查看补课日志</a>";
         }else if(row.logType == 4){
             readdRow[row.detailLogId] = row;
-            html = "<a class='viewReaddLog' href='javascript:void(0)' detailLogId='" + row.detailLogId + "'>查看电辅记录</a>";
+            html = "<a class='viewReaddLog' href='javascript:void(0)' detailLogId='" + row.detailLogId + "' logType='telCall'>查看电辅记录</a>";
         }
 
         return html;
@@ -446,7 +446,9 @@ define(['dialog',
                             });
                             hisTable.on("draw",function () {
                                 $("#btn-readd-clz").click(function () {
-                                    var reAddTplInput = Hdb.compile(KidsReAddInput)();
+                                    var data = {};
+                                    data.operType = "reAdd";
+                                    var reAddTplInput = Hdb.compile(KidsReAddInput)(data);
                                     new Dialog({
                                         mode:"confirm",
                                         id:"kidsInput",
@@ -499,7 +501,7 @@ define(['dialog',
 
                                 $("#btn-telCall-clz").click(function () {
                                     var dataParam = {};
-                                    dataParam.operType = "reAdd";
+                                    dataParam.operType = "telCall";
                                     var reAddTplInput = Hdb.compile(KidsReAddInput)(dataParam);
                                     new Dialog({
                                         mode:"confirm",
@@ -556,7 +558,8 @@ define(['dialog',
                                 })
                                 $(".viewReaddLog").click(function () {
                                     var detailLogId = $(this).attr("detailLogId");
-                                    readdRow.operType = "telCall";
+                                    var logType = $(this).attr("logType");
+                                    readdRow[detailLogId].operType = logType;
                                     var reAddTplInput = Hdb.compile(KidsReAddInput)(readdRow[detailLogId]);
                                     new Dialog({
                                         mode:"confirm",
