@@ -10,10 +10,10 @@ public final class Constants {
 
     }
     public interface KIDS_LOG_OBJ_TYPE_CD{
-        byte LOG_OBJ_TYEP_TEACHER = 1;
-        byte LOG_OBJ_TYPE_KIDS = 2;//
-        byte LOG_OBJ_TYPE_KIDS_READD = 3;//补课
-        byte LOG_OBJ_TYEP_KIDS_TELE = 4;//电辅
+        byte LOG_OBJ_TYEP_TEACHER = 1;//教师日志
+        byte LOG_OBJ_TYPE_KIDS = 2;//学生日志
+        byte LOG_OBJ_TYPE_KIDS_READD = 3;//补课日志
+        byte LOG_OBJ_TYEP_KIDS_TELE = 4;//电辅日志
     }
     //存放系统常用配置
     public interface SYSTEM_CONFIG {
@@ -26,7 +26,7 @@ public final class Constants {
         String SYSTEM_ENV_PRODUCT = "product"; //生产环境
     }
 
-    //知识批量采编onest路径
+/*    //知识批量采编onest路径
     public interface BATCH_UPLOAD {
         String BATCH_UPLOAD = "batchUpload";
     }
@@ -468,21 +468,21 @@ public final class Constants {
 
     }
 
-    /**
+    *//**
      * 导出文件限制
      *
      * @author ZSL
      *
-     */
+     *//*
     public interface EXPORT_FILE_LIMIT{
 
-        /**
+        *//**
          * 最大导出记录数
-         */
+         *//*
         int MAX_RECORDS=50000;
-        /**
+        *//**
          * 每页最多查询数据记录条数
-         */
+         *//*
         int PAGE_SIZE=5000;
 
     }
@@ -672,9 +672,9 @@ public final class Constants {
         String REMOVED = "0";//删除状态
     }
 
-    /**
+    *//**
      * 模板分组、筛选条件与原子的对应关系表
-     */
+     *//*
     public interface NGKM_TMPLT_KEY_OBJ_REL{
         //分组对应关系
         String GROUPS = "1";
@@ -880,9 +880,9 @@ public final class Constants {
     //咨询表字段类型
     public interface NGKM_CONSULT_COLM_TYPE{
         String NUM = "num";//数字类型
-/*        String DATE = "date";//日期类型
+*//*        String DATE = "date";//日期类型
         String REL = "rel";//关联知识类型
-        String MES = "mes";//短信类型*/
+        String MES = "mes";//短信类型*//*
         String CHAR = "char";//字符串类型
     }
 
@@ -906,5 +906,5 @@ public final class Constants {
         String TEST_USER = "tester";
         String TEST_TEND_ID = "-1";
         String TEST_REGN_ID = "000";
-    }
+    }*/
 }

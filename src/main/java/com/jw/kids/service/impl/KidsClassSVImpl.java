@@ -39,7 +39,7 @@ public class KidsClassSVImpl implements KidsClassSV{
     private TClassPackageDAO tClassPackageDAO;*/
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public TClass addClass(TClassVO tClassVO) throws GeneralException {
         tClassVO.setClassId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_class")));
         tClassDAO.insert(tClassVO);
@@ -55,7 +55,7 @@ public class KidsClassSVImpl implements KidsClassSV{
         return tClassVO;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public TClass editClass(TClass tClassVO) throws GeneralException {
         TClass tClass = new TClass();
@@ -66,7 +66,7 @@ public class KidsClassSVImpl implements KidsClassSV{
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public TClass deleteClass(String classId) throws GeneralException {
         Long lId;
         try{

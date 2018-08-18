@@ -30,7 +30,7 @@ public class KidsClassPackageSVImpl implements KidsClassPackageSV{
     TClassPackageDAO tClassPackageDAO;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public TClassPackage addClassPackage(TClassPackage TClassPackage) throws GeneralException {
         TClassPackage.setClassPackageId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_teacher")));
         tClassPackageDAO.insert(TClassPackage);
@@ -38,7 +38,7 @@ public class KidsClassPackageSVImpl implements KidsClassPackageSV{
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public TClassPackage editClassPackage(TClassPackageVO tClassPackageVO) throws GeneralException {
         TClassPackage tClassPackage = new TClassPackage();
         BeanUtils.copyProperties(tClassPackageVO, tClassPackage);
@@ -47,7 +47,7 @@ public class KidsClassPackageSVImpl implements KidsClassPackageSV{
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public TClassPackage deleteClassPackage(String classPackageId) throws GeneralException {
         Long lTid = null;
         try{

@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.jw.base.Constants.KIDS_LOG_OBJ_TYPE_CD.LOG_OBJ_TYPE_KIDS_READD;
 
 /**
  * @author jw
@@ -36,7 +35,7 @@ public class KidsClassLogDetailSVImpl implements KidsClassLogDetailSV{
     @Autowired
     private TClassLogDetailDAO tClassLogDetailDAO;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public TClassLogDetail add(TClassLogDetail tClassLogDetail) throws GeneralException {
         tClassLogDetail.setDetailLogId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("T_CLASS_LOG_DETAIL")));

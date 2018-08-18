@@ -43,7 +43,7 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
 
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public TClassLogVO add(TClassLogVO tClassLog) throws GeneralException {
         if(tClassLog == null){
             logger.error("============tClassLog is null==============");
@@ -64,7 +64,6 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
             tClassLogDetail.setClassTime(tClassLog.getClassTime());
             classLogDetailDAO.insert(tClassLogDetail);
         }
-
         for(TClassLogDetail tKids :tClassLog.getKidsList()){
             TClassLogDetail tClassLogDetail = new TClassLogDetail();
             tClassLogDetail.setCrtTime(DateUtil.getCurrontTime());
@@ -77,22 +76,25 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
 
             //消掉学生的课时
             TKids tKidsConsume = tKidsDAO.selectByPrimaryKey(tClassLogDetail.getLogObjId());
-            tKidsConsume.setAmount(tKidsConsume.getAmount() - 1);
-            tKidsDAO.updateByPrimaryKey(tKidsConsume);
+            if(tKidsConsume != null){
+                tKidsConsume.setAmount(tKidsConsume.getAmount() - 1);
+                tKidsDAO.updateByPrimaryKey(tKidsConsume);
+            }
+
         }
 
         return tClassLog;
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public TClassLogVO edit(TClassLogVO tClassLog) throws GeneralException {
         classLogDao.updateByPrimaryKey(tClassLog);
         return tClassLog;
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public TClassLog delete(String tId) throws GeneralException {
         Long lTid = null;
         try{

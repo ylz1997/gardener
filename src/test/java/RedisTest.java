@@ -21,8 +21,6 @@ import java.util.concurrent.TimeUnit;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = SpringbootApplication.class)
-//@ContextConfiguration
-//@EnableAutoConfiguration
 public class RedisTest{
     @Test
     public void test(){

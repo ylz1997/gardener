@@ -19,7 +19,7 @@ public class KidsLogSVImpl implements KidsLogSV{
     private TKidsLogDAO logDAO;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean add(TKidsLog log) throws GeneralException {
         log.setLogId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_kids_log")));
         logDAO.insert(log);

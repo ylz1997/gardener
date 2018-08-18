@@ -34,7 +34,7 @@ public class KidsStudentServiceImpl implements KidsStudentService {
     private TClassPackageDAO tClassPackageDAO;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public TKids addKids(TKids tKids) throws GeneralException {
         tKids.setkId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_kids")));
         tKids.setAmount(0);
@@ -43,14 +43,14 @@ public class KidsStudentServiceImpl implements KidsStudentService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public TKids editKids(TKids tKids) throws GeneralException {
         tKidsDAO.updateByPrimaryKey(tKids);
         return tKids;
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public TKids deleteKids(String kId) throws GeneralException {
         Long lKid;
         try{
@@ -77,7 +77,7 @@ public class KidsStudentServiceImpl implements KidsStudentService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public HashMap charge(String kid, String classPackageId) throws GeneralException {
         Long lKid;
         Long lClassPackageId;
