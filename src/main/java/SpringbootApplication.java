@@ -26,8 +26,8 @@ import java.util.Properties;
 @SpringBootApplication
 @EnableAutoConfiguration
 @EnableAspectJAutoProxy
-@ComponentScan(basePackages = {"com.jw.kids", "com.jw.kids.service", "com.jw.base","com.jw.kids.service"})
-@MapperScan(basePackages = {"com.jw.kids.dao"})
+@ComponentScan(basePackages = {"com.jw.kids", "com.jw.kids.service", "com.jw.base","com.jw.shiro.service"})
+@MapperScan(basePackages = {"com.jw.kids.dao","com.jw.shiro.dao"})
 
 public class SpringbootApplication implements EmbeddedServletContainerCustomizer {
     @Override
