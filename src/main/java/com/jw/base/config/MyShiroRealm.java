@@ -24,7 +24,7 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class MyShiroRealm extends AuthorizingRealm {
 
-    @Autowired
+    @Resource
     private UserInfoService userInfoService;
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
