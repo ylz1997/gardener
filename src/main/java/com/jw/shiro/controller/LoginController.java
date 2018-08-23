@@ -1,9 +1,8 @@
 package com.jw.shiro.controller;
 
+import com.jw.shiro.bean.UserInfo;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -24,8 +24,8 @@ import java.util.Map;
 public class LoginController {
     private Logger logger = LoggerFactory.getLogger(LoginController.class);
     @RequestMapping(value = "/login" , method = RequestMethod.GET)
-    public void login(HttpServletRequest request, HttpServletResponse response,  Map<String, Object> map) throws Exception{
-
+    public String login(UserInfo userInfo) throws Exception{
+/*
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
@@ -55,7 +55,28 @@ public class LoginController {
         }
         map.put("msg", msg);
         // 此方法不处理登录成功,由shiro进行处理
-        response.sendRedirect("/src/login/login.html");
+        response.sendRedirect("/src/login/login.html");*/
+
+        Map resultMap = new HashMap();
+        Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken token = new UsernamePasswordToken(userInfo.getUserName(), userInfo.getPassword());
+        try {
+            subject.login(token);
+            resultMap.put("token", subject.getSession().getId());
+            resultMap.put("msg", "登录成功");
+        } catch (IncorrectCredentialsException e) {
+            resultMap.put("msg", "密码错误");
+        } catch (LockedAccountException e) {
+            resultMap.put("msg", "登录失败，该用户已被冻结");
+        } catch (AuthenticationException e) {
+            resultMap.put("msg", "该用户不存在");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultMap.toString();
+
+
+
     }
 
 /*    @RequestMapping(value = "/loginJump",method = RequestMethod.GET)

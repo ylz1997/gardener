@@ -5,9 +5,9 @@ import com.jw.shiro.bean.TUserInfoExample;
 import com.jw.shiro.bean.UserInfo;
 import com.jw.shiro.dao.TUserInfoDAO;
 import com.jw.shiro.service.UserInfoService;
-import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
