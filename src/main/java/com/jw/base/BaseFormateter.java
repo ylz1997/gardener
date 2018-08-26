@@ -8,7 +8,6 @@ import java.sql.*;
 
 /**
  *
- * Created by lye on 2017/11/18.
  * 公用的出参转换类
  * 作用：1、自动去除时间格式后缀“.0”；2、将long类型转换为String类型；
  */

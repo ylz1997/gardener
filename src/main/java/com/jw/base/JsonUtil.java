@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 /**
  * json转换工具类
  *
- * @author Administrator
  */
 public final class JsonUtil {
 
