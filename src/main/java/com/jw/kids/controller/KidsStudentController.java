@@ -8,6 +8,7 @@ import com.jw.kids.bean.TKidsExample;
 import com.jw.kids.bean.TKidsVO;
 import com.jw.kids.controller.aop.KidsLog;
 import com.jw.kids.service.KidsStudentService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -91,6 +92,7 @@ public class KidsStudentController {
     }
     @KidsLog(operType = "charge")
     @RequestMapping(value = "/charge",method = RequestMethod.POST)
+    @RequiresPermissions("kids:charge")
     public String charge(String kId, String classPackageId) throws GeneralException {
 
         HashMap result = kidsStudentService.charge(kId, classPackageId);

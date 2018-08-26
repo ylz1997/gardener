@@ -16,7 +16,9 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
+import javax.management.relation.Role;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 /**
  * @author jw
@@ -31,9 +33,20 @@ public class MyShiroRealm extends AuthorizingRealm {
         System.out.println("权限配置-->MyShiroRealm.doGetAuthorizationInfo()");
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         UserInfo userInfo  = (UserInfo)principals.getPrimaryPrincipal();
-        for(SysRole role:userInfo.getRoleList()){
+        List<SysRole> roleList = userInfo.getRoleList();
+
+        if(roleList == null)
+            return authorizationInfo;
+
+        for(SysRole role:roleList){
             authorizationInfo.addRole(role.getRole());
-            for(TSysPermission p:role.getPermissions()){
+            List<TSysPermission> permissionList = role.getPermissions();
+
+            if(permissionList == null){
+                continue;
+            }
+
+            for(TSysPermission p:permissionList){
                 authorizationInfo.addStringPermission(p.getPermission());
             }
         }
