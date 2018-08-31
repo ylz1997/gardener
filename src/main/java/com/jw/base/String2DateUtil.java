@@ -11,7 +11,6 @@ import java.util.Date;
 /**
  * 将字符串日期与long类型之间转换
  *
- * @author ylz 2018-3-16 14:53:06
  */
 public class String2DateUtil {
 

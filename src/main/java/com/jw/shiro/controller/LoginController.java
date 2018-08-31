@@ -1,5 +1,6 @@
 package com.jw.shiro.controller;
 
+import com.jw.base.JsonUtil;
 import com.jw.shiro.bean.UserInfo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -23,7 +24,7 @@ import java.util.Map;
 @RestController
 public class LoginController {
     private Logger logger = LoggerFactory.getLogger(LoginController.class);
-    @RequestMapping(value = "/login" , method = RequestMethod.GET)
+    @RequestMapping(value = "/login" , method = RequestMethod.POST)
     public String login(UserInfo userInfo) throws Exception{
 /*
         String username = request.getParameter("username");
@@ -63,7 +64,8 @@ public class LoginController {
         try {
             subject.login(token);
             resultMap.put("token", subject.getSession().getId());
-            resultMap.put("msg", "登录成功");
+            resultMap.put("msg", "登录成功,正在跳转主页...");
+            resultMap.put("url", "/src/kids/kidsMain.html");
         } catch (IncorrectCredentialsException e) {
             resultMap.put("msg", "密码错误");
         } catch (LockedAccountException e) {
@@ -73,9 +75,7 @@ public class LoginController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return resultMap.toString();
-
-
+        return JsonUtil.convertObject2Json(resultMap);
 
     }
 
