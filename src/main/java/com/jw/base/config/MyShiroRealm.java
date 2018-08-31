@@ -33,6 +33,8 @@ public class MyShiroRealm extends AuthorizingRealm {
         System.out.println("权限配置-->MyShiroRealm.doGetAuthorizationInfo()");
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         UserInfo userInfo  = (UserInfo)principals.getPrimaryPrincipal();
+
+        //获取角色集合
         List<SysRole> roleList = userInfo.getRoleList();
 
         if(roleList == null)

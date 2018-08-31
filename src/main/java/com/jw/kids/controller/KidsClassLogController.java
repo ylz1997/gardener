@@ -6,6 +6,7 @@ import com.jw.base.JsonUtil;
 import com.jw.kids.bean.TClassLog;
 import com.jw.kids.bean.TClassLogVO;
 import com.jw.kids.service.KidsClassLogSV;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ public class KidsClassLogController {
     KidsClassLogSV kidsClassLogSV;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequiresPermissions("kidsLog:add")
     public String add(@RequestBody TClassLogVO tClassLog) throws GeneralException {
         tClassLog.setCrtTime(DateUtil.getCurrontTime());
         tClassLog.setModfTime(DateUtil.getCurrontTime());
