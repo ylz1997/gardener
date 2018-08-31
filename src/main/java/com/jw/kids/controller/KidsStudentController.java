@@ -32,6 +32,7 @@ public class KidsStudentController {
     private KidsStudentService kidsStudentService;
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
+    @RequiresPermissions("kids:add")
     @KidsLog(operType = "add")
     public String add(@Valid @RequestBody TKidsVO tKids) throws GeneralException {
         tKids.setCrtTime(DateUtil.getCurrontTime());
@@ -45,6 +46,7 @@ public class KidsStudentController {
         return JsonUtil.convertObject2Json(result);
     }
     @KidsLog(operType = "edit")
+    @RequiresPermissions("kids:edit")
     @RequestMapping(value = "/edit",method = RequestMethod.POST)
     public String edit(@Valid @RequestBody TKidsVO tKids) throws GeneralException {
         tKids.setModfTime(DateUtil.getCurrontTime());
@@ -58,6 +60,7 @@ public class KidsStudentController {
     }
 
     @KidsLog(operType = "delete")
+    @RequiresPermissions("kids:delete")
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
     public String delete(String kId) throws GeneralException {
         TKids kidsResult = kidsStudentService.deleteKids(kId);
