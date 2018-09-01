@@ -59,7 +59,7 @@
         <label for="consultantId">顾问</label>
         <select class="form-control kidsClz" id="consultantId" name="consultantId" {{#if tKids.consultantId}}value="{{tKids.consultantId}}"{{/if}} >
             {{#each consultants}}
-            <option value="{{teacherId}}" {{#equal ../tKids.consultantId teacherId}}selected{{/equal}}>{{teacherNm}}</option>
+            <option value="{{teacherId}}" {{#equal ../tKids.consultantId teacherId}}selected{{/equal}}>{{teacherEnNm}}</option>
             {{/each}}
         </select>
     </div>

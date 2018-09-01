@@ -5,6 +5,7 @@
         SELECT
         t.teacher_id as teacherId,
         teacher_nm as teacherNm,
+        teacher_en_nm as teacherEnNm,
         r.class_id as classId,
         c.class_nm as classNm
     FROM

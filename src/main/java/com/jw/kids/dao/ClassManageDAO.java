@@ -10,6 +10,11 @@ import java.util.Map;
  */
 public interface ClassManageDAO {
 
+    /**
+     *  根据班级id查询教师
+     * @param classId
+     * @return
+     */
     List<Map> listByClassId(Long classId);
 
     List<Map> listClassLog(HashMap params);

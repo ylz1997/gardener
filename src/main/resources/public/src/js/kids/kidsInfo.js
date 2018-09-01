@@ -645,7 +645,7 @@ define(['dialog',
 
                                                                     for(var i=0; i < classTeacherList.length; i++){
                                                                         targetTeacherHtml += "<label><input type=\"checkbox\" name=\"classes\" checked class=\"teacherCheckClz\" value='"+ classTeacherList[i].teacherId + "'/>" +
-                                                                            classTeacherList[i].teacherNm + "</label>";
+                                                                            classTeacherList[i].teacherEnNm + "</label>";
                                                                     }
                                                                     if(!targetTeacherHtml){
                                                                         targetTeacherHtml = "暂无数据...";
