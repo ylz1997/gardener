@@ -16,7 +16,7 @@ require(['jquery','dialog'],function ($, Dialog) {
                             });
                             setTimeout(function () {
                                 window.location.href = callData.url;
-                            },3000)
+                            },2000)
                         }
                         else{
                             new Dialog({
