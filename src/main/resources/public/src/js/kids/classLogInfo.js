@@ -167,7 +167,7 @@ define(['dialog',
                                     mode:"confirm",
                                     id:"kidsInput",
                                     content:html,
-                                    title:"查看课堂日志",
+                                        title:"查看课堂日志",
                                     callbak:function () {
                                         $(".kidsClzLogChangeClick").change(function () {
                                             var classId = $(this).val();

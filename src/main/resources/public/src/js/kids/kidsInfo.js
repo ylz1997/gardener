@@ -594,37 +594,6 @@ define(['dialog',
                                             });
                                         },
                                         ok:function () {
-                                            var params = new Object();
-                                            $(".kidsReAddClzLog").each(function(){
-                                                params[$(this).attr("name")] = $(this).val();
-                                            })
-                                            params.logObjId = kId;
-                                            $.ajax({
-                                                url:"/KidsLogDetail/add",
-                                                method:"POST",
-                                                contentType:"application/json",
-                                                data:JSON.stringify(params),
-                                                success:function (data) {
-                                                    data = JSON.parse(data);
-                                                    if(data.result == true){
-                                                        new Dialog({
-                                                            mode: 'tips',
-                                                            tipsType: 'success',
-                                                            content: "保存成功"
-                                                        });
-                                                    }
-                                                    hisTable.ajax.reload();
-                                                },
-                                                error:function (data) {
-                                                    debugger;
-                                                    new Dialog({
-                                                        mode: 'tips',
-                                                        tipsType: 'error',
-                                                        content: data.responseJSON.error
-                                                    });
-                                                    return;
-                                                }
-                                            })
                                         }
                                     });
                                 })

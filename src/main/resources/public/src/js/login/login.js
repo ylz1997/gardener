@@ -15,8 +15,8 @@ require(['jquery','dialog'],function ($, Dialog) {
                                 content: callData.msg
                             });
                             setTimeout(function () {
-                                window.location.href = callData.url;
-                            },2000)
+                                window.location.href = callData.url+"?loginNm="+callData.loginNm;
+                            },1000);
                         }
                         else{
                             new Dialog({

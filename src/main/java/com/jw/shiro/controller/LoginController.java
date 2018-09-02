@@ -36,6 +36,7 @@ public class LoginController {
             resultMap.put("token", subject.getSession().getId());
             resultMap.put("msg", "登录成功,正在跳转主页...");
             resultMap.put("url", "/src/kids/kidsMain.html");
+            resultMap.put("loginNm", ((UserInfo)subject.getPrincipal()).getName());
         } catch (IncorrectCredentialsException e) {
             resultMap.put("msg", "密码错误");
         } catch (LockedAccountException e) {

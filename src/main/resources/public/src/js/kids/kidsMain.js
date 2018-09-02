@@ -27,6 +27,17 @@ define(['text!src/kids/kidsInfoList.tpl',
                     Hdb,
                     CheckPermission) {
 
+    // 序列化url查询参数
+    function serilizeUrl(url) {
+        var result = {};
+        // url = url.split("?")[1];
+        var map = url.split("&");
+        for(var i = 0, len = map.length; i < len; i++){
+            result[map[i].split("=")[0]] = map[i].split("=")[1];
+        }
+        return result;
+    }
+
     var classes;
     $.ajax({
         url:"/class/list",
@@ -106,6 +117,12 @@ define(['text!src/kids/kidsInfoList.tpl',
     }
 
     $(document).ready(function () {
+        // 路径查询参数部分
+        var searchURL = decodeURI(window.location.search);
+        searchURL = searchURL.substring(1, searchURL.length);
+        // 参数序列化
+        var searchData = serilizeUrl(decodeURI(searchURL));
+        $("#userName").html(searchData.loginNm);
         eventInit();
     })
 });
