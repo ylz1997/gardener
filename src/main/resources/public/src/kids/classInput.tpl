@@ -17,7 +17,7 @@
         <label for="classLevel">带班老师</label>
         <select class="form-control kidsClz" id="teacherId" name="teacherId" {{#if tClass.teacherId}}value="{{tClass.teacherId}}"{{/if}} >
         {{#each teachers}}
-        <option value="{{teacherId}}" {{#equal ../tClass.teacherId value}}selected{{/equal}}>{{teacherNm}}</option>
+        <option value="{{teacherId}}" {{#equal ../tClass.teacherId teacherId}}selected{{/equal}}>{{teacherEnNm}}</option>
         {{/each}}
         </select>
     </div>

@@ -267,19 +267,32 @@ define(['dialog',
                 }
             },
             columns: [
-                {data: 'kId', title:"学生编号"},
+                {data: 'contractNo', title:"协议编号"},
                 {data: 'chNm', title:"中文名"},
                 {data: 'enNm', title:"英文名"},
                 {data: 'sex', title:"性别",render: function (data, type, row, meta) {
                     return exchangeDataDic(sexParam, data);
                 }},
-                {data: 'pNm', title:"家长姓名"},
-                {data: 'pRelation', title:"家长关系",render: function (data) {
-                    return exchangeDataDic(relation, data);
-
+                {data: 'consultantId', title:"顾问",render: function (data) {
+                    for(var i=0; i < consultants.length; i++){
+                        if(consultants[i].teacherId == data){
+                            return consultants[i].teacherEnNm;
+                        }
+                    }
+                    return "未指定";
                 }},
                 {data: 'phone', title:"联系方式"},
-                {data: 'address', title:"家庭住址"},
+                {data: 'ifAppAccount', title:"是否开通APP账号", render: function (data) {
+                    if(data == "1"){
+                        return "是";
+                    }
+                    else if(data == "0"){
+                        return "否";
+                    }
+                    else{
+                        return "未指定";
+                    }
+                }},
                 {data: 'amount', title:"剩余课时"},
                 {data: 'classId', title:"所在班级", render: function (data) {
                     for(var i=0; i < classes.length; i++){
