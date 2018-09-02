@@ -69,6 +69,7 @@ define(['text!src/kids/kidsInfoList.tpl',
         $("#classPackageInfo").click(function () {
             $("#contentMain").removeClass("jumbotron");
             $("#contentMain").html(classPackageListTpl);
+            new CheckPermission("classPackage:add", $("#btn-add-div"));
             new classPackageInfo();
         })
         $("#classInfo").click(function () {

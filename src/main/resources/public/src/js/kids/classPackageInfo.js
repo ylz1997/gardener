@@ -2,12 +2,14 @@ define(['dialog',
     'text!src/kids/classPackageInput.tpl',
     'jquery',
     'datatables',
-    'hdb'
+    'hdb',
+    'src/js/kids/checkPermission'
 ],function (Dialog,
             InputTpl,
             $,
             DataTables,
-            Hdb) {
+            Hdb,
+            CheckPermission) {
     var table;
 
 
@@ -30,8 +32,8 @@ define(['dialog',
         return data;
     }
     var genOperation = function (row) {
-        var html = "<a class='modifyBtn' href='javascript:void(0)' classPackageId='" + row.classPackageId + "'>修改</a> | ";
-        html = html + "<a class='deleteBtn' href='javascript:void(0)' classPackageId='" + row.classPackageId + "' classPackageNm='" + row.classPackageNm +"'>删除</a>"
+        var html = "<a class='modifyBtn hideMenu' href='javascript:void(0)' classPackageId='" + row.classPackageId + "'>修改 | </a> ";
+        html = html + "<a class='deleteBtn hideMenu' href='javascript:void(0)' classPackageId='" + row.classPackageId + "' classPackageNm='" + row.classPackageNm +"'>删除</a>"
         return html;
     }
     var getParam = function () {
@@ -68,6 +70,7 @@ define(['dialog',
                 {
                     data: 'classPackageId',
                     title: "操作",
+                    width: "200px",
                     render: function (data, type, row, meta) {
                         return genOperation(row);
                     }
@@ -75,6 +78,10 @@ define(['dialog',
             ]
         });
         table.on( 'draw', function () {
+            new CheckPermission("classPackage:edit", $(".modifyBtn"));
+            new CheckPermission("classPackage:delete", $(".deleteBtn"));
+
+
             $(".modifyBtn").click(function () {
                 var classPackageId = $(this).attr("classPackageId");
                 $.ajax({

@@ -9,6 +9,7 @@ import com.jw.kids.bean.TClassPackage;
 import com.jw.kids.bean.TClassPackageVO;
 import com.jw.kids.dao.TClassPackageDAO;
 import com.jw.kids.service.KidsClassPackageSV;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,7 @@ public class KidsClassPackageController {
     KidsClassPackageSV kidsClassPackageSV;
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
+    @RequiresPermissions("classPackage:add")
     public String add(@Valid @RequestBody TClassPackageVO tClassPackageVO) throws GeneralException {
         tClassPackageVO.setCrtTime(DateUtil.getCurrontTime());
         tClassPackageVO.setModfTime(DateUtil.getCurrontTime());
@@ -44,6 +46,7 @@ public class KidsClassPackageController {
     }
 
     @RequestMapping(value = "/edit",method = RequestMethod.POST)
+    @RequiresPermissions("classPackage:edit")
     public String edit(@Valid @RequestBody TClassPackageVO tClassPackageVO) throws GeneralException {
         tClassPackageVO.setModfTime(DateUtil.getCurrontTime());
         tClassPackageVO.setOperator(0001L);
@@ -56,6 +59,7 @@ public class KidsClassPackageController {
     }
 
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    @RequiresPermissions("classPackage:delete")
     public String delete(String classPackageId) throws GeneralException {
         TClassPackage tClassPackageResult = kidsClassPackageSV.deleteClassPackage(classPackageId);
         HashMap result = new HashMap();
