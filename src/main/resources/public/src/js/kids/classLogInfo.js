@@ -3,13 +3,15 @@ define(['dialog',
     'jquery',
     'datatables',
     'hdb',
-    'datetimepicker'
+    'datetimepicker',
+    'src/js/kids/checkPermission'
 ],function (Dialog,
             InputTpl,
             $,
             DataTables,
             Hdb,
-            datetimepicker) {
+            datetimepicker,
+            CheckPermission) {
     var table;
     var classes;
     $.ajax({
@@ -319,6 +321,7 @@ define(['dialog',
         });
 
         tableInit();
+
         $("#btn-query").click(function () {
             search();
         })
