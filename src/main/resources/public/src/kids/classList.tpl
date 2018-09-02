@@ -14,12 +14,14 @@
         </div>
     </form>
 
+    <div id="btn-add-div" class="hideMenu">
     <div class="continer">
         <div class="btn-group" role="group" aria-label="...">
             <button type="button" class="btn btn-success" id="btn-add">
                 <span class="glyphicon glyphicon-plus"  aria-hidden="true">添加班级</span>
             </button>
         </div>
+    </div>
     </div>
     <table id="list-contain" class="display">
     </table>

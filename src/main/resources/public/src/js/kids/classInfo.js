@@ -2,12 +2,14 @@ define(['dialog',
     'text!src/kids/classInput.tpl',
     'jquery',
     'datatables',
-    'hdb'
+    'hdb',
+    'src/js/kids/checkPermission'
 ],function (Dialog,
             InputTpl,
             $,
             DataTables,
-            Hdb) {
+            Hdb,
+            CheckPermission) {
     var classLevel;
     var table;
     var teachers;
@@ -94,8 +96,8 @@ define(['dialog',
         return data;
     }
     var genOperation = function (row) {
-        var html = "<a class='modifyBtn' href='javascript:void(0)' classId='" + row.classId + "'>修改</a> | ";
-        html = html + "<a class='deleteBtn' href='javascript:void(0)' classId='" + row.classId + "' classNm='" + row.classNm + "'>删除</a>"
+        var html = "<a class='modifyBtn hideMenu' href='javascript:void(0)' classId='" + row.classId + "'>修改 | </a> ";
+        html = html + "<a class='deleteBtn hideMenu' href='javascript:void(0)' classId='" + row.classId + "' classNm='" + row.classNm + "'>删除</a>"
         return html;
     }
     var getParam = function () {
@@ -130,6 +132,7 @@ define(['dialog',
                 {
                     data: 'classId',
                     title: "操作",
+                    width: "200px",
                     render: function (data, type, row, meta) {
                         return genOperation(row);
                     }
@@ -137,6 +140,8 @@ define(['dialog',
             ]
         });
         table.on( 'draw', function () {
+            new CheckPermission("class:edit", $(".modifyBtn"));
+            new CheckPermission("class:delete", $(".deleteBtn"));
             $(".modifyBtn").click(function () {
                 var classId = $(this).attr("classId");
                 $.ajax({

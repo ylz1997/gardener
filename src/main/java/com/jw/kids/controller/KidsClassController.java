@@ -6,6 +6,7 @@ import com.jw.base.JsonUtil;
 import com.jw.kids.bean.TClass;
 import com.jw.kids.bean.TClassVO;
 import com.jw.kids.service.KidsClassSV;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ public class KidsClassController {
     KidsClassSV kidsClassSV;
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
+    @RequiresPermissions("class:add")
     public String add(@Valid @RequestBody TClassVO tClass) throws GeneralException {
         tClass.setCrtTime(DateUtil.getCurrontTime());
         tClass.setModfTime(DateUtil.getCurrontTime());
@@ -40,6 +42,7 @@ public class KidsClassController {
     }
 
     @RequestMapping(value = "/edit",method = RequestMethod.POST)
+    @RequiresPermissions("class:edit")
     public String edit(@Valid @RequestBody TClassVO tClass) throws GeneralException {
         tClass.setModfTime(DateUtil.getCurrontTime());
         tClass.setOperator(0001L);
@@ -52,6 +55,7 @@ public class KidsClassController {
     }
 
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    @RequiresPermissions("class:delete")
     public String delete(String classId) throws GeneralException {
         TClass tClassResult = kidsClassSV.deleteClass(classId);
         HashMap result = new HashMap();

@@ -75,11 +75,13 @@ define(['text!src/kids/kidsInfoList.tpl',
         $("#classInfo").click(function () {
             $("#contentMain").removeClass("jumbotron");
             $("#contentMain").html(classListTpl);
+            new CheckPermission("class:add", $("#btn-add-div"));
             new classInfo();
         })
         $("#classInfo2").click(function () {
             $("#contentMain").removeClass("jumbotron");
             $("#contentMain").html(classListTpl);
+            new CheckPermission("class:add", $("#btn-add-div"));
             new classInfo();
         })
         $("#classLogInfo").click(function () {
