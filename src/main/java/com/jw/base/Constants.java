@@ -14,6 +14,7 @@ public final class Constants {
         byte LOG_OBJ_TYPE_KIDS = 2;//学生日志
         byte LOG_OBJ_TYPE_KIDS_READD = 3;//补课日志
         byte LOG_OBJ_TYEP_KIDS_TELE = 4;//电辅日志
+        byte LOG_OBJ_TYEP_KIDS_LEAVE = 5;//请假日志
     }
 
     public interface KIDS_IF_APP_ACCOUNT{

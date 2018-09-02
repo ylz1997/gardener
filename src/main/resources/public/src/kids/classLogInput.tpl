@@ -29,13 +29,12 @@
     </div>
     <label for="kidsList">学生</label>
     <div class="checkbox" id="kidsList">
-        {{#each classKidsList}}
-        <label>
-            <input type="checkbox" name="classes" class="kidsCheckClz"/>
-                   {{#each ../tClassLog.kidsList}}  {{#equal ../kidsId kId}}checked{{/equal}}
-            {{/each}}>
+        {{#each ../tClassLog.kidsList}}
+        <button type="button" name="classes" class="btn btn-success kidsCheckClz" title="Popover title"
+                data-container="body" data-toggle="popover" data-placement="bottom"
+                data-content="底部的 Popover 中的一些内容">
             {{classNm}}
-        </label>
+        </button>
         {{/each}}
     </div>
     <div class="form-group">

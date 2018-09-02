@@ -1,6 +1,7 @@
 define(['dialog',
     'text!src/kids/classLogInput.tpl',
     'jquery',
+    'bootstrap',
     'datatables',
     'hdb',
     'datetimepicker',
@@ -8,6 +9,7 @@ define(['dialog',
 ],function (Dialog,
             InputTpl,
             $,
+            Bootstrap,
             DataTables,
             Hdb,
             datetimepicker,
@@ -85,6 +87,7 @@ define(['dialog',
         })
         return allKids;
     }
+
 
     //注册一个判断相等的Helper,判断v1是否等于v2
     Hdb.registerHelper("equal",function(v1,v2,options){
@@ -171,23 +174,49 @@ define(['dialog',
                                     callbak:function () {
                                         $(".kidsClzLogChangeClick").change(function () {
                                             var classId = $(this).val();
-                                            var classKidsList = getKidsByClassId(classId);
-                                            var classTeacherList = getTeacherByClassId(classId);
+                                            var allClassKidsList = getKidsByClassId(classId);
+                                            var allClassTeacherList = getTeacherByClassId(classId);
+                                            var classKidsList = data.tClassLog.kidsList;
+                                            var classTeacherList = data.tClassLog.teacherList;
                                             var targetKidsHtml = "";
                                             var targetTeacherHtml = "";
 
                                             for(var i=0; i < classKidsList.length; i++){
-                                                targetKidsHtml += "<label><input type=\"checkbox\" name=\"classes\" checked class=\"kidsCheckClz\" value='"+ classKidsList[i].kId + "'/>" +
-                                                    classKidsList[i].chNm + "</label>";
+                                                var kId = classKidsList[i].logObjId;
+                                                var kNm = "";
+                                                var btnType = "";
+                                                if(classKidsList[i] && classKidsList[i].logType && classKidsList[i].logType == 2){
+                                                    btnType = "btn-success";
+                                                }
+                                                else{
+                                                    btnType = "btn-warning";
+                                                }
+                                                for(var j=0; j< allClassKidsList.length; j++){
+                                                    if(allClassKidsList[j].kId == kId){
+                                                        kNm = allClassKidsList[j].chNm;
+                                                        break;
+                                                    }
+                                                }
+                                                targetKidsHtml += "<button type=\"button\" name=\"classes\" class=\"btn " +btnType+ " kidsCheckClz\" value='"+ kId + "'>" +
+                                                    kNm + "</button>";
                                             }
                                             if(!targetKidsHtml){
                                                 targetKidsHtml = "暂无数据...";
                                             }
                                             $("#kidsList").html(targetKidsHtml);
 
-                                            for(var i=0; i < classTeacherList.length; i++){
-                                                targetTeacherHtml += "<label><input type=\"checkbox\" name=\"classes\" checked class=\"teacherCheckClz\" value='"+ classTeacherList[i].teacherId + "'/>" +
-                                                    classTeacherList[i].teacherEnNm + "</label>";
+                                            for(var i=0; i < allClassTeacherList.length; i++){
+                                                var teacherId = allClassTeacherList[i].teacherId;
+                                                var tNm = allClassTeacherList[i].teacherEnNm;
+                                                var checkFlag = "";
+                                                for(var j=0; j< classTeacherList.length; j++){
+                                                    if(classTeacherList[j].logObjId == teacherId){
+                                                        checkFlag = "checked";
+                                                        break;
+                                                    }
+                                                }
+                                                targetTeacherHtml += "<label><input type=\"checkbox\" name=\"classes\" " + checkFlag + " class=\"teacherCheckClz\" value='"+ teacherId + "'/>" +
+                                                    tNm + "</label>";
                                             }
                                             if(!targetTeacherHtml){
                                                 targetTeacherHtml = "暂无数据...";
@@ -234,23 +263,33 @@ define(['dialog',
                     callbak:function () {
                         $(".kidsClzLogChangeClick").change(function () {
                             var classId = $(this).val();
-                            var classKidsList = getKidsByClassId(classId);
-                            var classTeacherList = getTeacherByClassId(classId);
+                            var allClassKidsList = getKidsByClassId(classId);
+                            var allClassTeacherList = getTeacherByClassId(classId);
                             var targetKidsHtml = "";
                             var targetTeacherHtml = "";
-
-                            for(var i=0; i < classKidsList.length; i++){
-                                targetKidsHtml += "<label><input type=\"checkbox\" name=\"classes\" checked class=\"kidsCheckClz\" value='"+ classKidsList[i].kId + "'/>" +
-                                    classKidsList[i].chNm + "</label>";
+                            for(var i=0; i < allClassKidsList.length; i++){
+                                var kId = allClassKidsList[i].kId;
+                                targetKidsHtml += "<button type=\"button\" name=\"classes\" class=\"btn btn-success kidsCheckClz\" value='"+ kId + "'>" +
+                                    allClassKidsList[i].chNm + "</button>";
                             }
                             if(!targetKidsHtml){
                                 targetKidsHtml = "暂无数据...";
                             }
-                            $("#kidsList").html(targetKidsHtml);
 
-                            for(var i=0; i < classTeacherList.length; i++){
-                                targetTeacherHtml += "<label><input type=\"checkbox\" name=\"classes\" checked class=\"teacherCheckClz\" value='"+ classTeacherList[i].teacherId + "'/>" +
-                                    classTeacherList[i].teacherNm + "</label>";
+                            $("#kidsList").html(targetKidsHtml);
+                            //标记请假
+                            $("button.kidsCheckClz").click(function () {
+                                if($(this).hasClass("btn-success")){
+                                    $(this).removeClass("btn-success").addClass("btn-warning");
+                                }
+                                else if($(this).hasClass("btn-warning")){
+                                    $(this).removeClass("btn-warning").addClass("btn-success");
+                                }
+                            })
+
+                            for(var i=0; i < allClassTeacherList.length; i++){
+                                targetTeacherHtml += "<label><input type=\"checkbox\" name=\"classes\" checked class=\"teacherCheckClz\" value='"+ allClassTeacherList[i].teacherId + "'/>" +
+                                    allClassTeacherList[i].teacherEnNm + "</label>";
                             }
                             if(!targetTeacherHtml){
                                 targetTeacherHtml = "暂无数据...";
@@ -271,11 +310,15 @@ define(['dialog',
 
                         var kidsCheckClz = new Array();
                         $(".kidsCheckClz").each(function () {
-                            if(this.checked){
-                                var object = new Object();
-                                object.logObjId = $(this).val();
-                                kidsCheckClz.push(object);
+                            var object = new Object();
+                            object.logObjId = $(this).val();
+                            if($(this).hasClass("btn-warning")){
+                                object.logType = 5;//请假日志
                             }
+                            else{
+                                object.logType = 2;//上课日志
+                            }
+                            kidsCheckClz.push(object);
                         })
                         params["kidsList"] = kidsCheckClz;
 
@@ -284,6 +327,7 @@ define(['dialog',
                             if(this.checked){
                                 var object = new Object();
                                 object.logObjId = $(this).val();
+                                object.logType = 1;//教师日志
                                 teacherCheckClz.push(object);
                             }
                         })

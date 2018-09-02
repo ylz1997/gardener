@@ -60,7 +60,7 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
             tClassLogDetail.setDetailLogId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_class_log_detail")));
             tClassLogDetail.setLogId(tClassLog.getLogId());
             tClassLogDetail.setLogObjId(teacher.getLogObjId());
-            tClassLogDetail.setLogType(Constants.KIDS_LOG_OBJ_TYPE_CD.LOG_OBJ_TYEP_TEACHER);
+            tClassLogDetail.setLogType(teacher.getLogType());
             tClassLogDetail.setClassTime(tClassLog.getClassTime());
             classLogDetailDAO.insert(tClassLogDetail);
         }
@@ -69,7 +69,7 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
             tClassLogDetail.setCrtTime(DateUtil.getCurrontTime());
             tClassLogDetail.setDetailLogId(Long.parseLong(BasicUtil.getKeysInstant().getSequence("t_class_log_detail")));
             tClassLogDetail.setLogId(tClassLog.getLogId());
-            tClassLogDetail.setLogType(Constants.KIDS_LOG_OBJ_TYPE_CD.LOG_OBJ_TYPE_KIDS);
+            tClassLogDetail.setLogType(tKids.getLogType());
             tClassLogDetail.setLogObjId(tKids.getLogObjId());
             tClassLogDetail.setClassTime(tClassLog.getClassTime());
             classLogDetailDAO.insert(tClassLogDetail);
@@ -154,9 +154,17 @@ public class KidsClassLogSVImpl implements KidsClassLogSV {
         teacherExample.createCriteria().andLogIdEqualTo(result.getLogId()).andLogTypeEqualTo(Constants.KIDS_LOG_OBJ_TYPE_CD.LOG_OBJ_TYEP_TEACHER);
         result.setTeacherList(classLogDetailDAO.selectByExample(teacherExample));
 
+        //上课学生
         TClassLogDetailExample KidsExample = new TClassLogDetailExample();
-        teacherExample.createCriteria().andLogIdEqualTo(result.getLogId()).andLogTypeEqualTo(Constants.KIDS_LOG_OBJ_TYPE_CD.LOG_OBJ_TYPE_KIDS);
-        result.setKidsList(classLogDetailDAO.selectByExample(teacherExample));
+        KidsExample.createCriteria().andLogIdEqualTo(result.getLogId()).andLogTypeEqualTo(Constants.KIDS_LOG_OBJ_TYPE_CD.LOG_OBJ_TYPE_KIDS);
+        result.setKidsList(classLogDetailDAO.selectByExample(KidsExample));
+        //请假学生
+        TClassLogDetailExample KidsLeaveExample = new TClassLogDetailExample();
+        KidsLeaveExample.createCriteria().andLogIdEqualTo(result.getLogId()).andLogTypeEqualTo(Constants.KIDS_LOG_OBJ_TYPE_CD.LOG_OBJ_TYEP_KIDS_LEAVE);
+        List<TClassLogDetail> listKids = result.getKidsList();
+        listKids.addAll(classLogDetailDAO.selectByExample(KidsLeaveExample));
+        result.setKidsList(listKids);
+
         return result;
     }
 }
