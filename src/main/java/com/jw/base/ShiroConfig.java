@@ -38,7 +38,7 @@ public class ShiroConfig {
 
 
 
-        filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/auth/login", "anon");
 
 
 

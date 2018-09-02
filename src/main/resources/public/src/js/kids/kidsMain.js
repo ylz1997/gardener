@@ -10,7 +10,8 @@ define(['text!src/kids/kidsInfoList.tpl',
         'src/js/kids/classLogInfo',
         'jquery',
         'dialog',
-        'hdb'],
+        'hdb',
+        'src/js/kids/checkPermission'],
         function (kidsTpl,
                     staffInfoTpl,
                     classPackageListTpl,
@@ -23,7 +24,8 @@ define(['text!src/kids/kidsInfoList.tpl',
                     classLogInfo,
                     $,
                     Dialog,
-                    Hdb) {
+                    Hdb,
+                    CheckPermission) {
 
     var classes;
     $.ajax({

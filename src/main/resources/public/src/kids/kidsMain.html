@@ -7,10 +7,14 @@
     <link rel="stylesheet" type="text/css" href="../css/bootstrap/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="../css/datepicker/bootstrap-datepicker.css">
     <link rel="stylesheet" type="text/css" href="../DataTables-1.10.16/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/myCss.css">
     <script type="text/javascript" src="../js/assets/jquery/jquery-3.3.1.min.js"></script>
     <title>gardener系统</title>
 </head>
 <body>
+<span>
+      <span>欢迎您：<span></span></span>
+</span>
 <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -32,7 +36,7 @@
                 <li class="dropdown">
                     <a href="#" id="begin" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">开始<span class="glyphicon glyphicon-menu-hamburger"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a id="kidsInfo" href="#">学生档案<span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
+                        <li id="studentLi" class="hideMenu"><a id="kidsInfo" href="#">学生档案<span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
                         <li><a id="staffInfo" href="#">员工档案<span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" id="classPackageInfo">课时包管理<span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span></a></li>

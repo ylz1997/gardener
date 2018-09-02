@@ -2,7 +2,7 @@ require(['jquery','dialog'],function ($, Dialog) {
     $(document).ready(function(){   
         $("#loginBtn").click(function () {
             $.ajax({
-                url:"/login",
+                url:"/auth/login",
                 method:"POST",
                 data:{userName:$("#userName").val(),password:$("#password").val()},
                 success:function (callData) {
