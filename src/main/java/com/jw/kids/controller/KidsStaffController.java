@@ -7,6 +7,7 @@ import com.jw.kids.bean.TTeacher;
 import com.jw.kids.bean.TTeacherClassRel;
 import com.jw.kids.bean.TTeacherVO;
 import com.jw.kids.service.KidsStaffSV;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,7 @@ public class KidsStaffController {
     private KidsStaffSV kidsStaffSV;
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
+    @RequiresPermissions("/Staff/add")
     public String add(@Valid @RequestBody TTeacherVO tTeacher) throws GeneralException {
         tTeacher.setCrtTime(DateUtil.getCurrontTime());
         tTeacher.setModfTime(DateUtil.getCurrontTime());
@@ -43,6 +45,7 @@ public class KidsStaffController {
     }
 
     @RequestMapping(value = "/edit",method = RequestMethod.POST)
+    @RequiresPermissions("/Staff/edit")
     public String edit(@Valid @RequestBody TTeacherVO tTeacher) throws GeneralException {
         tTeacher.setModfTime(DateUtil.getCurrontTime());
         tTeacher.setOperator(0001L);
@@ -55,6 +58,7 @@ public class KidsStaffController {
     }
 
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    @RequiresPermissions("/Staff/delete")
     public String delete(String tId) throws GeneralException {
         TTeacher tTeacherResult = kidsStaffSV.deleteStaff(tId);
         HashMap result = new HashMap();

@@ -57,11 +57,13 @@ define(['text!src/kids/kidsInfoList.tpl',
             var data = {};
             data.classes = classes;
             $("#contentMain").html(Hdb.compile(kidsTpl)(data));
+            new CheckPermission("kids:add", $("#btn-add-div"));
             new KidsInfo();
         })
         $("#staffInfo").click(function () {
             $("#contentMain").removeClass("jumbotron");
             $("#contentMain").html(staffInfoTpl);
+            new CheckPermission("staff:add", $("#btn-add-div"));
             new KidsStaffInfo();
         })
         $("#classPackageInfo").click(function () {
@@ -86,7 +88,6 @@ define(['text!src/kids/kidsInfoList.tpl',
 
             $("#contentMain").html(Hdb.compile(classLogListTpl)(data));
             new CheckPermission("kidsLog:add", $("#btn-add-div"));
-
             new classLogInfo();
         })
         $("#classLogInfo2").click(function () {

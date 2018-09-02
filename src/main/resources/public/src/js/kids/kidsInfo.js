@@ -7,7 +7,8 @@ define(['dialog',
     'text!src/kids/viewLogDetail.tpl',
     'text!src/kids/classLogInput.tpl',
     'text!src/kids/kidsReAddClass.tpl',
-    'datetimepicker'
+    'datetimepicker',
+    'src/js/kids/checkPermission'
 ],function (Dialog,
             KidsInput,
             $,
@@ -17,7 +18,8 @@ define(['dialog',
             ViewLogDetail,
             ClassLogInput,
             KidsReAddInput,
-            datetimepicker) {
+            datetimepicker,
+            CheckPermission) {
     var table;
     var sexParam = {};
     var relation = {};
@@ -220,9 +222,9 @@ define(['dialog',
         return data;
     }
     var genOperation = function (row) {
-        var html = "<a class='modifyBtn' href='javascript:void(0)' kId='" + row.kId + "'>修改</a> | ";
-        html = html + "<a class='deleteBtn' href='javascript:void(0)' kId='" + row.kId + "' chNm='" + row.chNm + "'>删除</a> | ";
-        html = html + "<a class='chargeBtn' href='javascript:void(0)' kId='" + row.kId + "'>充值课时</a> | ";
+        var html = "<a class='modifyBtn hideMenu' href='javascript:void(0)' kId='" + row.kId + "'>修改 | </a>  ";
+        html = html + "<a class='deleteBtn hideMenu' href='javascript:void(0)' kId='" + row.kId + "' chNm='" + row.chNm + "'>删除 | </a>  ";
+        html = html + "<a class='chargeBtn hideMenu' href='javascript:void(0)' kId='" + row.kId + "'>充值课时 | </a> ";
         html = html + "<a class='history' href='javascript:void(0)' kId='" + row.kId + "'>考勤查询</a>";
         return html;
     }
@@ -290,6 +292,7 @@ define(['dialog',
                 {
                     data: 'cnslColmId',
                     title: "操作",
+                    width: "200px",
                     render: function (data, type, row, meta) {
                         return genOperation(row);
                     }
@@ -297,6 +300,10 @@ define(['dialog',
             ]
         });
         table.on( 'draw', function () {
+            new CheckPermission("kids:edit", $(".modifyBtn"));
+            new CheckPermission("kids:delete", $(".deleteBtn"));
+            new CheckPermission("kids:charge", $(".chargeBtn"));
+
             $(".modifyBtn").click(function () {
                 var kId = $(this).attr("kId");
                 $.ajax({

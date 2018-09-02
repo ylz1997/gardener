@@ -4,14 +4,16 @@ define(['dialog',
     'datatables',
     'hdb',
     'text!src/kids/classLogInput.tpl',
-    'text!src/kids/viewLogDetail.tpl'
+    'text!src/kids/viewLogDetail.tpl',
+    'src/js/kids/checkPermission'
 ],function (Dialog,
             InputTpl,
             $,
             DataTables,
             Hdb,
             ClassLogInput,
-            ViewLogDetail) {
+            ViewLogDetail,
+            CheckPermission) {
     var table;
     var sexParam = {};
     var classes = {};
@@ -149,8 +151,8 @@ define(['dialog',
         return data;
     }
     var genOperation = function (row) {
-        var html = "<a class='modifyBtn' href='javascript:void(0)' tId='" + row.teacherId + "'>修改</a> | ";
-        html = html + "<a class='deleteBtn' href='javascript:void(0)' tId='" + row.teacherId + "' teacherNm='" + row.teacherNm + "'>删除</a> | "
+        var html = "<a class='modifyBtn hideMenu' href='javascript:void(0)' tId='" + row.teacherId + "'>修改 | </a> ";
+        html = html + "<a class='deleteBtn hideMenu' href='javascript:void(0)' tId='" + row.teacherId + "' teacherNm='" + row.teacherNm + "'>删除 | </a> "
         html = html + "<a class='history' href='javascript:void(0)' teacherId='" + row.teacherId + "'>上课历史查询</a>";
         return html;
     }
@@ -195,6 +197,7 @@ define(['dialog',
                 {
                     data: 'cnslColmId',
                     title: "操作",
+                    width: "200px",
                     render: function (data, type, row, meta) {
                         return genOperation(row);
                     }
@@ -202,6 +205,9 @@ define(['dialog',
             ]
         });
         table.on( 'draw', function () {
+            new CheckPermission("staff:edit", $(".modifyBtn"));
+            new CheckPermission("staff:delete", $(".deleteBtn"));
+
             $(".modifyBtn").click(function () {
                 var tId = $(this).attr("tId");
                 $.ajax({
